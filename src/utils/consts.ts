@@ -1,0 +1,8 @@
+export const ADMIN_ROUTE = '/admin'
+export const LOGIN_ROUTE = '/login'
+export const ANALITIC_ROUTE = '/analytics'
+export const USER_MANAGE_ROUTE = '/user-manage'
+export const DISCIPLINE_MANAGE_ROUTE = '/discipline-manage'
+export const GROUP_MANAGE_ROUTE = '/group-manage'
+export const DOWNLOAD_ROUTE = '/download'
+export const REACT_APP_API_URL = 'http://localhost:5000/api/'
