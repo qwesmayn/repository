@@ -1,3 +1,6 @@
+import groupsByIdReducer from './reducers/GroupByIdSlice';
+import disciplineReducer from './reducers/disciplineSlice';
+import groupReducer from './reducers/groupSlice';
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import userReducer from './reducers/userSlice'
 import userManageReducer from './reducers/userManageSlice'
@@ -6,6 +9,9 @@ import userManageReducer from './reducers/userManageSlice'
 const rootReducer = combineReducers({
     userReducer,
     userManageReducer,
+    groupReducer,
+    disciplineReducer,
+    groupsByIdReducer,
 })
 
 export const store = configureStore({

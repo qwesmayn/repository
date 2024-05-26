@@ -1,9 +1,9 @@
-import { IGroup } from "./IGroup";
+import { IGroups } from "./IGroups";
 
 export interface IStudents {
     _id : string,
     fullName : string,
-    group : IGroup,
+    group : IGroups,
     login : string,
     password : string,
 }

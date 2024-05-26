@@ -1,7 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import {
+  changeAuthors,
   changeStudents,
+  createStudent,
   getAuthors,
   getStudents,
 } from "../action_creators/actionCreatos";
@@ -68,20 +70,29 @@ export const userManageSlice = createSlice({
       );
 
     // обработка редактирования студентов
-    builder.addCase(changeStudents.pending.type, (state) => {
-      state.isLoading = true;
-    }),
-      builder.addCase(changeStudents.fulfilled.type, (state) => {
-        state.isLoading = false;
-        state.error = "";
-      }),
-      builder.addCase(
-        changeStudents.rejected.type,
-        (state, action: PayloadAction<string>) => {
-          state.isLoading = false;
-          state.error = action.payload;
-        }
-      );
+    builder.addCase(
+      changeStudents.rejected.type,
+      (state, action: PayloadAction<string>) => {
+        state.error = action.payload;
+      }
+    );
+
+    // обработка редактирования преподователя
+    builder.addCase(
+      changeAuthors.rejected.type,
+      (state, action: PayloadAction<string>) => {
+        state.error = action.payload;
+      }
+    );
+
+
+    // обработка создания студента
+    builder.addCase(
+      createStudent.rejected.type,
+      (state, action: PayloadAction<string>) => {
+        state.error = action.payload;
+      }
+    );
   },
 });
 
