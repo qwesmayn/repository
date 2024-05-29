@@ -10,7 +10,7 @@ const ProtectedLogin: FC<{ element: JSX.Element }> = ({ element }) => {
 };
 
 const AppRouter: FC = () => {
-  const isAuth = true
+  const {isAuth}  = useAppSelector((state) => state.userReducer )
 
   return (
     <Routes>

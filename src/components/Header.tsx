@@ -2,8 +2,12 @@ import { useState } from "react";
 import logo from "../static/logo.png";
 import { ArrowRightStartOnRectangleIcon, Bars3Icon, GlobeAltIcon, XMarkIcon,} from "@heroicons/react/24/outline";
 import { ADMIN_ROUTE, ANALITIC_ROUTE, DISCIPLINE_MANAGE_ROUTE, DOWNLOAD_ROUTE, GROUP_MANAGE_ROUTE, USER_MANAGE_ROUTE } from "../utils/consts";
+import { setAuth } from "../store/reducers/userSlice";
+import { useAppDispatch } from "../hooks/typeHooks";
+import { NavLink } from "react-router-dom";
 
 const Header = () => {
+  const dispatch = useAppDispatch()
   const [language, setLanguage] = useState<string>("ua");
   const [languageDropdownOpen, setLanguageDropdownOpen] = useState<boolean>(false);
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
@@ -14,8 +18,8 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    // Обработчик для выхода с аккаунта
-    console.log("Logged out");
+    dispatch(setAuth(false))
+    localStorage.clear()
   };
 
   const pages = [
@@ -60,13 +64,13 @@ const Header = () => {
         {menuOpen && (
           <div className="absolute left-0 top-full mt-2 w-max bg-white border rounded-lg shadow-lg py-2 text-center">
             {pages.map((page, index) => (
-              <a
+              <NavLink
                 key={index}
-                href={page.link}
+                to = {page.link}
                 className="block px-4 py-2 hover:bg-gray-100 shadow-xl"
               >
                 {page.name}
-              </a>
+              </NavLink>
             ))}
           </div>
         )}

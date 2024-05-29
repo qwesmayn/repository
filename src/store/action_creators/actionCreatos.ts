@@ -8,7 +8,7 @@ import { IGroups } from "../../models/IGroups";
 import { IDiscipline } from "../../models/IDiscipline";
 import { IGroupsByiD } from "../../models/IGroupById";
 import { ITypesMaterials } from "../../models/ITypesMaterials";
-import { IMaterials } from "../../models/iMaterials";
+import { IMaterials } from "../../models/IMaterials";
 
 // Авторизация
 
@@ -431,7 +431,22 @@ export const changeMaterials= createAsyncThunk(
       );
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue("Не удалось изменить преподователя");
+      return thunkAPI.rejectWithValue("Не удалось изменить материал");
+    }
+  }
+);
+
+export const changeGroups= createAsyncThunk(
+  "changeGroups",
+  async (changes: { id: string; change: {} }, thunkAPI) => {
+    try {
+      const response = await $authHost.put(
+        `/groups/${changes.id}`,
+        changes.change
+      );
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue("Не удалось изменить группу");
     }
   }
 );

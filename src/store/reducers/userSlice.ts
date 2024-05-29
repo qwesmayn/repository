@@ -20,7 +20,11 @@
     export const userSlice = createSlice({
     name: 'user',
     initialState,
-    reducers: {},
+    reducers: {
+        setAuth: (state, action: PayloadAction<boolean>) => {
+            state.isAuth = action.payload
+          },
+    },
     extraReducers: (builder) => {
         builder.addCase(Login.pending.type, (state) => {
         state.isLoading = true;
@@ -30,7 +34,6 @@
         state.error = "";
         state.user = action.payload
         state.isAuth = true;
-        debugger
         }),
         builder.addCase(Login.rejected.type, (state, action: PayloadAction<string>) => {
         state.isLoading = false;
@@ -38,5 +41,7 @@
         });
     }
     })
+
+    export const { setAuth } = userSlice.actions
 
     export default userSlice.reducer

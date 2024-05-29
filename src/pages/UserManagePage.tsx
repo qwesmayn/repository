@@ -8,61 +8,70 @@ import {
   getGroups,
   getStudents,
 } from "../store/action_creators/actionCreatos";
-import GroupFilter from "../components/GroupFilter";
-import DisciplinesFilter from "../components/DisciplinesFilter";
 import AddUser from "../components/modals/ModalAddUser";
 import Loading from "../components/Loadind";
 import ModalAddAuthors from "../components/modals/ModalAddAuthors";
+import Dropdown from "../components/DropDown";
 
 const UserManagePage: FC = () => {
   const [view, setView] = useState<"users" | "authors">("users");
-  const [selectedGroup, setSelectedGroup] = useState<string>("all");
-  const [selectedDiscipline, setselectedDiscipline] = useState<string>("all");
+  const [selectedGroup, setSelectedGroup] = useState<string>("");
+  const [selectedDiscipline, setselectedDiscipline] = useState<string>("");
   const [isAddUserModalOpen, setIsAddUserModalOpen] = useState<boolean>(false);
-  const [isAddAuthorsModalOpen, setIsAddAuthorsModalOpen] = useState<boolean>(false);
+  const [isAddAuthorsModalOpen, setIsAddAuthorsModalOpen] =
+    useState<boolean>(false);
   const dispatch = useAppDispatch();
   const { students, authors, isLoading } = useAppSelector(
     (state) => state.userManageReducer
   );
-  const {groups} = useAppSelector((state) => state.groupReducer)
-  const {disciplines} = useAppSelector((state) => state.disciplineReducer)
+  const { groups } = useAppSelector((state) => state.groupReducer);
+  const { disciplines } = useAppSelector((state) => state.disciplineReducer);
 
   useEffect(() => {
-    Promise.all([dispatch(getStudents()), dispatch(getAuthors()), dispatch(getGroups()), dispatch(getDisciplines())]);
+    Promise.all([
+      dispatch(getStudents()),
+      dispatch(getAuthors()),
+      dispatch(getGroups()),
+      dispatch(getDisciplines()),
+    ]);
   }, [dispatch]);
 
   const handleGroupChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedGroup(event.target.value);
   };
 
-  const handleDisciplineChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleDisciplineChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     setselectedDiscipline(event.target.value);
   };
 
-  const handleCloseAddUserModal = () =>{
-    setIsAddUserModalOpen(false)
-  }
+  const handleCloseAddUserModal = () => {
+    setIsAddUserModalOpen(false);
+  };
 
-  const handleCloseAuthorsAddModal = () =>{
-    setIsAddAuthorsModalOpen(false)
-  }
+  const handleCloseAuthorsAddModal = () => {
+    setIsAddAuthorsModalOpen(false);
+  };
 
   const filteredStudents = useMemo(() => {
-    return selectedGroup === "all"
+    return selectedGroup === ""
       ? students
       : students.filter((student) => student.group?.name === selectedGroup);
   }, [selectedGroup, students]);
 
   const filteredAuthors = useMemo(() => {
-    return selectedDiscipline === "all"
+    return selectedDiscipline === ""
       ? authors
       : authors.filter((author) =>
-          author.disciplines?.some((discipline) => discipline.name === selectedDiscipline)
+          author.disciplines?.some(
+            (discipline) => discipline.name === selectedDiscipline
+          )
         );
   }, [selectedDiscipline, authors]);
 
   const nextIdUsers = students.length + 1;
-  const nextIdAuthors = authors.length + 1
+  const nextIdAuthors = authors.length + 1;
 
   return isLoading ? (
     <Loading />
@@ -88,48 +97,80 @@ const UserManagePage: FC = () => {
               Автори
             </button>
           </div>
-          <div>
-            {view === "users" && (
-              <GroupFilter
-                selectedGroup={selectedGroup}
-                handleGroupChange={handleGroupChange}
-                groups={students.map((student) => student.group?.name)}
-              />
-            )}
-            {view === "authors" && (
-              <DisciplinesFilter
-                selectedDiscipline={selectedDiscipline}
-                handleDisciplineChange={handleDisciplineChange}
-                disciplines={Array.from(
+          {view === "users" && (
+            <Dropdown
+              value={selectedGroup}
+              onChange={handleGroupChange}
+              options={[
+                ...Array.from(
+                  new Set(students.map((student) => student.group?.name))
+                ).map((group) => ({
+                  value: group,
+                  label: group,
+                })),
+              ]}
+              placeholder="Виберіть групу"
+            />
+          )}
+          {view === "authors" && (
+            <Dropdown
+              value={selectedDiscipline}
+              onChange={handleDisciplineChange}
+              options={[
+                ...Array.from(
                   new Set(
                     authors.flatMap((author) =>
                       author.disciplines.map((discipline) => discipline.name)
                     )
                   )
-                ).filter((disciplineName) => disciplineName)}
-              />
-            )}
-          </div>
+                ).map((discipline) => ({
+                  value: discipline,
+                  label: discipline,
+                })),
+              ]}
+              placeholder="Виберіть дисципліну"
+            />
+          )}
         </div>
         <div>
           {view === "users" && (
-            <button className="bg-white text-black px-6 py-2 shadow-xl rounded transition-colors duration-300" onClick={() => setIsAddUserModalOpen(true)}>
+            <button
+              className="bg-white text-black px-6 py-2 shadow-xl rounded transition-colors duration-300"
+              onClick={() => setIsAddUserModalOpen(true)}
+            >
               Додати користувача
             </button>
           )}
           {view === "authors" && (
-            <button className="bg-white text-black px-6 py-2 shadow-xl rounded transition-colors duration-300" onClick={() => setIsAddAuthorsModalOpen(true)}>
+            <button
+              className="bg-white text-black px-6 py-2 shadow-xl rounded transition-colors duration-300"
+              onClick={() => setIsAddAuthorsModalOpen(true)}
+            >
               Додати автора
             </button>
           )}
         </div>
       </div>
       <div>
-        {view === "users" && <UsersTable students={filteredStudents} groups={groups}/>}
-        {view === "authors" && <AuthorsTable authors={filteredAuthors} disciplines = {disciplines}/>}
+        {view === "users" && (
+          <UsersTable students={filteredStudents} groups={groups} />
+        )}
+        {view === "authors" && (
+          <AuthorsTable authors={filteredAuthors} disciplines={disciplines} />
+        )}
       </div>
-      <AddUser isAddUserModalOpen={isAddUserModalOpen} closeAddModal={handleCloseAddUserModal} nextId={nextIdUsers} groups = {groups}/>
-      <ModalAddAuthors isAddAuthorsModalOpen = {isAddAuthorsModalOpen} closeAddModal={handleCloseAuthorsAddModal} nextId={nextIdAuthors} disciplines={disciplines}/>
+      <AddUser
+        isAddUserModalOpen={isAddUserModalOpen}
+        closeAddModal={handleCloseAddUserModal}
+        nextId={nextIdUsers}
+        groups={groups}
+      />
+      <ModalAddAuthors
+        isAddAuthorsModalOpen={isAddAuthorsModalOpen}
+        closeAddModal={handleCloseAuthorsAddModal}
+        nextId={nextIdAuthors}
+        disciplines={disciplines}
+      />
     </div>
   );
 };

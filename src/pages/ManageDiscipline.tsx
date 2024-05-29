@@ -11,6 +11,8 @@ import ErrorAlert from "../components/ErrorAlert";
 import { clearErrors } from "../store/reducers/groupSlice";
 import ModalAddDiscipline from "../components/modals/ModalAddDiscipline";
 import ModalAddGroup from "../components/modals/ModalAddLinkGroups";
+import Dropdown from "../components/DropDown";
+import DisciplineRow from "../components/DisciplineRow";
 
 const ManageDisciplines: FC = () => {
   const dispatch = useAppDispatch();
@@ -105,18 +107,17 @@ const ManageDisciplines: FC = () => {
   return (
     <div className="overflow-x-auto p-6">
       <div className="flex justify-between items-center mb-4">
-        <select
-          className="border border-gray-300 rounded-3xl px-4 py-2 shadow-xl "
+        <Dropdown
           value={selectedDiscipline}
           onChange={(e) => setSelectedDiscipline(e.target.value)}
-        >
-          <option value="">Виберіть дисципліну</option>
-          {disciplines.map((discipline) => (
-            <option key={discipline._id} value={discipline._id}>
-              {discipline.name}
-            </option>
-          ))}
-        </select>
+          options={[
+            ...disciplines.map((discipline) => ({
+              value: discipline._id,
+              label: discipline.name,
+            })),
+          ]}
+          placeholder="Виберіть дисципліну"
+        />
         <button
           className="bg-white text-black border border-gray-300 px-4 py-2 rounded shadow-xl transition-colors duration-300"
           onClick={() => setIsModalAddOpen(true)}
@@ -128,77 +129,25 @@ const ManageDisciplines: FC = () => {
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border-separate border-spacing-5 text-center">
           <tbody>
-            
-          {disciplines
-  .filter(discipline => selectedDiscipline === "" || discipline._id === selectedDiscipline)
-  .map((discipline, index) => (
-              <tr key={discipline._id}>
-                <td className="align-top">{index + 1}</td>
-                <td className="align-top">{discipline.name}</td>
-                <td className="align-top">
-                  <button
-                    className="bg-white shadow-xl px-20 text-black py-2 rounded transition-colors duration-300"
-                    onClick={() => toggleDisciplineGroups(discipline._id)}
-                  >
-                    Група ▼
-                  </button>
-                  <div
-                    className={`overflow-hidden transition-all duration-700 ${
-                      selectedDisciplineId === discipline._id
-                        ? "max-h-screen"
-                        : "max-h-0"
-                    }`}
-                  >
-                    <ul className="m-auto mb-3 mt-5 w-max bg-white border border-gray-300 rounded shadow-lg p-2 overflow-y-auto">
-                      {groupsById
-                        .filter((group) => group.discipline === discipline._id)
-                        .map((group) => (
-                          <li
-                            key={group._id}
-                            className="flex justify-between items-center px-2 py-1 border-b"
-                          >
-                            <span className="mr-6">{group.group.name}</span>
-                            <button
-                              className="text-red-500 transition-colors duration-300"
-                              onClick={() =>
-                                handleDeleteGroup(
-                                  group.group._id,
-                                  group.discipline
-                                )
-                              }
-                            >
-                              &times;
-                            </button>
-                          </li>
-                        ))}
-                      <li className="flex justify-between items-center px-2 py-1 border-b">
-                        <button
-                          className="text-blue-500 transition-colors duration-300"
-                          onClick={() => {
-                            openModalAddGroup();
-                          }}
-                        >
-                          Додати групу
-                        </button>
-                      </li>
-                    </ul>
-                  </div>
-                </td>
-                <td className="align-top">
-                  <button className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded-md">
-                    Зберегти зміни
-                  </button>
-                </td>
-                <td className="align-top">
-                  <button
-                    className="bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded-md mr-2"
-                    onClick={() => handleDeleteDiscipline(discipline._id)}
-                  >
-                    Видалити дисципліну
-                  </button>
-                </td>
-              </tr>
-            ))}
+            {disciplines
+              .filter(
+                (discipline) =>
+                  selectedDiscipline === "" ||
+                  discipline._id === selectedDiscipline
+              )
+              .map((discipline, index) => (
+                <DisciplineRow
+                  key={discipline._id}
+                  index={index}
+                  discipline={discipline}
+                  selectedDisciplineId={selectedDisciplineId}
+                  toggleDisciplineGroups={toggleDisciplineGroups}
+                  groupsById={groupsById}
+                  handleDeleteGroup={handleDeleteGroup}
+                  openModalAddGroup={openModalAddGroup}
+                  handleDeleteDiscipline={handleDeleteDiscipline}
+                />
+              ))}
           </tbody>
         </table>
       </div>

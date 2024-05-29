@@ -9,11 +9,11 @@ import { IAuthors } from "../models/IAuthors";
 import ModalDelete from "./modals/ModalDelete";
 import ModalAddAuthorDiscipline from "./modals/ModalAddAuthorDisciplines";
 import { IDiscipline } from "../models/IDiscipline";
-
+import AuthorRow from "./AuthorRow";
 
 interface authorsTableProps {
   authors: IAuthors[];
-  disciplines : IDiscipline[];
+  disciplines: IDiscipline[];
 }
 
 const AuthorsTable: FC<authorsTableProps> = ({ authors, disciplines }) => {
@@ -42,11 +42,10 @@ const AuthorsTable: FC<authorsTableProps> = ({ authors, disciplines }) => {
       }
       return author;
     });
-  
+
     await dispatch(changeAuthors({ id: authorId, change: { disciplines: updatedAuthors.find(author => author._id === authorId)?.disciplines } }));
     await dispatch(getAuthors());
   };
-  
 
   const openAddDisciplineModal = (id: string) => {
     setAuthorToAddDiscipline(id);
@@ -58,14 +57,13 @@ const AuthorsTable: FC<authorsTableProps> = ({ authors, disciplines }) => {
     setIsAddDisciplineModalOpen(false);
   };
 
-  const saveDiscipline = async (discplines: string[]) => {
+  const saveDiscipline = async (disciplines: string[]) => {
     if (authorToAddDiscipline) {
-      await dispatch(changeAuthors({ id: authorToAddDiscipline, change: { disciplines: discplines } }));
+      await dispatch(changeAuthors({ id: authorToAddDiscipline, change: { disciplines: disciplines } }));
       await dispatch(getAuthors());
       closeAddDisciplineModal();
     }
   };
-  
 
   const confirmDelete = async () => {
     if (authorsToDelete) {
@@ -79,72 +77,27 @@ const AuthorsTable: FC<authorsTableProps> = ({ authors, disciplines }) => {
     setSelectedAuthorId((prevId) => (prevId === id ? null : id));
   };
 
+  const saveAuthorChanges = async (id: string, changes: { [key: string]: any }) => {
+    await dispatch(changeAuthors({ id, change: changes }));
+    await dispatch(getAuthors());
+  };
+
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full bg-white border-separate border-spacing-5">
         <tbody>
           {authors.map((author, index) => (
-            <tr
+            <AuthorRow
               key={author._id}
-              className="hover:bg-gray-100 transition-all duration-300"
-            >
-              <td className="text-center align-top shadow-xl px-2">{index + 1}</td>
-              <td className="text-center align-top shadow-xl">{author.fullName}</td>
-              <td className="text-center align-top shadow-xl">{author.position}</td>
-              <td className="text-center align-top">
-                <div>
-                  <button
-                    className="bg-white shadow-xl text-black px-5 py-1 rounded transition-colors duration-300"
-                    onClick={() => toggleSelectedAuthor(author._id)}
-                  >
-                    Дисципліни ▼
-                  </button>
-
-                  <div
-                    className={`overflow-hidden transition-all duration-700 ${
-                      selectedAuthorId === author._id
-                        ? "max-h-screen"
-                        : "max-h-0"
-                    }`}
-                  >
-                    <ul className="m-auto mb-3 mt-5 w-max bg-white border border-gray-300 rounded shadow-lg p-2 overflow-y-auto">
-                      {author.disciplines.map((discipline, index) => (
-                        <li
-                          key={index}
-                          className="flex justify-between items-center px-2 py-1 border-b"
-                        >
-                          <span className="mr-6">{discipline.name}</span>
-                          <button
-                            className="text-red-500 transition-colors duration-300"
-                            onClick={() => changeDiscAuthors(author._id, discipline._id)}
-                          >
-                            &times;
-                          </button>
-                        </li>
-                      ))}
-                      <li className="flex justify-between items-center px-2 py-1 border-b">
-                        <button className="text-blue-500 transition-colors duration-300" onClick={() => openAddDisciplineModal(author._id)}>
-                          Додати дисципліну
-                        </button>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </td>
-              <td className="text-center align-top">
-                <div className="flex justify-center space-x-2">
-                  <button className="bg-blue-500 shadow-xl text-white px-2 py-1 rounded transition-colors duration-300">
-                    Save
-                  </button>
-                  <button
-                    className="bg-red-500 shadow-xl text-white px-2 py-1 rounded transition-colors duration-300"
-                    onClick={() => openModal(author._id)}
-                  >
-                    Delete
-                  </button>
-                </div>
-              </td>
-            </tr>
+              author={author}
+              index={index}
+              selectedAuthorId={selectedAuthorId}
+              toggleSelectedAuthor={toggleSelectedAuthor}
+              changeDiscAuthors={changeDiscAuthors}
+              openAddDisciplineModal={openAddDisciplineModal}
+              openModal={openModal}
+              saveAuthorChanges={saveAuthorChanges}
+            />
           ))}
         </tbody>
       </table>
@@ -154,7 +107,7 @@ const AuthorsTable: FC<authorsTableProps> = ({ authors, disciplines }) => {
         closeModal={closeModal}
         confirmDelete={confirmDelete}
       />
-      <ModalAddAuthorDiscipline isModalOpen = {isAddDisciplineModalOpen} closeModal={closeAddDisciplineModal} saveDisciplines={saveDiscipline} disciplines={disciplines}/>
+      <ModalAddAuthorDiscipline isModalOpen={isAddDisciplineModalOpen} closeModal={closeAddDisciplineModal} saveDisciplines={saveDiscipline} disciplines={disciplines} />
     </div>
   );
 };

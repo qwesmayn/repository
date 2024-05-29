@@ -1,6 +1,6 @@
 import { FC } from "react";
 import MaterialBlock from "./MaterialBlock";
-import { IMaterials} from "../models/iMaterials";
+import { IMaterials} from "../models/IMaterials";
 import { IAuthors } from "../models/IAuthors";
 import { IDiscipline } from "../models/IDiscipline";
 import { ITypesMaterials } from "../models/ITypesMaterials";

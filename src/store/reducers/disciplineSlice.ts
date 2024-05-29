@@ -5,10 +5,8 @@ import {
   deleteDisciplines,
   getDisciplines,
   getDisciplinesById,
-  getMaterialsTypes,
 } from "../action_creators/actionCreatos";
 import { IDiscipline } from "../../models/IDiscipline";
-import { ITypesMaterials } from "../../models/ITypesMaterials";
 
 export interface disciplineState {
   isLoading: boolean;
