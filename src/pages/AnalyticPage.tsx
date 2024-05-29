@@ -1,46 +1,35 @@
-import { FC, useState } from "react";
-import MaterialsList from "../components/MaterialList";
-import { Material } from "../components/MaterialBlock";
+import { FC, useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../hooks/typeHooks";
+import { getMaterials, getAuthors, getDisciplines, getMaterialsTypes, deleteMaterials, changeMaterials } from "../store/action_creators/actionCreatos";
 import Dropdown from "../components/DropDown";
-const AnalyticPage: FC = () => {
-    const materials: Material[] = [
-        {
-            id: 1,
-            image: 'https://via.placeholder.com/250x100',
-            name: 'Навчальний матеріал 1',
-            description: 'Опис матеріалу 1',
-            discipline: 'Математика',
-            material_type: 'Підручник',
-            author: 'Іван Іванов',
-            view: 123,
-            date: '2023-05-17',
-        },
-        {
-            id: 2,
-            image: 'https://via.placeholder.com/250x100',
-            name: 'Навчальний матеріал 2',
-            description: 'Опис матеріалу 2',
-            discipline: 'Фізика',
-            material_type: 'Лабораторна',
-            author: 'Петро Петренко',
-            view: 45,
-            date: '2023-05-18',
-        },
-    ];
+import MaterialsList from "../components/MaterialList";
 
+const AnalyticPage: FC = () => {
+    const dispatch = useAppDispatch();
+    const { disciplines } = useAppSelector((state) => state.disciplineReducer);
+    const { materials, materialsTypes } = useAppSelector((state) => state.materialReducer);
+    const { authors} = useAppSelector((state) => state.userManageReducer);
     const [selectedDiscipline, setSelectedDiscipline] = useState<string>('');
     const [selectedMaterialType, setSelectedMaterialType] = useState<string>('');
 
-    const handleDownload = (id: number) => {
+    useEffect(() => {
+        dispatch(getMaterials());
+        dispatch(getAuthors());
+        dispatch(getDisciplines());
+        dispatch(getMaterialsTypes());
+    }, [dispatch]);
+
+    const handleDownload = (id: string) => {
         console.log('Download material', id);
     };
 
-    const handleSave = (id: number) => {
-        console.log('Save changes', id);
+    const handleSave = (id: string, change : object) => {
+        dispatch(changeMaterials({ id : id , change : change}))
     };
 
-    const handleDelete = (id: number) => {
-        console.log('Delete material', id);
+    const handleDelete = async (id: string) => {
+        await dispatch(deleteMaterials(id))
+        await dispatch(getMaterials())
     };
 
     const handleDisciplineChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -54,7 +43,7 @@ const AnalyticPage: FC = () => {
     const filteredMaterials = materials.filter((material) => {
         return (
             (selectedDiscipline === '' || material.discipline === selectedDiscipline) &&
-            (selectedMaterialType === '' || material.material_type === selectedMaterialType)
+            (selectedMaterialType === '' || material.materialType === selectedMaterialType)
         );
     });
 
@@ -65,24 +54,27 @@ const AnalyticPage: FC = () => {
                     <Dropdown
                         value={selectedDiscipline}
                         onChange={handleDisciplineChange}
-                        options={[
-                            { value: 'Математика', label: 'Математика' },
-                            { value: 'Фізика', label: 'Фізика' },
-                        ]}
+                        options={disciplines.map(discipline => ({
+                            value: discipline._id,
+                            label: discipline.name,
+                        }))}
                         placeholder="Вибір дисципліни"
                     />
                     <Dropdown
                         value={selectedMaterialType}
                         onChange={handleMaterialTypeChange}
-                        options={[
-                            { value: 'Підручник', label: 'Підручник' },
-                            { value: 'Лабораторна', label: 'Лабораторна' },
-                        ]}
+                        options={materialsTypes.map(type => ({
+                            value: type._id,
+                            label: type.name,
+                        }))}
                         placeholder="Вибір типу матеріалу"
                     />
                 </div>
                 <MaterialsList 
                     materials={filteredMaterials} 
+                    authors={authors}
+                    disciplines={disciplines}
+                    materialsTypes={materialsTypes}
                     onDownload={handleDownload} 
                     onSave={handleSave} 
                     onDelete={handleDelete} 

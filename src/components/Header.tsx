@@ -58,12 +58,12 @@ const Header = () => {
           )}
         </button>
         {menuOpen && (
-          <div className="absolute left-0 top-full mt-2 w-max bg-white border rounded-lg shadow-lg py-2">
+          <div className="absolute left-0 top-full mt-2 w-max bg-white border rounded-lg shadow-lg py-2 text-center">
             {pages.map((page, index) => (
               <a
                 key={index}
                 href={page.link}
-                className="block px-4 py-2 hover:bg-gray-100"
+                className="block px-4 py-2 hover:bg-gray-100 shadow-xl"
               >
                 {page.name}
               </a>

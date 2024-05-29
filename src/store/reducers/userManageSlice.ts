@@ -5,6 +5,7 @@ import {
   changeStudents,
   createStudent,
   getAuthors,
+  getAuthorsById,
   getStudents,
 } from "../action_creators/actionCreatos";
 import { IAuthors } from "../../models/IAuthors";
@@ -48,6 +49,27 @@ export const userManageSlice = createSlice({
           state.error = action.payload;
         }
       );
+
+    // обработка запроса на получение преподователей по ид
+    builder.addCase(getAuthorsById.pending.type, (state) => {
+      state.isLoading = true;
+    }),
+      builder.addCase(
+        getAuthorsById.fulfilled.type,
+        (state, action: PayloadAction<IAuthors[]>) => {
+          state.isLoading = false;
+          state.error = "";
+          state.authors = action.payload;
+        }
+      ),
+      builder.addCase(
+        getAuthorsById.rejected.type,
+        (state, action: PayloadAction<string>) => {
+          state.isLoading = false;
+          state.error = action.payload;
+        }
+      );
+
 
     // обработка запроса на получение студентов
     builder.addCase(getStudents.pending.type, (state) => {

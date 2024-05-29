@@ -10,7 +10,7 @@ import { IDiscipline } from "../../models/IDiscipline";
 interface FormData {
   fullName: string;
   position: string;
-  disciplines: string[]; // Array of discipline IDs
+  disciplines: string[]; 
 }
 
 interface AddUserProps {
