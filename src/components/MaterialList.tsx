@@ -12,10 +12,10 @@ interface MaterialsListProps {
     materialsTypes: ITypesMaterials[];
     onDownload: (id: string) => void;
     onSave: (id: string, change : object) => void;
-    onDelete: (id: string) => void;
+    openModal: (id: string) => void;
 }
 
-const MaterialsList: FC<MaterialsListProps> = ({ materials, authors, disciplines, materialsTypes, onDownload, onSave, onDelete }) => {
+const MaterialsList: FC<MaterialsListProps> = ({ materials, authors, disciplines, materialsTypes, onDownload, onSave, openModal }) => {
     return (
         <div className="flex flex-wrap gap-20">
             {materials.map(material => (
@@ -27,7 +27,7 @@ const MaterialsList: FC<MaterialsListProps> = ({ materials, authors, disciplines
                     materialsTypes={materialsTypes}
                     onDownload={onDownload} 
                     onSave={onSave} 
-                    onDelete={onDelete} 
+                    openModal={openModal} 
                 />
             ))}
         </div>

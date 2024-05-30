@@ -23,6 +23,7 @@ const StudentRow: FC<StudentRowProps> = ({
   const [editedStudent, setEditedStudent] = useState<IStudents>({ ...student });
   const [isEditingFullName, setIsEditingFullName] = useState(false);
   const [isEditingLogin, setIsEditingLogin] = useState(false);
+  const [isEditingPassword, setIsEditingPassword] = useState(false);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -40,6 +41,9 @@ const StudentRow: FC<StudentRowProps> = ({
     if (editedStudent.login !== student.login) {
       changes.login = editedStudent.login;
     }
+    if (editedStudent.password !== student.password) {
+      changes.password = editedStudent.password;
+    }
     changeUser(student._id, changes);
   };
 
@@ -51,27 +55,33 @@ const StudentRow: FC<StudentRowProps> = ({
     setIsEditingLogin(true);
   };
 
+  const handleDoubleClickPassword = () => {
+    setIsEditingPassword(true);
+  };
+
   return (
-    <tr key={student._id} className="hover:bg-gray-100 transition-all duration-300">
-      <td className="text-center align-top shadow-dark-lg px-4">{index + 1}</td>
-      <td className="text-center align-top shadow-dark-lg" onDoubleClick={handleDoubleClickFullName}>
-        {isEditingFullName ? (
-          <input
-            type="text"
-            name="fullName"
-            value={editedStudent.fullName}
-            onChange={handleChange}
-            onBlur={() => setIsEditingFullName(false)}
-            autoFocus
-          />
-        ) : (
-          editedStudent.fullName
-        )}
-      </td>
-      <td className="text-center align-top">
+    <div key={student._id} className="flex transition-all justify-between duration-300 border-2 border-black mb-5 p-3">
+      <div className="text-center align-top shadow-dark-lg w-20 h-max py-3">{index + 1}</div>
+      <div className="text-center align-top shadow-dark-lg w-96 h-max py-3 overflow-hidden whitespace-nowrap" onDoubleClick={handleDoubleClickFullName}>
+  {isEditingFullName ? (
+    <input
+      type="text"
+      name="fullName"
+      value={editedStudent.fullName}
+      onChange={handleChange}
+      onBlur={() => setIsEditingFullName(false)}
+      autoFocus
+      className="w-full"
+    />
+  ) : (
+    <div className="truncate">{editedStudent.fullName}</div>
+  )}
+</div>
+
+      <div className="text-center align-top ">
         <div>
           <button
-            className="bg-white shadow-dark-lg px-6 text-black py-1 rounded transition-colors duration-300"
+            className="bg-white shadow-dark-lg px-6 text-black py-3 rounded-3xl transition-colors duration-300"
             onClick={() =>
               setSelectedStudentId(selectedStudentId === student._id ? null : student._id)
             }
@@ -106,8 +116,8 @@ const StudentRow: FC<StudentRowProps> = ({
             </ul>
           </div>
         </div>
-      </td>
-      <td className="text-center align-top shadow-dark-lg" onDoubleClick={handleDoubleClickLogin}>
+      </div>
+      <div className="text-center align-top shadow-dark-lg w-72 h-max py-3 overflow-hidden whitespace-nowrap" onDoubleClick={handleDoubleClickLogin}>
         {isEditingLogin ? (
           <input
             type="text"
@@ -116,29 +126,44 @@ const StudentRow: FC<StudentRowProps> = ({
             onChange={handleChange}
             onBlur={() => setIsEditingLogin(false)}
             autoFocus
+            className="w-full"
           />
         ) : (
-          editedStudent.login
+          <div className="truncate">{editedStudent.login}</div>
         )}
-      </td>
-      <td className="text-center align-top shadow-dark-lg">{student.password}</td>
-      <td className="text-center align-top">
-      <button
-            className="bg-blue-500 shadow-dark-lg text-white px-2 py-2 rounded-2xl transition-colors duration-300"
-            onClick={handleSave}
-          >
-            Зберегти зміни
-          </button>
-      </td>
-      <td className="text-center align-top ">
-          <button
-            className="bg-red-500 text-white shadow-dark-lg px-2 py-2 rounded-2xl transition-colors duration-300"
-            onClick={() => openModal(student._id)}
-          >
-            Видалити користувача
-          </button>
-      </td>
-    </tr>
+      </div>
+      <div className="text-center align-top shadow-dark-lg w-96 h-max py-3 overflow-hidden whitespace-nowrap" onDoubleClick={handleDoubleClickPassword}>
+        {isEditingPassword ? (
+          <input
+            type="text"
+            name="password"
+            value={editedStudent.password}
+            onChange={handleChange}
+            onBlur={() => setIsEditingPassword(false)}
+            autoFocus
+            className="w-full"
+          />
+        ) : (
+          <div className="truncate">{editedStudent.password}</div>
+        )}
+      </div>
+      <div className="text-center align-top">
+        <button
+          className="bg-blue-500 shadow-dark-lg h-min text-white py-2 px-2  rounded-2xl transition-colors duration-300"
+          onClick={handleSave}
+        >
+          Зберегти зміни
+        </button>
+      </div>
+      <div className="text-center align-top">
+        <button
+          className="bg-red-500 text-white shadow-dark-lg py-2 px-2 rounded-2xl transition-colors duration-300"
+          onClick={() => openModal(student._id)}
+        >
+          Видалити користувача
+        </button>
+      </div>
+    </div>
   );
 };
 

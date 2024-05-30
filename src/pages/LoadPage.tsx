@@ -8,6 +8,7 @@ import {
   getMaterialsTypes,
 } from "../store/action_creators/actionCreatos";
 import { useForm } from "react-hook-form";
+import Popup from "../components/Popup";
 
 const LoadPage: FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -17,12 +18,13 @@ const LoadPage: FC = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
   const [file, setFile] = useState<File | undefined>(undefined);
   const [coverFile, setCoverFile] = useState<File | undefined>(undefined);
   const [coverPreview, setCoverPreview] = useState<string | null>(null);
-
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const { disciplines } = useAppSelector((state) => state.disciplineReducer);
   const { authors } = useAppSelector((state) => state.userManageReducer);
   const { materialsTypes } = useAppSelector((state) => state.materialReducer)
@@ -136,9 +138,6 @@ const LoadPage: FC = () => {
                 </option>
               ))}
             </select>
-            {errors.discipline && (
-              <span className="text-red-500">Дисципліна обов'язкова</span>
-            )}
           </div>
           <div className="mb-9 shadow-dark-lg">
             <select
@@ -165,9 +164,6 @@ const LoadPage: FC = () => {
                 </option>
               ))}
             </select>
-            {errors.author && (
-              <span className="text-red-500">Автор обов'язковий</span>
-            )}
           </div>
           <div className="mb-9 shadow-dark-lg">
             <div className="flex items-center">
@@ -254,10 +250,14 @@ const LoadPage: FC = () => {
         <button
           type="button"
           className="px-6 py-2 bg-gray-300 w-full text-gray-700 rounded-md hover:bg-gray-400 transition-colors duration-300"
+          onClick={() => setShowSuccessPopup(true)}
         >
           Скасувати
         </button>
       </div>
+      {showSuccessPopup && (
+          <Popup message="Вікладач успішно створеній" closeModal={reset} />
+        )}
     </div>
   );
 };

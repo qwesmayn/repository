@@ -11,7 +11,7 @@ interface MaterialBlockProps {
   materialsTypes: ITypesMaterials[];
   onDownload: (id: string) => void;
   onSave: (id: string, change : object) => void;
-  onDelete: (id: string) => void;
+  openModal: (id: string) => void;
 }
 
 const MaterialBlock: FC<MaterialBlockProps> = ({
@@ -21,7 +21,7 @@ const MaterialBlock: FC<MaterialBlockProps> = ({
   materialsTypes,
   onDownload,
   onSave,
-  onDelete,
+  openModal,
 }) => {
   const [editedMaterial, setEditedMaterial] = useState<IMaterials>({
     ...material,
@@ -190,7 +190,7 @@ const MaterialBlock: FC<MaterialBlockProps> = ({
             Зберегти зміни
           </button>
           <button
-            onClick={() => onDelete(_id)}
+            onClick={() => openModal(_id)}
             className="bg-red-500 text-white px-4 py-2 rounded-lg text-sm"
           >
             Видалити

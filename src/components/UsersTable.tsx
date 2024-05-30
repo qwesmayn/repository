@@ -74,22 +74,20 @@ const UsersTable: FC<UserTableProps> = ({ students, groups }) => {
 
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full bg-white border-separate border-spacing-5">
-        <tbody>
-          {students.map((student, index) => (
-            <StudentRow
-              key={student._id}
-              student={student}
-              index={index}
-              selectedStudentId={selectedStudentId}
-              setSelectedStudentId={setSelectedStudentId}
-              changeUser={changeUser}
-              openAddGroupModal={openAddGroupModal}
-              openModal={openModal}
-            />
-          ))}
-        </tbody>
-      </table>
+      <div className="grid grid-row-6 gap-4 p-7 border-[3px] border-black">
+        {students.map((student, index) => (
+          <StudentRow
+            key={student._id}
+            student={student}
+            index={index}
+            selectedStudentId={selectedStudentId}
+            setSelectedStudentId={setSelectedStudentId}
+            changeUser={changeUser}
+            openAddGroupModal={openAddGroupModal}
+            openModal={openModal}
+          />
+        ))}
+      </div>
 
       <ModalDelete
         nameDel="користувача"

@@ -1,8 +1,9 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import { IGroups } from "../../models/IGroups";
 import { useAppDispatch } from "../../hooks/typeHooks";
 import { createStudent, getStudents } from "../../store/action_creators/actionCreatos";
+import Popup from "../Popup";
 
 interface FormData {
   fullName: string;
@@ -21,18 +22,23 @@ interface AddUserProps {
 const AddUser: FC<AddUserProps> = ({ isAddUserModalOpen, closeAddModal, nextId, groups }) => {
   const { register, handleSubmit } = useForm<FormData>();
   const dispatch = useAppDispatch()
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   const onSubmit = async (data: FormData) => {
     await dispatch(createStudent(data))
-    await dispatch(getStudents())
-    closeAddModal()
+    setShowSuccessPopup(true);
   };
+
+  const closePopup =  () => {
+    setShowSuccessPopup(false);
+    closeAddModal();
+  }
 
   return (
     isAddUserModalOpen && (
       <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
         <div className="bg-white rounded-lg p-8 shadow-lg w-max">
-          <h2 className="text-xl mb-4">Додати користувача</h2>
+          <h2 className="text-xl mb-4">Додаті корістувача</h2>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="flex space-x-4">
               <input
@@ -88,6 +94,9 @@ const AddUser: FC<AddUserProps> = ({ isAddUserModalOpen, closeAddModal, nextId, 
             </div>
           </form>
         </div>
+        {showSuccessPopup && (
+          <Popup message="Корістувачі успішно створений" closeModal={closePopup} />
+        )}
       </div>
     )
   );

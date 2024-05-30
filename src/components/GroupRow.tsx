@@ -40,10 +40,10 @@ const GroupRow: FC<GroupRowProps> = ({
   };
 
   return (
-    <div key={group._id} className="mb-4 p-4 transition-all duration-300">
-      <div className="grid grid-cols-4 gap-4">
-        <div className="text-center shadow-dark-lg px-2 py-1">{index + 1}</div>
-        <div className="text-center shadow-dark-lg px-2 py-1" onDoubleClick={handleDoubleClickName}>
+    <div key={group._id} className="mb-9 p-4 transition-all duration-300 border-2 border-black">
+      <div className="flex justify-between">
+        <div className="text-center shadow-dark-lg px-5 py-1 w-max">{index + 1}</div>
+        <div className="text-center shadow-dark-lg px-40 py-1" onDoubleClick={handleDoubleClickName}>
           {isEditingName ? (
             <input
               type="text"

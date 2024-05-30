@@ -5,6 +5,7 @@ import {
   deleteDisciplines,
   getGroupsOnIdDiscipline,
   deleteLink,
+  changeDisciplines,
 } from "../store/action_creators/actionCreatos";
 import ModalDelete from "../components/modals/ModalDelete";
 import ErrorAlert from "../components/ErrorAlert";
@@ -97,6 +98,15 @@ const ManageDisciplines: FC = () => {
     );
   };
 
+  const saveDisciplineChanges = async (
+    id: string,
+    changes: { [key: string]: any }
+  ) => {
+    debugger;
+    await dispatch(changeDisciplines({ id, change: changes }));
+    await dispatch(getDisciplines());
+  };
+
   const clearError = () => {
     dispatch(clearErrors());
     setLocalError(null);
@@ -105,7 +115,7 @@ const ManageDisciplines: FC = () => {
   const nextIdDiscipline = disciplines.length + 1;
 
   return (
-    <div className="overflow-x-auto p-6">
+    <div className="overflow-x-auto px-20 pt-16">
       <div className="flex justify-between items-center mb-4">
         <Dropdown
           value={selectedDiscipline}
@@ -126,9 +136,8 @@ const ManageDisciplines: FC = () => {
         </button>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white border-separate border-spacing-5 text-center">
-          <tbody>
+        <div className="overflow-x-auto">
+          <div className="grid grid-row-6 gap-4 border-[3px] border-black px-6 pt-14">
             {disciplines
               .filter(
                 (discipline) =>
@@ -137,7 +146,6 @@ const ManageDisciplines: FC = () => {
               )
               .map((discipline, index) => (
                 <DisciplineRow
-                  key={discipline._id}
                   index={index}
                   discipline={discipline}
                   selectedDisciplineId={selectedDisciplineId}
@@ -145,11 +153,11 @@ const ManageDisciplines: FC = () => {
                   groupsById={groupsById}
                   handleDeleteGroup={handleDeleteGroup}
                   openModalAddGroup={openModalAddGroup}
+                  saveDisciplineChanges={saveDisciplineChanges}
                   handleDeleteDiscipline={handleDeleteDiscipline}
                 />
               ))}
-          </tbody>
-        </table>
+          </div>
       </div>
       <ModalDelete
         nameDel="дисципліну"

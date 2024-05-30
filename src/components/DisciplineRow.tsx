@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { ChangeEvent, FC, useState } from "react";
 import { IDiscipline } from "../models/IDiscipline";
 import { IGroupsByiD } from "../models/IGroupById";
 
@@ -10,6 +10,7 @@ interface DisciplineRowProps {
   groupsById: IGroupsByiD[];
   handleDeleteGroup: (groupId: string, disciplineId: string) => void;
   openModalAddGroup: () => void;
+  saveDisciplineChanges: (id: string, changes: { [key: string]: any }) => void;
   handleDeleteDiscipline: (disciplineId: string) => void;
 }
 
@@ -22,14 +23,51 @@ const DisciplineRow: FC<DisciplineRowProps> = ({
   handleDeleteGroup,
   openModalAddGroup,
   handleDeleteDiscipline,
+  saveDisciplineChanges,
 }) => {
+
+  const [editedDiscipline, setEditedDiscipline] = useState<IDiscipline>({ ...discipline });
+  const [isEditingName, setIsEditingName] = useState(false);
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setEditedDiscipline((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleSave = () => {
+    debugger
+    if (editedDiscipline.name !== discipline.name) {
+      saveDisciplineChanges(discipline._id, { name: editedDiscipline.name });
+    }
+  };
+
+  const handleDoubleClickName = () => {
+    setIsEditingName(true);
+  };
+
   return (
-    <tr key={discipline._id}>
-      <td className="align-top shadow-dark-lg px-3">{index + 1}</td>
-      <td className="align-top shadow-dark-lg">{discipline.name}</td>
-      <td className="align-top">
+    <div key={discipline._id} className="flex transition-all justify-between duration-300 border-2 border-black mb-5 p-3">
+      <div className="align-top shadow-dark-lg w-20 h-max py-3 text-center">{index + 1}</div>
+      <div className="align-top shadow-dark-lg w-96 h-max py-3 overflow-hidden whitespace-nowrap text-center" onDoubleClick={handleDoubleClickName}>
+        {isEditingName ? (
+          <input
+            type="text"
+            name="name"
+            value={editedDiscipline.name}
+            onChange={handleChange}
+            onBlur={() => setIsEditingName(false)}
+            autoFocus
+          />
+        ) : (
+          <span>{editedDiscipline.name}</span>
+        )}
+      </div>
+      <div className="align-top">
         <button
-          className="bg-white shadow-dark-lg px-20 text-black py-2 rounded transition-colors duration-300"
+          className="bg-white shadow-dark-lg px-20 text-black py-3 rounded transition-colors duration-300"
           onClick={() => toggleDisciplineGroups(discipline._id)}
         >
           Група ▼
@@ -70,21 +108,21 @@ const DisciplineRow: FC<DisciplineRowProps> = ({
             </li>
           </ul>
         </div>
-      </td>
-      <td className="align-top">
-        <button className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded-md shadow-dark-lg">
+      </div>
+      <div className="align-top">
+        <button className="bg-blue-500 hover:bg-blue-600 text-white py-3 px-3 rounded-2xl shadow-dark-lg" onClick={handleSave}>
           Зберегти зміни
         </button>
-      </td>
-      <td className="align-top">
+      </div>
+      <div className="align-top">
         <button
-          className="bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded-md mr-2 shadow-dark-lg"
+          className="bg-red-500 hover:bg-red-600 text-white py-3 px-3 rounded-2xl mr-2 shadow-dark-lg"
           onClick={() => handleDeleteDiscipline(discipline._id)}
         >
           Видалити дисципліну
         </button>
-      </td>
-    </tr>
+      </div>
+    </div>
   );
 };
 

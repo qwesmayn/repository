@@ -51,7 +51,7 @@ const Header = () => {
       <div className="flex-none w-full lg:max-w-xs mb-4 lg:mb-0">
         <input
           type="text"
-          placeholder="Пошук"
+          placeholder="Пошук матеріалу"
           className="w-full px-2 py-1 border text-center border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>

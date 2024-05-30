@@ -46,12 +46,14 @@ const UserManagePage: FC = () => {
     setselectedDiscipline(event.target.value);
   };
 
-  const handleCloseAddUserModal = () => {
+  const handleCloseAddUserModal = async () => {
     setIsAddUserModalOpen(false);
+    dispatch(getStudents())
   };
 
   const handleCloseAuthorsAddModal = () => {
     setIsAddAuthorsModalOpen(false);
+    dispatch(getAuthors())
   };
 
   const filteredStudents = useMemo(() => {

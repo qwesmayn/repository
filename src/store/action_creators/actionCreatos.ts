@@ -23,7 +23,7 @@ export const Login = createAsyncThunk(
       localStorage.setItem("token", response.data.token);
       return jwtDecode<IUser>(response.data.token)._id;
     } catch (error) {
-      return thunkAPI.rejectWithValue("Не удалось установить авторизацию");
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
@@ -37,7 +37,7 @@ export const getAuthors = createAsyncThunk(
       const response = await $authHost.get<{ authors: IAuthors[] }>("/authors");
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue("Не удалось получить преподователей");
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
@@ -51,7 +51,7 @@ export const getAuthorsById = createAsyncThunk(
       );
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue("Не удалось получить преподователей");
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
@@ -65,7 +65,7 @@ export const getStudents = createAsyncThunk(
       );
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue("Не удалось получить студентов");
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
@@ -77,7 +77,7 @@ export const getGroups = createAsyncThunk(
       const response = await $authHost.get<{ groups: IGroups[] }>("/groups/");
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue("Не удалось получить группы");
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
@@ -91,7 +91,7 @@ export const getDisciplines = createAsyncThunk(
       );
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue("Не удалось получить группы");
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
@@ -105,7 +105,7 @@ export const getDisciplinesById = createAsyncThunk(
       );
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue("Не удалось получить группы");
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
@@ -138,7 +138,7 @@ export const getMaterials = createAsyncThunk(
       );
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue("Не удалось получить типы дисциплин");
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
@@ -152,7 +152,7 @@ export const getMaterialsTypes = createAsyncThunk(
       }>(`/materials/types`);
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue("Не удалось получить типы дисциплин");
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
@@ -166,7 +166,7 @@ export const getMaterialsTypesById = createAsyncThunk(
       }>(`/materials/types/${id}`);
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue("Не удалось получить типы дисциплин");
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
@@ -447,6 +447,21 @@ export const changeGroups= createAsyncThunk(
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue("Не удалось изменить группу");
+    }
+  }
+);
+
+export const changeDisciplines= createAsyncThunk(
+  "changeDisciplines",
+  async (changes: { id: string; change: {} }, thunkAPI) => {
+    try {
+      const response = await $authHost.put(
+        `/disciplines/${changes.id}`,
+        changes.change
+      );
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue("Не удалось изменить дисциплину");
     }
   }
 );

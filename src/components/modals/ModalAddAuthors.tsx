@@ -2,10 +2,10 @@ import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAppDispatch } from "../../hooks/typeHooks";
 import {
-  createAuthors,
-  getAuthors,
+  createAuthors
 } from "../../store/action_creators/actionCreatos";
 import { IDiscipline } from "../../models/IDiscipline";
+import Popup from "../Popup";
 
 interface FormData {
   fullName: string;
@@ -28,23 +28,19 @@ const ModalAddAuthors: FC<AddUserProps> = ({
 }) => {
   const { register, handleSubmit } = useForm<FormData>();
   const dispatch = useAppDispatch();
-  const [selectedDisciplines, setSelectedDisciplines] = useState<IDiscipline[]>(
-    []
-  );
+  const [selectedDisciplines, setSelectedDisciplines] = useState<IDiscipline[]>([]);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   const closeModalAdd = () => {
-    setSelectedDisciplines([])
+    setSelectedDisciplines([]);
     closeAddModal();
   }
 
   const onSubmit = async (data: FormData) => {
-    const disciplineIds = selectedDisciplines.map(
-      (discipline) => discipline._id
-    );
+    const disciplineIds = selectedDisciplines.map((discipline) => discipline._id);
     const authorData = { ...data, disciplines: disciplineIds };
     await dispatch(createAuthors(authorData));
-    await dispatch(getAuthors());
-    closeModalAdd();
+    setShowSuccessPopup(true);
   };
 
   const handleDisciplineChange = (
@@ -71,6 +67,11 @@ const ModalAddAuthors: FC<AddUserProps> = ({
     );
   };
 
+  const closePopup = () => {
+    setShowSuccessPopup(false);
+    closeModalAdd();
+  }
+
   return (
     isAddAuthorsModalOpen && (
       <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
@@ -78,7 +79,7 @@ const ModalAddAuthors: FC<AddUserProps> = ({
           <h2 className="text-xl mb-4">Додати автора</h2>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 flex">
             <div className="flex flex-col space-y-4 flex-grow">
-            <div className="flex space-x-4 items-center">
+              <div className="flex space-x-4 items-center">
                 <input
                   type="text"
                   id="ID"
@@ -153,6 +154,9 @@ const ModalAddAuthors: FC<AddUserProps> = ({
             </div>
           </form>
         </div>
+        {showSuccessPopup && (
+          <Popup message="Вікладач успішно створеній" closeModal={closePopup} />
+        )}
       </div>
     )
   );

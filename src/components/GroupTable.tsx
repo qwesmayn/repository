@@ -57,8 +57,9 @@ const GroupTable: FC<GroupTableProps> = ({ groups, selectedGroup }) => {
     : groups;
 
   return (
-    <div className="py-4 px-52">
-      <div className="w-full bg-white">
+    <div className="py-4 mx-20">
+      <div className="w-full bg-white px-52 border-[3px] border-black">
+        <div className="p-8">
         {filteredGroups.map((group, index) => (
           <GroupRow
             key={group._id}
@@ -70,6 +71,7 @@ const GroupTable: FC<GroupTableProps> = ({ groups, selectedGroup }) => {
             saveGroupChanges={saveGroupChanges}
           />
         ))}
+        </div>
       </div>
 
       <ModalDelete

@@ -11,18 +11,21 @@ import ModalAddAuthorDiscipline from "./modals/ModalAddAuthorDisciplines";
 import { IDiscipline } from "../models/IDiscipline";
 import AuthorRow from "./AuthorRow";
 
-interface authorsTableProps {
+interface AuthorsTableProps {
   authors: IAuthors[];
   disciplines: IDiscipline[];
 }
 
-const AuthorsTable: FC<authorsTableProps> = ({ authors, disciplines }) => {
+const AuthorsTable: FC<AuthorsTableProps> = ({ authors, disciplines }) => {
   const dispatch = useAppDispatch();
   const [selectedAuthorId, setSelectedAuthorId] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [authorsToDelete, setAuthorsToDelete] = useState<string | null>(null);
-  const [isAddDisciplineModalOpen, setIsAddDisciplineModalOpen] = useState<boolean>(false);
-  const [authorToAddDiscipline, setAuthorToAddDiscipline] = useState<string | null>(null);
+  const [isAddDisciplineModalOpen, setIsAddDisciplineModalOpen] =
+    useState<boolean>(false);
+  const [authorToAddDiscipline, setAuthorToAddDiscipline] = useState<string | null>(
+    null
+  );
 
   const openModal = (id: string) => {
     setAuthorsToDelete(id);
@@ -84,23 +87,22 @@ const AuthorsTable: FC<authorsTableProps> = ({ authors, disciplines }) => {
 
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full bg-white border-separate border-spacing-5">
-        <tbody>
-          {authors.map((author, index) => (
-            <AuthorRow
-              key={author._id}
-              author={author}
-              index={index}
-              selectedAuthorId={selectedAuthorId}
-              toggleSelectedAuthor={toggleSelectedAuthor}
-              changeDiscAuthors={changeDiscAuthors}
-              openAddDisciplineModal={openAddDisciplineModal}
-              openModal={openModal}
-              saveAuthorChanges={saveAuthorChanges}
-            />
-          ))}
-        </tbody>
-      </table>
+      <div className="grid grid-row-6 gap-4 p-7 border-[3px] border-black">
+        {authors.map((author, index) => (
+          <AuthorRow
+            key={author._id}
+            author={author}
+            index={index}
+            selectedAuthorId={selectedAuthorId}
+            toggleSelectedAuthor={toggleSelectedAuthor}
+            changeDiscAuthors={changeDiscAuthors}
+            openAddDisciplineModal={openAddDisciplineModal}
+            openModal={openModal}
+            saveAuthorChanges={saveAuthorChanges}
+          />
+        ))}
+      </div>
+
       <ModalDelete
         nameDel="автора"
         isModalOpen={isModalOpen}

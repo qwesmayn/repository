@@ -1,5 +1,4 @@
-    import { createSlice } from '@reduxjs/toolkit'
-    import type { PayloadAction } from '@reduxjs/toolkit'
+    import { createSlice, PayloadAction } from '@reduxjs/toolkit'
     import { Login } from '../action_creators/actionCreatos';
     import { IUser } from '../../models/IUser';
 
