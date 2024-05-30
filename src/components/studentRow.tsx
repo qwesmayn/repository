@@ -53,8 +53,8 @@ const StudentRow: FC<StudentRowProps> = ({
 
   return (
     <tr key={student._id} className="hover:bg-gray-100 transition-all duration-300">
-      <td className="text-center align-top shadow-xl px-4">{index + 1}</td>
-      <td className="text-center align-top shadow-xl" onDoubleClick={handleDoubleClickFullName}>
+      <td className="text-center align-top shadow-dark-lg px-4">{index + 1}</td>
+      <td className="text-center align-top shadow-dark-lg" onDoubleClick={handleDoubleClickFullName}>
         {isEditingFullName ? (
           <input
             type="text"
@@ -71,7 +71,7 @@ const StudentRow: FC<StudentRowProps> = ({
       <td className="text-center align-top">
         <div>
           <button
-            className="bg-white shadow-xl px-6 text-black py-1 rounded transition-colors duration-300"
+            className="bg-white shadow-dark-lg px-6 text-black py-1 rounded transition-colors duration-300"
             onClick={() =>
               setSelectedStudentId(selectedStudentId === student._id ? null : student._id)
             }
@@ -83,7 +83,7 @@ const StudentRow: FC<StudentRowProps> = ({
               selectedStudentId === student._id ? "max-h-screen" : "max-h-0"
             }`}
           >
-            <ul className="m-auto mb-3 mt-5 w-max bg-white border border-gray-300 rounded shadow-lg p-2 overflow-y-auto">
+            <ul className="m-auto mb-3 mt-5 w-max bg-white border border-gray-300 rounded shadow-dark-lg p-2 overflow-y-auto">
               {student.group ? (
                 <li className="flex justify-between items-center px-2 py-1 border-b">
                   <span className="mr-6">{student.group.name}</span>
@@ -107,7 +107,7 @@ const StudentRow: FC<StudentRowProps> = ({
           </div>
         </div>
       </td>
-      <td className="text-center align-top shadow-xl" onDoubleClick={handleDoubleClickLogin}>
+      <td className="text-center align-top shadow-dark-lg" onDoubleClick={handleDoubleClickLogin}>
         {isEditingLogin ? (
           <input
             type="text"
@@ -121,10 +121,10 @@ const StudentRow: FC<StudentRowProps> = ({
           editedStudent.login
         )}
       </td>
-      <td className="text-center align-top shadow-xl">{student.password}</td>
+      <td className="text-center align-top shadow-dark-lg">{student.password}</td>
       <td className="text-center align-top">
       <button
-            className="bg-blue-500 shadow-xl text-white px-2 py-2 rounded-2xl transition-colors duration-300"
+            className="bg-blue-500 shadow-dark-lg text-white px-2 py-2 rounded-2xl transition-colors duration-300"
             onClick={handleSave}
           >
             Зберегти зміни
@@ -132,7 +132,7 @@ const StudentRow: FC<StudentRowProps> = ({
       </td>
       <td className="text-center align-top ">
           <button
-            className="bg-red-500 text-white shadow-xl px-2 py-2 rounded-2xl transition-colors duration-300"
+            className="bg-red-500 text-white shadow-dark-lg px-2 py-2 rounded-2xl transition-colors duration-300"
             onClick={() => openModal(student._id)}
           >
             Видалити користувача

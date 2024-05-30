@@ -47,7 +47,7 @@ const ManageGroup: FC = () => {
           placeholder="Выберите группу"
         />
         <button
-          className="bg-white text-black broder border-gray-300 px-4 py-2 rounded shadow-xl transition-colors duration-300"
+          className="bg-white text-black broder border-gray-300 px-4 py-2 rounded-3xl shadow-dark-lg transition-colors duration-300"
           onClick={openAddGroupModal}
         >
           Добавить группу

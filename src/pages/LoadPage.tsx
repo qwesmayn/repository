@@ -99,9 +99,9 @@ const LoadPage: FC = () => {
       onDrop={handleCoverDrop}
       onDragOver={(e) => e.preventDefault()}
     >
-      <div className="max-w-md w-full bg-white shadow-md rounded-md p-6 space-y-6">
+      <div className="max-w-md w-full bg-white shadow-dark-lg rounded-md p-6 space-y-6">
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="mb-9 shadow-xl">
+          <div className="mb-9 shadow-dark-lg">
             <input
               id="title"
               type="text"
@@ -113,7 +113,7 @@ const LoadPage: FC = () => {
               <span className="text-red-500">Назва обов'язкова</span>
             )}
           </div>
-          <div className="mb-9 shadow-xl">
+          <div className="mb-9 shadow-dark-lg">
             <textarea
               id="description"
               placeholder="Введіть опис:"
@@ -124,7 +124,7 @@ const LoadPage: FC = () => {
               <span className="text-red-500">Опис обов'язковий</span>
             )}
           </div>
-          <div className="mb-9 shadow-xl">
+          <div className="mb-9 shadow-dark-lg">
             <select
               id="discipline"
               className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500"
@@ -140,7 +140,7 @@ const LoadPage: FC = () => {
               <span className="text-red-500">Дисципліна обов'язкова</span>
             )}
           </div>
-          <div className="mb-9 shadow-xl">
+          <div className="mb-9 shadow-dark-lg">
             <select
               id="materialType"
               className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500"
@@ -153,7 +153,7 @@ const LoadPage: FC = () => {
                 ))}
             </select>
           </div>
-          <div className="mb-9 shadow-xl">
+          <div className="mb-9 shadow-dark-lg">
             <select
               id="author"
               className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500"
@@ -169,7 +169,7 @@ const LoadPage: FC = () => {
               <span className="text-red-500">Автор обов'язковий</span>
             )}
           </div>
-          <div className="mb-9 shadow-xl">
+          <div className="mb-9 shadow-dark-lg">
             <div className="flex items-center">
               <input
                 id="link"
@@ -193,7 +193,7 @@ const LoadPage: FC = () => {
               </label>
             </div>
           </div>
-          <div className="mb-9 shadow-xl">
+          <div className="mb-9 shadow-dark-lg">
             <button
               type="button"
               className="w-full bg-blue-500 text-white rounded-md px-4 py-2 hover:bg-blue-600 transition-colors duration-300"
@@ -218,7 +218,7 @@ const LoadPage: FC = () => {
         onClick={() => coverInputRef.current?.click()}
       >
         <p className="text-sm font-medium">Перетягніть обкладинку</p>
-        <div className="w-full flex justify-center shadow-xl my-4">
+        <div className="w-full flex justify-center shadow-dark-lg my-4">
           {coverPreview ? (
             <img
               src={coverPreview}
@@ -232,7 +232,7 @@ const LoadPage: FC = () => {
         <p className="text-sm text-yellow-600 mb-2">
           *Розмір файлу не повинен перевищувати 10 МБ.
         </p>
-        <button className="px-6 py-2 bg-white text-gray-700 rounded-md shadow-xl transition-colors duration-300">
+        <button className="px-6 py-2 bg-white text-gray-700 rounded-md shadow-dark-lg transition-colors duration-300">
           Завантажити обкладинку
         </button>
         <input

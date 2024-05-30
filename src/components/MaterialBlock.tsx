@@ -73,7 +73,7 @@ const MaterialBlock: FC<MaterialBlockProps> = ({
   return (
     <div
       key={_id}
-      className="flex flex-col justify-between w-[327px] py-6 px-5 rounded-3xl border-x-2 border-gray-200 shadow-2xl"
+      className="flex flex-col justify-between w-[327px] py-6 px-5 rounded-3xl border-x-2 border-gray-200 shadow-dark-lg"
     >
       <img
         src={

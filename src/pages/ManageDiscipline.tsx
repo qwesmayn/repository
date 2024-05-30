@@ -119,7 +119,7 @@ const ManageDisciplines: FC = () => {
           placeholder="Виберіть дисципліну"
         />
         <button
-          className="bg-white text-black border border-gray-300 px-4 py-2 rounded shadow-xl transition-colors duration-300"
+          className="bg-white text-black border border-gray-300 px-4 py-2 rounded-3xl shadow-dark-lg transition-colors duration-300"
           onClick={() => setIsModalAddOpen(true)}
         >
           Додати дисципліну

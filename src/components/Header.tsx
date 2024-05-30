@@ -1,13 +1,13 @@
 import { useState } from "react";
 import logo from "../static/logo.png";
-import { ArrowRightStartOnRectangleIcon, Bars3Icon, GlobeAltIcon, XMarkIcon,} from "@heroicons/react/24/outline";
+import { ArrowRightStartOnRectangleIcon, Bars3Icon, GlobeAltIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { ADMIN_ROUTE, ANALITIC_ROUTE, DISCIPLINE_MANAGE_ROUTE, DOWNLOAD_ROUTE, GROUP_MANAGE_ROUTE, USER_MANAGE_ROUTE } from "../utils/consts";
 import { setAuth } from "../store/reducers/userSlice";
 import { useAppDispatch } from "../hooks/typeHooks";
 import { NavLink } from "react-router-dom";
 
 const Header = () => {
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const [language, setLanguage] = useState<string>("ua");
   const [languageDropdownOpen, setLanguageDropdownOpen] = useState<boolean>(false);
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
@@ -18,8 +18,8 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    dispatch(setAuth(false))
-    localStorage.clear()
+    dispatch(setAuth(false));
+    localStorage.clear();
   };
 
   const pages = [
@@ -32,15 +32,19 @@ const Header = () => {
   ];
 
   return (
-    <header className="bg-white shadow-xl py-4 px-6 flex flex-col lg:flex-row items-center justify-between">
+    <header className="bg-white shadow-dark-lg  py-4 px-6 flex flex-col lg:flex-row items-center justify-between">
       {/* Logo and University Name */}
       <div className="flex items-center flex-col w-3/12 justify-between mb-4 lg:mb-0 lg:flex-row">
-        <img src={logo} alt="Лого" className="h-16 w-16 lg:h-24 lg:w-24 lg:mr-4" />
+        <NavLink to={ADMIN_ROUTE}>
+            <img src={logo} alt="Лого" className="h-16 w-16 lg:h-24 lg:w-24 lg:mr-4" />
+        </NavLink>
+        <NavLink to={"#"}>
         <div className="text-center">
           <span className="text-lg lg:text-xl font-medium">Репозіторій Університету</span>
           <br />
           <span className="text-lg lg:text-xl font-medium">ITSTEP</span>
         </div>
+        </NavLink>
       </div>
 
       {/* Search Input */}
@@ -62,12 +66,13 @@ const Header = () => {
           )}
         </button>
         {menuOpen && (
-          <div className="absolute left-0 top-full mt-2 w-max bg-white border rounded-lg shadow-lg py-2 text-center">
+          <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 w-max bg-white border rounded-lg shadow-dark-lg py-4 px-6 text-center">
             {pages.map((page, index) => (
               <NavLink
                 key={index}
-                to = {page.link}
-                className="block px-4 py-2 hover:bg-gray-100 shadow-xl"
+                to={page.link}
+                onClick={() => setMenuOpen(!menuOpen)}
+                className="block px-4 py-2 shadow-dark-lg "
               >
                 {page.name}
               </NavLink>

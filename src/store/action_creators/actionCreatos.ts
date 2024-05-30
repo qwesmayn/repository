@@ -346,7 +346,7 @@ export const deleteGroups = createAsyncThunk(
       const response = await $authHost.delete(`/groups/${id}`);
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue("Не удалось удалить группу");
+      return thunkAPI.rejectWithValue("Не удалось удалить группу(возмножно существуют связи с данной группой у студента)");
     }
   }
 );

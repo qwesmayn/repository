@@ -81,7 +81,7 @@ const UserManagePage: FC = () => {
         <div className="flex items-center">
           <div className="mr-40">
             <button
-              className={`px-4 py-2 mr-2 shadow-xl ${
+              className={`px-4 py-2 mr-2 shadow-dark-lg ${
                 view === "users" ? "bg-blue-600 text-white" : "bg-gray-200"
               } transition-colors duration-300`}
               onClick={() => setView("users")}
@@ -89,7 +89,7 @@ const UserManagePage: FC = () => {
               Користувачі
             </button>
             <button
-              className={`px-4 py-2 shadow-xl ${
+              className={`px-4 py-2 shadow-dark-lg ${
                 view === "authors" ? "bg-blue-600 text-white" : "bg-gray-200"
               } transition-colors duration-300`}
               onClick={() => setView("authors")}
@@ -103,7 +103,7 @@ const UserManagePage: FC = () => {
               onChange={handleGroupChange}
               options={[
                 ...Array.from(
-                  new Set(students.map((student) => student.group?.name))
+                  new Set(groups.map((group) => group.name))
                 ).map((group) => ({
                   value: group,
                   label: group,
@@ -135,7 +135,7 @@ const UserManagePage: FC = () => {
         <div>
           {view === "users" && (
             <button
-              className="bg-white text-black px-6 py-2 shadow-xl rounded transition-colors duration-300"
+              className="bg-white text-black px-6 py-2 shadow-dark-lg rounded-3xl transition-colors duration-300"
               onClick={() => setIsAddUserModalOpen(true)}
             >
               Додати користувача
@@ -143,7 +143,7 @@ const UserManagePage: FC = () => {
           )}
           {view === "authors" && (
             <button
-              className="bg-white text-black px-6 py-2 shadow-xl rounded transition-colors duration-300"
+              className="bg-white text-black px-6 py-2 shadow-dark-lg rounded-3xl transition-colors duration-300"
               onClick={() => setIsAddAuthorsModalOpen(true)}
             >
               Додати автора

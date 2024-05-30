@@ -40,10 +40,10 @@ const GroupRow: FC<GroupRowProps> = ({
   };
 
   return (
-    <div key={group._id} className="mb-4 p-4 hover:bg-gray-100 transition-all duration-300">
+    <div key={group._id} className="mb-4 p-4 transition-all duration-300">
       <div className="grid grid-cols-4 gap-4">
-        <div className="text-center shadow-xl px-2 py-1">{index + 1}</div>
-        <div className="text-center shadow-xl px-2 py-1" onDoubleClick={handleDoubleClickName}>
+        <div className="text-center shadow-dark-lg px-2 py-1">{index + 1}</div>
+        <div className="text-center shadow-dark-lg px-2 py-1" onDoubleClick={handleDoubleClickName}>
           {isEditingName ? (
             <input
               type="text"
@@ -59,7 +59,7 @@ const GroupRow: FC<GroupRowProps> = ({
         </div>
         <div className="text-center px-2 py-1">
         <button
-            className="bg-blue-500 shadow-xl text-white px-20 py-2 rounded-2xl transition-colors duration-300"
+            className="bg-blue-500 shadow-dark-lg text-white px-20 py-2 rounded-2xl transition-colors duration-300"
             onClick={() => {
               setSelectedGroupId(selectedGroupId === group._id ? null : group._id);
               handleSave(); 
@@ -70,7 +70,7 @@ const GroupRow: FC<GroupRowProps> = ({
         </div>
         <div className="text-center px-2 py-1">
           <button
-            className="bg-red-500 text-white shadow-xl px-20 py-2 rounded-2xl transition-colors duration-300"
+            className="bg-red-500 text-white shadow-dark-lg px-20 py-2 rounded-2xl transition-colors duration-300"
             onClick={() => openDeleteModal(group._id)}
           >
             Видалити групу

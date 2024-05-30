@@ -55,8 +55,8 @@ const AuthorRow: FC<AuthorRowProps> = ({
 
   return (
     <tr key={author._id} className="hover:bg-gray-100 transition-all duration-300">
-      <td className="text-center align-top shadow-xl px-2">{index + 1}</td>
-      <td className="text-center align-top shadow-xl w-80" onDoubleClick={handleDoubleClickFullName}>
+      <td className="text-center align-top shadow-dark-lg px-2">{index + 1}</td>
+      <td className="text-center align-top shadow-dark-lg w-80" onDoubleClick={handleDoubleClickFullName}>
         {isEditingFullName ? (
           <input
             type="text"
@@ -70,7 +70,7 @@ const AuthorRow: FC<AuthorRowProps> = ({
           editedAuthor.fullName
         )}
       </td>
-      <td className="text-center align-top shadow-xl w-80" onDoubleClick={handleDoubleClickPosition}>
+      <td className="text-center align-top shadow-dark-lg w-80" onDoubleClick={handleDoubleClickPosition}>
         {isEditingPosition ? (
           <input
             type="text"
@@ -87,7 +87,7 @@ const AuthorRow: FC<AuthorRowProps> = ({
       <td className="text-center align-top">
         <div>
           <button
-            className="bg-white shadow-xl text-black px-5 py-1 rounded transition-colors duration-300  w-80"
+            className="bg-white shadow-dark-lg text-black px-5 py-1 rounded transition-colors duration-300  w-80"
             onClick={() => toggleSelectedAuthor(author._id)}
           >
             Дисципліни ▼
@@ -97,7 +97,7 @@ const AuthorRow: FC<AuthorRowProps> = ({
               selectedAuthorId === author._id ? "max-h-screen" : "max-h-0"
             }`}
           >
-            <ul className="m-auto mb-3 mt-5 w-max bg-white border border-gray-300 rounded shadow-lg p-2 overflow-y-auto">
+            <ul className="m-auto mb-3 mt-5 w-max bg-white border border-gray-300 rounded shadow-dark-lg p-2 overflow-y-auto">
               {author.disciplines.map((discipline, index) => (
                 <li
                   key={index}
@@ -126,7 +126,7 @@ const AuthorRow: FC<AuthorRowProps> = ({
       </td>
       <td className="text-center align-top">
       <button
-            className="bg-blue-500 shadow-xl text-white px-2 py-2 rounded-2xl transition-colors duration-300"
+            className="bg-blue-500 shadow-dark-lg text-white px-2 py-2 rounded-2xl transition-colors duration-300"
             onClick={handleSave}
           >
             Зберегти зміни
@@ -134,7 +134,7 @@ const AuthorRow: FC<AuthorRowProps> = ({
       </td>
       <td className="text-center align-top">
           <button
-            className="bg-red-500 shadow-xl text-white px-2 py-2 rounded-2xl transition-colors duration-300"
+            className="bg-red-500 shadow-dark-lg text-white px-2 py-2 rounded-2xl transition-colors duration-300"
             onClick={() => openModal(author._id)}
           >
             Видалити користувача

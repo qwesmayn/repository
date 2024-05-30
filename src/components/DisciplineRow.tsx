@@ -25,11 +25,11 @@ const DisciplineRow: FC<DisciplineRowProps> = ({
 }) => {
   return (
     <tr key={discipline._id}>
-      <td className="align-top">{index + 1}</td>
-      <td className="align-top">{discipline.name}</td>
+      <td className="align-top shadow-dark-lg px-3">{index + 1}</td>
+      <td className="align-top shadow-dark-lg">{discipline.name}</td>
       <td className="align-top">
         <button
-          className="bg-white shadow-xl px-20 text-black py-2 rounded transition-colors duration-300"
+          className="bg-white shadow-dark-lg px-20 text-black py-2 rounded transition-colors duration-300"
           onClick={() => toggleDisciplineGroups(discipline._id)}
         >
           Група ▼
@@ -39,7 +39,7 @@ const DisciplineRow: FC<DisciplineRowProps> = ({
             selectedDisciplineId === discipline._id ? "max-h-screen" : "max-h-0"
           }`}
         >
-          <ul className="m-auto mb-3 mt-5 w-max bg-white border border-gray-300 rounded shadow-lg p-2 overflow-y-auto">
+          <ul className="m-auto mb-3 mt-5 w-max bg-white border border-gray-300 rounded shadow-dark-lg p-2 overflow-y-auto">
             {groupsById
               .filter((group) => group.discipline === discipline._id)
               .map((group) => (
@@ -72,13 +72,13 @@ const DisciplineRow: FC<DisciplineRowProps> = ({
         </div>
       </td>
       <td className="align-top">
-        <button className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded-md">
+        <button className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded-md shadow-dark-lg">
           Зберегти зміни
         </button>
       </td>
       <td className="align-top">
         <button
-          className="bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded-md mr-2"
+          className="bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded-md mr-2 shadow-dark-lg"
           onClick={() => handleDeleteDiscipline(discipline._id)}
         >
           Видалити дисципліну
