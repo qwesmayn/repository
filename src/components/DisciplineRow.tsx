@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useState } from "react";
+import { ChangeEvent, FC, useState, useEffect } from "react";
 import { IDiscipline } from "../models/IDiscipline";
 import { IGroupsByiD } from "../models/IGroupById";
 
@@ -25,9 +25,16 @@ const DisciplineRow: FC<DisciplineRowProps> = ({
   handleDeleteDiscipline,
   saveDisciplineChanges,
 }) => {
-
   const [editedDiscipline, setEditedDiscipline] = useState<IDiscipline>({ ...discipline });
   const [isEditingName, setIsEditingName] = useState(false);
+  const [hasChanges, setHasChanges] = useState(false);
+
+  useEffect(() => {
+    const isDifferent = (
+      editedDiscipline.name !== discipline.name
+    );
+    setHasChanges(isDifferent);
+  }, [editedDiscipline, discipline]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -38,9 +45,9 @@ const DisciplineRow: FC<DisciplineRowProps> = ({
   };
 
   const handleSave = () => {
-    debugger
-    if (editedDiscipline.name !== discipline.name) {
+    if (hasChanges) {
       saveDisciplineChanges(discipline._id, { name: editedDiscipline.name });
+      setHasChanges(false);
     }
   };
 
@@ -110,13 +117,16 @@ const DisciplineRow: FC<DisciplineRowProps> = ({
         </div>
       </div>
       <div className="align-top">
-        <button className="bg-blue-500 hover:bg-blue-600 text-white py-3 px-3 rounded-2xl shadow-dark-lg" onClick={handleSave}>
+        <button 
+          className={`bg-blue-500 text-white py-3 px-3 rounded-2xl shadow-dark-lg ${hasChanges ? '' : 'bg-gray-500 text-gray-300 cursor-not-allowed'}`}
+          onClick={handleSave} 
+          disabled={!hasChanges}>
           Зберегти зміни
         </button>
       </div>
       <div className="align-top">
         <button
-          className="bg-red-500 hover:bg-red-600 text-white py-3 px-3 rounded-2xl mr-2 shadow-dark-lg"
+          className="bg-red-500 text-white py-3 px-3 rounded-2xl mr-2 shadow-dark-lg"
           onClick={() => handleDeleteDiscipline(discipline._id)}
         >
           Видалити дисципліну

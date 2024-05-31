@@ -1,4 +1,4 @@
-import { FC, useState, ChangeEvent } from "react";
+import { FC, useState, ChangeEvent, useEffect } from "react";
 import { IStudents } from "../models/IStudents";
 
 interface StudentRowProps {
@@ -24,6 +24,16 @@ const StudentRow: FC<StudentRowProps> = ({
   const [isEditingFullName, setIsEditingFullName] = useState(false);
   const [isEditingLogin, setIsEditingLogin] = useState(false);
   const [isEditingPassword, setIsEditingPassword] = useState(false);
+  const [hasChanges, setHasChanges] = useState(false);
+
+  useEffect(() => {
+    const isDifferent = (
+      editedStudent.fullName !== student.fullName ||
+      editedStudent.login !== student.login ||
+      editedStudent.password !== student.password
+    );
+    setHasChanges(isDifferent);
+  }, [editedStudent, student]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -63,22 +73,22 @@ const StudentRow: FC<StudentRowProps> = ({
     <div key={student._id} className="flex transition-all justify-between duration-300 border-2 border-black mb-5 p-3">
       <div className="text-center align-top shadow-dark-lg w-20 h-max py-3">{index + 1}</div>
       <div className="text-center align-top shadow-dark-lg w-96 h-max py-3 overflow-hidden whitespace-nowrap" onDoubleClick={handleDoubleClickFullName}>
-  {isEditingFullName ? (
-    <input
-      type="text"
-      name="fullName"
-      value={editedStudent.fullName}
-      onChange={handleChange}
-      onBlur={() => setIsEditingFullName(false)}
-      autoFocus
-      className="w-full"
-    />
-  ) : (
-    <div className="truncate">{editedStudent.fullName}</div>
-  )}
-</div>
+        {isEditingFullName ? (
+          <input
+            type="text"
+            name="fullName"
+            value={editedStudent.fullName}
+            onChange={handleChange}
+            onBlur={() => setIsEditingFullName(false)}
+            autoFocus
+            className="w-full"
+          />
+        ) : (
+          <div className="truncate">{editedStudent.fullName}</div>
+        )}
+      </div>
 
-      <div className="text-center align-top ">
+      <div className="text-center align-top">
         <div>
           <button
             className="bg-white shadow-dark-lg px-6 text-black py-3 rounded-3xl transition-colors duration-300"
@@ -149,15 +159,18 @@ const StudentRow: FC<StudentRowProps> = ({
       </div>
       <div className="text-center align-top">
         <button
-          className="bg-blue-500 shadow-dark-lg h-min text-white py-2 px-2  rounded-2xl transition-colors duration-300"
+          className={`h-min py-3 px-3 rounded-2xl transition-colors duration-300 ${
+            hasChanges ? "bg-blue-500 text-white" : "bg-gray-500 text-gray-300 cursor-not-allowed"
+          }`}
           onClick={handleSave}
+          disabled={!hasChanges}
         >
           Зберегти зміни
         </button>
       </div>
       <div className="text-center align-top">
         <button
-          className="bg-red-500 text-white shadow-dark-lg py-2 px-2 rounded-2xl transition-colors duration-300"
+          className="bg-red-500 text-white shadow-dark-lg py-3 px-3 rounded-2xl transition-colors duration-300"
           onClick={() => openModal(student._id)}
         >
           Видалити користувача

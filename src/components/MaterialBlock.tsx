@@ -1,4 +1,4 @@
-import { FC, useState, ChangeEvent } from "react";
+import { FC, useState, ChangeEvent, useEffect } from "react";
 import { IMaterials } from "../models/IMaterials";
 import { IAuthors } from "../models/IAuthors";
 import { IDiscipline } from "../models/IDiscipline";
@@ -10,7 +10,7 @@ interface MaterialBlockProps {
   disciplines: IDiscipline[];
   materialsTypes: ITypesMaterials[];
   onDownload: (id: string) => void;
-  onSave: (id: string, change : object) => void;
+  onSave: (id: string, change: object) => void;
   openModal: (id: string) => void;
 }
 
@@ -28,10 +28,20 @@ const MaterialBlock: FC<MaterialBlockProps> = ({
   });
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [isEditingDescription, setIsEditingDescription] = useState(false);
+  const [hasChanges, setHasChanges] = useState(false);
 
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  useEffect(() => {
+    const isDifferent = (
+      editedMaterial.title !== material.title ||
+      editedMaterial.description !== material.description ||
+      editedMaterial.discipline !== material.discipline ||
+      editedMaterial.materialType !== material.materialType ||
+      editedMaterial.author !== material.author
+    );
+    setHasChanges(isDifferent);
+  }, [editedMaterial, material]);
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setEditedMaterial((prevState) => ({
       ...prevState,
@@ -40,7 +50,7 @@ const MaterialBlock: FC<MaterialBlockProps> = ({
   };
 
   const handleSave = () => {
-    const changes: { [key: string]: any } = {}; 
+    const changes: { [key: string]: any } = {};
     if (editedMaterial.title !== material.title) {
       changes.title = editedMaterial.title;
     }
@@ -58,7 +68,6 @@ const MaterialBlock: FC<MaterialBlockProps> = ({
     }
     onSave(material._id, changes);
   };
-  
 
   const handleDoubleClickTitle = () => {
     setIsEditingTitle(true);
@@ -185,7 +194,10 @@ const MaterialBlock: FC<MaterialBlockProps> = ({
           </button>
           <button
             onClick={handleSave}
-            className="bg-green-500 text-white px-4 py-2 rounded-lg text-sm"
+            className={`px-4 py-2 rounded-lg text-sm ${
+              hasChanges ? "bg-green-500 text-white" : "bg-gray-500 text-gray-300 cursor-not-allowed"
+            }`}
+            disabled={!hasChanges}
           >
             Зберегти зміни
           </button>

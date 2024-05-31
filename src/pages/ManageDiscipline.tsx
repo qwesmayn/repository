@@ -2,10 +2,12 @@ import { FC, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/typeHooks";
 import {
   getDisciplines,
-  deleteDisciplines,
   getGroupsOnIdDiscipline,
   deleteLink,
   changeDisciplines,
+  deleteDisciplines,
+  changeAuthors,
+  getAuthors,
 } from "../store/action_creators/actionCreatos";
 import ModalDelete from "../components/modals/ModalDelete";
 import ErrorAlert from "../components/ErrorAlert";
@@ -14,6 +16,7 @@ import ModalAddDiscipline from "../components/modals/ModalAddDiscipline";
 import ModalAddGroup from "../components/modals/ModalAddLinkGroups";
 import Dropdown from "../components/DropDown";
 import DisciplineRow from "../components/DisciplineRow";
+import { IAuthors } from "../models/IAuthors";
 
 const ManageDisciplines: FC = () => {
   const dispatch = useAppDispatch();
@@ -23,6 +26,7 @@ const ManageDisciplines: FC = () => {
     error,
   } = useAppSelector((state) => state.disciplineReducer);
   const { groupsById } = useAppSelector((state) => state.groupsByIdReducer);
+  const {authors} = useAppSelector((state) => state.userManageReducer)
   const [selectedDisciplineId, setSelectedDisciplineId] = useState<
     string | null
   >(null);
@@ -37,6 +41,7 @@ const ManageDisciplines: FC = () => {
   const [selectedDiscipline, setSelectedDiscipline] = useState<string>("");
 
   useEffect(() => {
+    dispatch(getAuthors())
     dispatch(getDisciplines());
   }, [dispatch]);
 
@@ -68,20 +73,40 @@ const ManageDisciplines: FC = () => {
 
   const confirmDeleteDiscipline = async () => {
     if (disciplineToDelete) {
-      const resultAction = await dispatch(
-        deleteDisciplines(disciplineToDelete)
-      );
-      if (deleteDisciplines.fulfilled.match(resultAction)) {
-        dispatch(getDisciplines());
-      } else if (deleteDisciplines.rejected.match(resultAction)) {
-        setLocalError(
-          "Не удалось удалить дисцплины(возможно есть существующие связи с authors)."
+      try {
+        // Пройтись по каждому преподавателю
+        await Promise.all(
+          authors.map(async (author: IAuthors) => {
+            // Найти объект дисциплины в массиве disciplines
+            if (!disciplineToDelete) return;
+            if (author.disciplines.some((d) => d._id === disciplineToDelete)) {
+              // Удалить дисциплину из списка дисциплин преподавателя
+              const updatedDisciplines = author.disciplines.filter(
+                (d) => d._id !== disciplineToDelete
+              );
+              // Обновить данные преподавателя в хранилище
+              await dispatch(changeAuthors({ id: author._id, change: { disciplines: updatedDisciplines } }));
+            }
+          })
         );
+
+        // Удалить саму дисциплину
+        const resultAction = await dispatch(deleteDisciplines(disciplineToDelete));
+        if (deleteDisciplines.fulfilled.match(resultAction)) {
+          dispatch(getDisciplines());
+        } else if (deleteDisciplines.rejected.match(resultAction)) {
+          setLocalError(
+            "Не удалось удалить дисциплину (возможно есть существующие связи с преподавателями)."
+          );
+        }
+        setIsModalOpen(false);
+        setDisciplineToDelete(null);
+      } catch (error) {
+        console.error("Ошибка при удалении дисциплины:", error);
       }
-      setIsModalOpen(false);
-      setDisciplineToDelete(null);
     }
   };
+  
 
   const handleDeleteGroup = async (groupId: string, disciplineId: string) => {
     const resultAction = await dispatch(deleteLink({ groupId, disciplineId }));
@@ -161,6 +186,7 @@ const ManageDisciplines: FC = () => {
       </div>
       <ModalDelete
         nameDel="дисципліну"
+        description="Усі наявні зв'язки буде видалено"
         isModalOpen={isModalOpen}
         closeModal={() => setIsModalOpen(false)}
         confirmDelete={confirmDeleteDiscipline}

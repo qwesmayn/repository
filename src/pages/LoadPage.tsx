@@ -27,7 +27,7 @@ const LoadPage: FC = () => {
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const { disciplines } = useAppSelector((state) => state.disciplineReducer);
   const { authors } = useAppSelector((state) => state.userManageReducer);
-  const { materialsTypes } = useAppSelector((state) => state.materialReducer)
+  const { materialsTypes } = useAppSelector((state) => state.materialReducer);
 
   useEffect(() => {
     Promise.all([
@@ -91,16 +91,11 @@ const LoadPage: FC = () => {
       previewImage: coverFile,
       materialFile: file,
     };
-
-    dispatch(createMaterial(materialData));
+    console.log(materialData);
   };
 
   return (
-    <div
-      className="flex justify-between items-center mt-16 px-12 h-max"
-      onDrop={handleCoverDrop}
-      onDragOver={(e) => e.preventDefault()}
-    >
+    <div className="flex justify-between items-start mt-16 px-12 h-max">
       <div className="max-w-md w-full bg-white shadow-dark-lg rounded-md p-6 space-y-6">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-9 shadow-dark-lg">
@@ -145,11 +140,11 @@ const LoadPage: FC = () => {
               className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500"
               {...register("materialType", { required: true })}
             >
-                {materialsTypes.map((materialsType) => (
-                    <option key={materialsType._id} value={materialsType._id}>
-                        {materialsType.name}
-                    </option>
-                ))}
+              {materialsTypes.map((materialsType) => (
+                <option key={materialsType._id} value={materialsType._id}>
+                  {materialsType.name}
+                </option>
+              ))}
             </select>
           </div>
           <div className="mb-9 shadow-dark-lg">
@@ -165,45 +160,57 @@ const LoadPage: FC = () => {
               ))}
             </select>
           </div>
-          <div className="mb-9 shadow-dark-lg">
-            <div className="flex items-center">
-              <input
-                id="link"
-                type="text"
-                placeholder="Вставте посилання:"
-                className={`w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500 ${
-                  isLinkChecked ? "" : "opacity-50 cursor-not-allowed"
-                }`}
-                disabled={!isLinkChecked}
-                {...register("link")}
-              />
-              <label htmlFor="link" className="ml-2 flex">
+          <div className="mb flex items-center">
+            <div className="flex-1">
+              {!isLinkChecked ? (
+                <div className="mb-9">
+                  <p className="text-sm font-medium text-center">
+                    Перетягніть файл
+                  </p>
+                  <div className="w-full flex justify-center my-4">
+                    <ArrowUpTrayIcon className="w-16" />
+                  </div>
+                  <p className="text-sm text-yellow-600 mb-2">
+                    *Розмір файлу не повинен перевищувати 10 МБ.
+                  </p>
+                  <button
+                    type="button"
+                    className="w-full bg-blue-500 text-white rounded-md px-4 py-2 hover:bg-blue-600 transition-colors duration-300"
+                    onClick={handleFileUploadClick}
+                  >
+                    Завантажити файл
+                  </button>
+                  <input
+                    ref={fileInputRef}
+                    id="file"
+                    type="file"
+                    className="hidden"
+                    onChange={handleFileChange}
+                  />
+                </div>
+              ) : (
                 <input
-                  type="checkbox"
-                  id="linkCheckbox"
-                  checked={isLinkChecked}
-                  onChange={handleLinkCheckboxChange}
-                  className="mr-3"
+                  id="link"
+                  type="text"
+                  placeholder="Вставте посилання:"
+                  className={`w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500 ${
+                    isLinkChecked ? "" : "opacity-50 cursor-not-allowed"
+                  }`}
+                  disabled={!isLinkChecked}
+                  {...register("link")}
                 />
-                Посилання?
-              </label>
+              )}
             </div>
-          </div>
-          <div className="mb-9 shadow-dark-lg">
-            <button
-              type="button"
-              className="w-full bg-blue-500 text-white rounded-md px-4 py-2 hover:bg-blue-600 transition-colors duration-300"
-              onClick={handleFileUploadClick}
-            >
-              Завантажити файл
-            </button>
-            <input
-              ref={fileInputRef}
-              id="file"
-              type="file"
-              className="hidden"
-              onChange={handleFileChange}
-            />
+            <div className="ml-4 flex items-center">
+              <input
+                type="checkbox"
+                id="linkCheckbox"
+                checked={isLinkChecked}
+                onChange={handleLinkCheckboxChange}
+                className="mr-2"
+              />
+              <label htmlFor="linkCheckbox">Посилання?</label>
+            </div>
           </div>
         </form>
       </div>
@@ -256,8 +263,11 @@ const LoadPage: FC = () => {
         </button>
       </div>
       {showSuccessPopup && (
-          <Popup message="Вікладач успішно створеній" closeModal={reset} />
-        )}
+        <Popup
+          message="Матеріал успішно створено"
+          closeModal={() => setShowSuccessPopup(false)}
+        />
+      )}
     </div>
   );
 };
