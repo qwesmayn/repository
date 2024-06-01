@@ -57,8 +57,8 @@ const DisciplineRow: FC<DisciplineRowProps> = ({
 
   return (
     <div key={discipline._id} className="flex transition-all justify-between duration-300 border-2 border-black mb-5 p-3">
-      <div className="align-top shadow-dark-lg w-20 h-max py-3 text-center">{index + 1}</div>
-      <div className="align-top shadow-dark-lg w-96 h-max py-3 overflow-hidden whitespace-nowrap text-center" onDoubleClick={handleDoubleClickName}>
+      <div className="align-top shadow-dark-lg w-20 h-max py-3 text-center bg-bg-blue-design">{index + 1}</div>
+      <div className="align-top shadow-dark-lg w-96 h-max py-3 overflow-hidden whitespace-nowrap text-center bg-bg-blue-design" onDoubleClick={handleDoubleClickName}>
         {isEditingName ? (
           <input
             type="text"
@@ -74,7 +74,7 @@ const DisciplineRow: FC<DisciplineRowProps> = ({
       </div>
       <div className="align-top">
         <button
-          className="bg-white shadow-dark-lg px-20 text-black py-3 rounded transition-colors duration-300"
+          className="bg-bg-blue-design shadow-dark-lg px-20 text-black py-3 rounded transition-colors duration-300"
           onClick={() => toggleDisciplineGroups(discipline._id)}
         >
           Група ▼
@@ -84,7 +84,7 @@ const DisciplineRow: FC<DisciplineRowProps> = ({
             selectedDisciplineId === discipline._id ? "max-h-screen" : "max-h-0"
           }`}
         >
-          <ul className="m-auto mb-3 mt-5 w-max bg-white border border-gray-300 rounded shadow-dark-lg p-2 overflow-y-auto">
+          <ul className="m-auto mb-3 mt-5 w-max bg-bg-blue-design border border-gray-300 rounded shadow-dark-lg p-2 overflow-y-auto">
             {groupsById
               .filter((group) => group.discipline === discipline._id)
               .map((group) => (
@@ -118,7 +118,7 @@ const DisciplineRow: FC<DisciplineRowProps> = ({
       </div>
       <div className="align-top">
         <button 
-          className={`bg-blue-500 text-white py-3 px-3 rounded-2xl shadow-dark-lg ${hasChanges ? '' : 'bg-gray-500 text-gray-300 cursor-not-allowed'}`}
+          className={` py-3 px-3 rounded-2xl shadow-dark-lg ${hasChanges ? 'bg-bg-blue-design text-black' : 'bg-gray-500 text-gray-300 cursor-not-allowed'}`}
           onClick={handleSave} 
           disabled={!hasChanges}>
           Зберегти зміни
@@ -126,7 +126,7 @@ const DisciplineRow: FC<DisciplineRowProps> = ({
       </div>
       <div className="align-top">
         <button
-          className="bg-red-500 text-white py-3 px-3 rounded-2xl mr-2 shadow-dark-lg"
+          className="bg-bg-blue-design text-dark py-3 px-3 rounded-2xl mr-2 shadow-dark-lg"
           onClick={() => handleDeleteDiscipline(discipline._id)}
         >
           Видалити дисципліну

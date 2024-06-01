@@ -103,7 +103,7 @@ const LoadPage: FC = () => {
               id="title"
               type="text"
               placeholder="Введіть назву:"
-              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500"
+              className="bg-bg-blue-design w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500"
               {...register("title", { required: true })}
             />
             {errors.title && (
@@ -114,7 +114,7 @@ const LoadPage: FC = () => {
             <textarea
               id="description"
               placeholder="Введіть опис:"
-              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500"
+              className="bg-bg-blue-design w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500"
               {...register("description", { required: true })}
             ></textarea>
             {errors.description && (
@@ -124,7 +124,7 @@ const LoadPage: FC = () => {
           <div className="mb-9 shadow-dark-lg">
             <select
               id="discipline"
-              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500"
+              className="bg-bg-blue-design w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500"
               {...register("discipline", { required: true })}
             >
               {disciplines.map((discipline) => (
@@ -137,7 +137,7 @@ const LoadPage: FC = () => {
           <div className="mb-9 shadow-dark-lg">
             <select
               id="materialType"
-              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500"
+              className="bg-bg-blue-design w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500"
               {...register("materialType", { required: true })}
             >
               {materialsTypes.map((materialsType) => (
@@ -150,7 +150,7 @@ const LoadPage: FC = () => {
           <div className="mb-9 shadow-dark-lg">
             <select
               id="author"
-              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500"
+              className="bg-bg-blue-design w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500"
               {...register("author", { required: true })}
             >
               {authors.map((author) => (
@@ -163,19 +163,19 @@ const LoadPage: FC = () => {
           <div className="mb flex items-center">
             <div className="flex-1">
               {!isLinkChecked ? (
-                <div className="mb-9">
-                  <p className="text-sm font-medium text-center">
+                <div className="mb-9 ">
+                  <p className="text-sm font-medium text-center bg-bg-blue-design">
                     Перетягніть файл
                   </p>
-                  <div className="w-full flex justify-center my-4">
+                  <div className="w-full flex justify-center mb-4 bg-bg-blue-design">
                     <ArrowUpTrayIcon className="w-16" />
                   </div>
-                  <p className="text-sm text-yellow-600 mb-2">
+                  <p className="text-sm text-yellow-600 mb-2 text-center">
                     *Розмір файлу не повинен перевищувати 10 МБ.
                   </p>
                   <button
                     type="button"
-                    className="w-full bg-blue-500 text-white rounded-md px-4 py-2 hover:bg-blue-600 transition-colors duration-300"
+                    className="w-full bg-bg-blue-design text-black rounded-2xl px-4 py-2 shadow-dark-lg transition-colors duration-300"
                     onClick={handleFileUploadClick}
                   >
                     Завантажити файл
@@ -193,7 +193,7 @@ const LoadPage: FC = () => {
                   id="link"
                   type="text"
                   placeholder="Вставте посилання:"
-                  className={`w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500 ${
+                  className={`bg-bg-blue-design w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500 ${
                     isLinkChecked ? "" : "opacity-50 cursor-not-allowed"
                   }`}
                   disabled={!isLinkChecked}
@@ -201,7 +201,7 @@ const LoadPage: FC = () => {
                 />
               )}
             </div>
-            <div className="ml-4 flex items-center">
+            <div className="ml-4 flex items-center bg-bg-blue-design">
               <input
                 type="checkbox"
                 id="linkCheckbox"
@@ -215,13 +215,13 @@ const LoadPage: FC = () => {
         </form>
       </div>
       <div
-        className="flex flex-col items-center justify-center cursor-pointer"
+        className="flex flex-col items-center justify-center mt-52 cursor-pointer "
         onDrop={handleCoverDrop}
         onDragOver={(e) => e.preventDefault()}
         onClick={() => coverInputRef.current?.click()}
       >
-        <p className="text-sm font-medium">Перетягніть обкладинку</p>
-        <div className="w-full flex justify-center shadow-dark-lg my-4">
+        <p className="text-sm font-medium ">Перетягніть обкладинку</p>
+        <div className="w-full flex justify-center shadow-dark-lg my-4 bg-bg-blue-design">
           {coverPreview ? (
             <img
               src={coverPreview}
@@ -235,7 +235,7 @@ const LoadPage: FC = () => {
         <p className="text-sm text-yellow-600 mb-2">
           *Розмір файлу не повинен перевищувати 10 МБ.
         </p>
-        <button className="px-6 py-2 bg-white text-gray-700 rounded-md shadow-dark-lg transition-colors duration-300">
+        <button className="px-6 py-2 bg-bg-blue-design text-black rounded-2xl shadow-dark-lg transition-colors duration-300">
           Завантажити обкладинку
         </button>
         <input
@@ -249,14 +249,14 @@ const LoadPage: FC = () => {
       <div className="flex flex-col items-start space-y-4 mb-auto">
         <button
           type="button"
-          className="px-6 py-2 bg-blue-500 w-full text-white rounded-md hover:bg-blue-600 transition-colors duration-300"
+          className="px-6 py-2 bg-bg-blue-design w-full text-black rounded-2xl shadow-dark-lg  transition-colors duration-300"
           onClick={handleSubmit(onSubmit)}
         >
           Додати
         </button>
         <button
           type="button"
-          className="px-6 py-2 bg-gray-300 w-full text-gray-700 rounded-md hover:bg-gray-400 transition-colors duration-300"
+          className="px-6 py-2 bg-bg-blue-design w-full text-black rounded-2xl shadow-dark-lg transition-colors duration-300"
           onClick={() => setShowSuccessPopup(true)}
         >
           Скасувати
@@ -264,8 +264,11 @@ const LoadPage: FC = () => {
       </div>
       {showSuccessPopup && (
         <Popup
-          message="Матеріал успішно створено"
-          closeModal={() => setShowSuccessPopup(false)}
+          message="Матеріал успішно скасовано"
+          closeModal={() => {
+            reset()
+            setShowSuccessPopup(false)
+          }}
         />
       )}
     </div>

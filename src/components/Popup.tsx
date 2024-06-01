@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 
 interface PopupProps {
-  closeModal: () => void;
+  closeModal?: () => void;
   message: string;
   duration?: number;
 }
@@ -12,7 +12,9 @@ const Popup: FC<PopupProps> = ({ message, duration = 1000, closeModal }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsOpen(false);
-      closeModal();
+      if(closeModal){
+        closeModal();
+      }
     }, duration);
 
     return () => clearTimeout(timer);
@@ -20,7 +22,7 @@ const Popup: FC<PopupProps> = ({ message, duration = 1000, closeModal }) => {
 
   return isOpen ? (
     <div className="fixed inset-0 flex items-center justify-center z-50 ">
-      <div className="bg-gray-800 text-white p-4 rounded-md shadow-lg">
+      <div className="bg-bg-blue-design text-black p-4 rounded-md shadow-lg">
         <p>{message}</p>
       </div>
     </div>

@@ -26,7 +26,7 @@ const ModalAddAuthors: FC<AddUserProps> = ({
   nextId,
   disciplines,
 }) => {
-  const { register, handleSubmit } = useForm<FormData>();
+  const { register, handleSubmit, setValue } = useForm<FormData>(); // Добавляем setValue из react-hook-form
   const dispatch = useAppDispatch();
   const [selectedDisciplines, setSelectedDisciplines] = useState<IDiscipline[]>([]);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
@@ -46,17 +46,13 @@ const ModalAddAuthors: FC<AddUserProps> = ({
   const handleDisciplineChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    const selectedId = event.target.value;
-    const selectedDiscipline = disciplines.find(
-      (discipline) => discipline._id === selectedId
-    );
+    const selectedOptions = event.target.selectedOptions;
+    const selectedDisciplines = Array.from(selectedOptions).map(option => {
+      const selectedId = option.value;
+      return disciplines.find((discipline) => discipline._id === selectedId);
+    });
 
-    if (
-      selectedDiscipline &&
-      !selectedDisciplines.some((discipline) => discipline._id === selectedId)
-    ) {
-      setSelectedDisciplines([...selectedDisciplines, selectedDiscipline]);
-    }
+    setSelectedDisciplines(selectedDisciplines);
   };
 
   const removeDiscipline = (disciplineId: string) => {
@@ -65,6 +61,10 @@ const ModalAddAuthors: FC<AddUserProps> = ({
         (discipline) => discipline._id !== disciplineId
       )
     );
+
+    // Обновляем значение defaultValue для select элемента
+    const defaultDisciplineId = selectedDisciplines[0]?.id || ""; // Получаем первую дисциплину в списке, если она есть
+    setValue("disciplines", defaultDisciplineId); // Устанавливаем defaultValue для поля disciplines
   };
 
   const closePopup = () => {
@@ -75,7 +75,7 @@ const ModalAddAuthors: FC<AddUserProps> = ({
   return (
     isAddAuthorsModalOpen && (
       <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-        <div className="bg-white rounded-lg p-8 shadow-lg">
+        <div className="bg-white shadow-dark-lg p-8 ">
           <h2 className="text-xl mb-4">Додати автора</h2>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 flex">
             <div className="flex flex-col space-y-4 flex-grow">
@@ -85,28 +85,29 @@ const ModalAddAuthors: FC<AddUserProps> = ({
                   id="ID"
                   value={nextId}
                   readOnly
-                  className="border border-gray-300 px-3 py-2 rounded-lg w-12 text-center"
+                  className="border border-gray-300 px-3 py-2 shadow-dark-lg w-12 text-center bg-bg-blue-design"
                   placeholder="ID"
                 />
                 <input
                   type="text"
                   id="fullName"
                   {...register("fullName", { required: true })}
-                  className="border border-gray-300 px-3 py-2 rounded-lg flex-grow"
+                  className="border border-gray-300 px-3 py-2 shadow-dark-lg flex-grow bg-bg-blue-design"
                   placeholder="Ввод ПІБ"
                 />
                 <input
                   type="text"
                   id="position"
                   {...register("position", { required: true })}
-                  className="border border-gray-300 px-3 py-2 rounded-lg flex-grow"
+                  className="border border-gray-300 px-3 py-2 shadow-dark-lg flex-grow bg-bg-blue-design"
                   placeholder="Посада/Звання"
                 />
                 <select
                   id="disciplines"
-                  onChange={handleDisciplineChange}
-                  className="border border-gray-300 px-3 py-2 rounded-lg"
+                  className="border border-gray-300 px-3 py-2 shadow-dark-lg bg-bg-blue-design"
                   defaultValue=""
+                  {...register("disciplines", { required: true })}
+                  onChange={handleDisciplineChange}
                 >
                   <option value="" disabled>
                   Дисципліни ▼
@@ -119,19 +120,20 @@ const ModalAddAuthors: FC<AddUserProps> = ({
                 </select>
                 <button
                   type="submit"
-                  className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300"
+                  className="bg-bg-blue-design text-dark py-2 px-4 shadow-dark-lg transition duration-300 rounded-2xl"
+                  disabled={!selectedDisciplines.length} // Добавляем disabled, если не выбрано ни одной дисциплины
                 >
                   Зберегти
                 </button>
                 <button
                   type="button"
-                  className="bg-gray-300 text-black py-2 px-4 rounded-lg hover:bg-gray-400 transition duration-300"
+                  className="bg-bg-blue-design text-black py-2 px-4 shadow-dark-lg transition duration-300 rounded-2xl"
                   onClick={closeModalAdd}
                 >
                   Відмінити
                 </button>
               </div>
-              <div className="border w-max border-gray-300 rounded-lg p-4 overflow-hidden ml-auto">
+              <div className="bg-bg-blue-design rounded-2xl border w-max border-gray-300 shadow-dark-lg p-4 overflow-hidden ml-auto">
                 <h3 className="text-lg">Доданы дисципліни:</h3>
                 <ul className="mt-2">
                   {selectedDisciplines.map((discipline) => (
@@ -163,3 +165,4 @@ const ModalAddAuthors: FC<AddUserProps> = ({
 };
 
 export default ModalAddAuthors;
+

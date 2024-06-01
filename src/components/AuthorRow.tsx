@@ -64,8 +64,8 @@ const AuthorRow: FC<AuthorRowProps> = ({
 
   return (
     <tr key={author._id} className="flex transition-all justify-between duration-300 border-2 border-black mb-5 p-3">
-      <td className="text-center align-top shadow-dark-lg h-max py-3 px-5">{index + 1}</td>
-      <td className="text-center align-top shadow-dark-lg w-80 h-max py-3" onDoubleClick={handleDoubleClickFullName}>
+      <td className="text-center align-top shadow-dark-lg h-max py-3 px-5 bg-bg-blue-design">{index + 1}</td>
+      <td className="text-center align-top shadow-dark-lg w-80 h-max py-3 bg-bg-blue-design" onDoubleClick={handleDoubleClickFullName}>
         {isEditingFullName ? (
           <input
             type="text"
@@ -79,7 +79,7 @@ const AuthorRow: FC<AuthorRowProps> = ({
           editedAuthor.fullName
         )}
       </td>
-      <td className="text-center align-top shadow-dark-lg w-80 h-max py-3" onDoubleClick={handleDoubleClickPosition}>
+      <td className="text-center align-top shadow-dark-lg w-80 h-max py-3 bg-bg-blue-design" onDoubleClick={handleDoubleClickPosition}>
         {isEditingPosition ? (
           <input
             type="text"
@@ -96,7 +96,7 @@ const AuthorRow: FC<AuthorRowProps> = ({
       <td className="text-center align-top ">
         <div>
           <button
-            className="bg-white shadow-dark-lg text-black px-5 py-3 rounded transition-colors duration-300  w-80"
+            className="bg-bg-blue-design shadow-dark-lg text-black px-5 py-3 rounded transition-colors duration-300  w-80"
             onClick={() => toggleSelectedAuthor(author._id)}
           >
             Дисципліни ▼
@@ -106,7 +106,7 @@ const AuthorRow: FC<AuthorRowProps> = ({
               selectedAuthorId === author._id ? "max-h-screen" : "max-h-0"
             }`}
           >
-            <ul className="m-auto mb-3 mt-5 w-max bg-white border border-gray-300 rounded shadow-dark-lg p-2 overflow-y-auto">
+            <ul className="m-auto mb-3 mt-5 w-max bg-bg-blue-design border border-gray-300 rounded shadow-dark-lg p-2 overflow-y-auto">
               {author.disciplines.map((discipline, index) => (
                 <li
                   key={index}
@@ -135,7 +135,7 @@ const AuthorRow: FC<AuthorRowProps> = ({
       </td>
       <td className="text-center align-top">
         <button
-          className={`bg-blue-500 shadow-dark-lg text-white py-3 px-3 rounded-2xl transition-colors duration-300 ${hasChanges ? '' : 'cursor-not-allowed text-gray-300 bg-gray-500'}`}
+          className={` shadow-dark-lg text-black py-3 px-3 rounded-2xl transition-colors duration-300 ${hasChanges ? 'bg-bg-blue-design ' : 'cursor-not-allowed text-gray-300 bg-gray-500'}`}
           onClick={handleSave}
           disabled={!hasChanges}
         >
@@ -144,7 +144,7 @@ const AuthorRow: FC<AuthorRowProps> = ({
       </td>
       <td className="text-center align-top">
         <button
-          className="bg-red-500 shadow-dark-lg text-white py-3 px-3 rounded-2xl transition-colors duration-300"
+          className="bg-bg-blue-design shadow-dark-lg text-black py-3 px-3 rounded-2xl transition-colors duration-300"
           onClick={() => openModal(author._id)}
         >
           Видалити користувача

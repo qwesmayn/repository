@@ -35,8 +35,9 @@ const AnalyticPage: FC = () => {
     console.log("Download material", id);
   };
 
-  const handleSave = (id: string, change: object) => {
-    dispatch(changeMaterials({ id: id, change: change }));
+  const handleSave = async (id: string, change: object) => {
+    await dispatch(changeMaterials({ id: id, change: change }));
+    await dispatch(getMaterials())
   };
 
   const handleDisciplineChange = (
@@ -113,7 +114,7 @@ const AnalyticPage: FC = () => {
           openModal={openDeleteModal}
         />
         <ModalDelete
-          nameDel="группу"
+          nameDel="материал"
           isModalOpen={isDeleteModalOpen}
           closeModal={closeDeleteModal}
           confirmDelete={confirmDelete}

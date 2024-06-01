@@ -10,6 +10,7 @@ import ModalDelete from "./modals/ModalDelete";
 import ModalAddGroup from "./modals/ModalAddStudentGroup";
 import { IGroups } from "../models/IGroups";
 import StudentRow from "./studentRow";
+import Popup from "./Popup";
 
 interface UserTableProps {
   students: IStudents[];
@@ -28,6 +29,7 @@ const UsersTable: FC<UserTableProps> = ({ students, groups }) => {
   const [studentToAddGroup, setStudentToAddGroup] = useState<string | null>(
     null
   );
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const openModal = (id: string) => {
     setStudentToDelete(id);
@@ -49,8 +51,12 @@ const UsersTable: FC<UserTableProps> = ({ students, groups }) => {
 
   const changeUser = async (id: string, change: Object) => {
     await dispatch(changeStudents({ id, change }));
-    await dispatch(getStudents());
+    setIsPopupOpen(true)
   };
+
+  const UpdateUser = () => {
+    dispatch(getStudents())
+  }
 
   const openAddGroupModal = (id: string) => {
     setStudentToAddGroup(id);
@@ -67,8 +73,7 @@ const UsersTable: FC<UserTableProps> = ({ students, groups }) => {
       await dispatch(
         changeStudents({ id: studentToAddGroup, change: { group } })
       );
-      await dispatch(getStudents());
-      closeAddGroupModal();
+      setIsPopupOpen(true)
     }
   };
 
@@ -101,6 +106,7 @@ const UsersTable: FC<UserTableProps> = ({ students, groups }) => {
         saveGroup={saveGroup}
         groups={groups}
       />
+      {isPopupOpen && <Popup message="Зміни збережено" closeModal={UpdateUser}/>}
     </div>
   );
 };

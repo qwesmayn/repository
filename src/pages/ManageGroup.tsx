@@ -4,12 +4,15 @@ import { createGroup, getGroups } from "../store/action_creators/actionCreatos";
 import ModalAddGroup from "../components/modals/ModalAddGroup";
 import GroupTable from "../components/GroupTable";
 import Dropdown from "../components/DropDown";
+import Popup from "../components/Popup";
 
 const ManageGroup: FC = () => {
   const dispatch = useAppDispatch();
   const { groups } = useAppSelector((state) => state.groupReducer);
-  const [isAddGroupModalOpen, setIsAddGroupModalOpen] = useState<boolean>(false);
+  const [isAddGroupModalOpen, setIsAddGroupModalOpen] =
+    useState<boolean>(false);
   const [selectedGroup, setSelectedGroup] = useState<string>("");
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   useEffect(() => {
     dispatch(getGroups());
@@ -25,8 +28,7 @@ const ManageGroup: FC = () => {
 
   const saveGroup = async (groupName: string) => {
     await dispatch(createGroup({ name: groupName }));
-    await dispatch(getGroups());
-    closeAddGroupModal();
+    setIsPopupOpen(true)
   };
 
   const nextidGroup = groups.length + 1;
@@ -42,12 +44,15 @@ const ManageGroup: FC = () => {
           value={selectedGroup}
           onChange={handleGroupChange}
           options={[
-            ...groups.map((group) => ({ value: group.name, label: group.name })),
+            ...groups.map((group) => ({
+              value: group.name,
+              label: group.name,
+            })),
           ]}
           placeholder="Выберите группу"
         />
         <button
-          className="bg-white text-black broder border-gray-300 px-4 py-2 rounded-3xl shadow-dark-lg transition-colors duration-300"
+          className="bg-bg-blue-design text-black broder border-gray-300 px-4 py-2 rounded-3xl shadow-dark-lg transition-colors duration-300"
           onClick={openAddGroupModal}
         >
           Добавить группу
@@ -60,6 +65,15 @@ const ManageGroup: FC = () => {
         nextId={nextidGroup}
         saveGroup={saveGroup}
       />
+      {isPopupOpen && (
+        <Popup
+          message="Успішно додана"
+          closeModal={() => {
+            dispatch(getGroups());
+            closeAddGroupModal();
+          }}
+        />
+      )}
     </div>
   );
 };

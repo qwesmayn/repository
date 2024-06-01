@@ -12,7 +12,7 @@ const Dropdown: FC<DropdownProps> = ({ value, onChange, options, placeholder }) 
         <select
             value={value}
             onChange={onChange}
-            className="p-2 border rounded-3xl shadow-dark-lg"
+            className="p-2 bg-bg-blue-design border rounded-3xl shadow-dark-lg"
         >
             <option value="">{placeholder}</option>
             {options.map((option) => (

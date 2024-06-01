@@ -4,9 +4,9 @@ import {
   getGroups,
   createDisciplines,
   createLink,
+  getDisciplines,
 } from "../../store/action_creators/actionCreatos";
-import { clearErrors } from "../../store/reducers/groupSlice";
-import ErrorAlert from "../ErrorAlert";
+import Popup from "../Popup";
 
 interface ModalAddDisciplineProps {
   isOpen: boolean;
@@ -25,7 +25,7 @@ const ModalAddDiscipline: FC<ModalAddDisciplineProps> = ({
   );
   const [disciplineName, setDisciplineName] = useState("");
   const [selectedGroups, setSelectedGroups] = useState<string[]>([]);
-  const [localError, setLocalError] = useState<string | null>(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -52,14 +52,10 @@ const ModalAddDiscipline: FC<ModalAddDisciplineProps> = ({
       for (const groupId of selectedGroups) {
         await dispatch(createLink({ groupId, disciplineId })).unwrap();
       }
+      setIsPopupOpen(true)
     } catch (error) {
-      setLocalError("Не удалось добавить дисциплину и создать связи.");
+      console.log(error)
     }
-  };
-
-  const clearError = () => {
-    dispatch(clearErrors());
-    setLocalError(null);
   };
 
   return (
@@ -74,19 +70,19 @@ const ModalAddDiscipline: FC<ModalAddDisciplineProps> = ({
             value={nextId}
             readOnly
             placeholder="Назва дисципліни"
-            className="w-12 p-2 border border-gray-300 rounded text-center shadow-xl"
+            className="bg-bg-blue-design w-12 p-2 border border-gray-300 rounded text-center shadow-dark-lg"
           />
           <input
             type="text"
             value={disciplineName}
             onChange={(e) => setDisciplineName(e.target.value)}
             placeholder="Назва дисципліни"
-            className="w-1/4 p-2 border border-gray-300 rounded text-center shadow-xl"
+            className="bg-bg-blue-design w-1/4 p-2 border border-gray-300 rounded text-center shadow-dark-lg"
           />
           <select
             onChange={(e) => handleAddGroup(e.target.value)}
             disabled={isGroupsLoading}
-            className="w-1/4 p-2 border border-gray-300 text-center rounded-3xl shadow-xl"
+            className="bg-bg-blue-design w-1/4 p-2 border border-gray-300 text-center rounded-3xl shadow-dark-lg"
           >
             <option value="" disabled>Виберіть групу</option>
             {groups.map((group) => (
@@ -97,19 +93,19 @@ const ModalAddDiscipline: FC<ModalAddDisciplineProps> = ({
           </select>
           <button
             onClick={handleSubmit}
-            className="bg-blue-500 text-white py-2 px-20 rounded mr-2 hover:bg-blue-600 shadow-xl"
+            className="bg-bg-blue-design text-black py-2 px-20 rounded-2xl mr-2 shadow-dark-lg"
           >
             Зберегти
           </button>
           <button
             onClick={() => onRequestClose(false)}
-            className="bg-gray-500 text-white py-2 px-20 rounded hover:bg-gray-600 shadow-xl"
+            className="bg-bg-blue-design text-black py-2 px-20 rounded-2xl shadow-dark-lg"
           >
             Відмінити
           </button>
         </div>
         <div className="flex justify-end mt-4 mr-7">
-          <div className="bg-white p-4 rounded-lg shadow-lg w-1/5 ">
+          <div className="bg-bg-blue-design p-4 rounded-lg shadow-dark-lg w-1/5 ">
             <h3 className="text-lg mb-2">Вибрані групи:</h3>
             <ul className="mb-4">
               {selectedGroups.map((groupId) => (
@@ -131,9 +127,10 @@ const ModalAddDiscipline: FC<ModalAddDisciplineProps> = ({
             </ul>
           </div>
         </div>
-        {localError && (
-          <ErrorAlert error={localError} clearError={clearError} />
-        )}
+              {isPopupOpen && <Popup message="Дисципліна успішно створена" closeModal={() => {
+      dispatch(getDisciplines())
+      onRequestClose(false)
+      }}/>}
       </div>
     </div>
   )}

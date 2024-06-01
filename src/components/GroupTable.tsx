@@ -60,7 +60,7 @@ const GroupTable: FC<GroupTableProps> = ({ groups, selectedGroup }) => {
   
         // Удалить группу у всех студентов
         await Promise.all(students.map(async student => {
-          if (student.group._id === groupToDelete) {
+          if (student.group?._id === groupToDelete) {
             // Обновить данные студента без группы
             await dispatch(changeStudents({ id: student._id, change: { group: null } }));
           }

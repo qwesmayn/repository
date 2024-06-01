@@ -6,8 +6,11 @@ export default {
   ],
   theme: {
     extend: {
+      backgroundColor :{
+        "bg-blue-design" : 'rgba(241, 246, 250, 1)'
+      },
       boxShadow: {
-        'dark-lg': '0 4px 4px 0 rgba(0, 0, 0, 0.25)', // Добавление более тёмной тени
+        'dark-lg': '0 4px 4px 0 rgba(0, 0, 0, 0.25)',
       },
     },
   },

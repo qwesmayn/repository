@@ -84,7 +84,7 @@ const UserManagePage: FC = () => {
           <div className="mr-40">
             <button
               className={`px-4 py-2 mr-2 shadow-dark-lg ${
-                view === "users" ? "bg-blue-600 text-white" : "bg-gray-200"
+                view === "users" ? " text-black border border-black bg-bg-blue-design" : "bg-bg-blue-design"
               } transition-colors duration-300`}
               onClick={() => setView("users")}
             >
@@ -92,7 +92,7 @@ const UserManagePage: FC = () => {
             </button>
             <button
               className={`px-4 py-2 shadow-dark-lg ${
-                view === "authors" ? "bg-blue-600 text-white" : "bg-gray-200"
+                view === "authors" ? " text-black border border-black bg-bg-blue-design" : "bg-bg-blue-design"
               } transition-colors duration-300`}
               onClick={() => setView("authors")}
             >
@@ -137,7 +137,7 @@ const UserManagePage: FC = () => {
         <div>
           {view === "users" && (
             <button
-              className="bg-white text-black px-6 py-2 shadow-dark-lg rounded-3xl transition-colors duration-300"
+              className="bg-bg-blue-design text-black px-6 py-2 shadow-dark-lg rounded-3xl transition-colors duration-300"
               onClick={() => setIsAddUserModalOpen(true)}
             >
               Додати користувача
@@ -145,7 +145,7 @@ const UserManagePage: FC = () => {
           )}
           {view === "authors" && (
             <button
-              className="bg-white text-black px-6 py-2 shadow-dark-lg rounded-3xl transition-colors duration-300"
+              className="bg-bg-blue-design text-black px-6 py-2 shadow-dark-lg rounded-3xl transition-colors duration-300"
               onClick={() => setIsAddAuthorsModalOpen(true)}
             >
               Додати автора

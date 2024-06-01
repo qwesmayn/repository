@@ -17,7 +17,7 @@ interface MaterialsListProps {
 
 const MaterialsList: FC<MaterialsListProps> = ({ materials, authors, disciplines, materialsTypes, onDownload, onSave, openModal }) => {
     return (
-        <div className="flex flex-wrap gap-20">
+        <div className="flex pl-9 flex-wrap gap-20">
             {materials.map(material => (
                 <MaterialBlock 
                     key={material._id}

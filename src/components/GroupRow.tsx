@@ -51,8 +51,8 @@ const GroupRow: FC<GroupRowProps> = ({
   return (
     <div key={group._id} className="mb-9 p-4 transition-all duration-300 border-2 border-black">
       <div className="flex justify-between">
-        <div className="text-center shadow-dark-lg px-7 py-3 w-max h-max">{index + 1}</div>
-        <div className="text-center  shadow-dark-lg px-40 h-max py-3" onDoubleClick={handleDoubleClickName}>
+        <div className="text-center shadow-dark-lg px-7 py-3 w-max h-max bg-bg-blue-design">{index + 1}</div>
+        <div className="text-center  shadow-dark-lg px-40 h-max py-3 bg-bg-blue-design" onDoubleClick={handleDoubleClickName}>
           {isEditingName ? (
             <input
               type="text"
@@ -68,7 +68,7 @@ const GroupRow: FC<GroupRowProps> = ({
         </div>
         <div className="text-center px-2 py-1">
           <button
-            className={`bg-blue-500 shadow-dark-lg text-white px-20 py-3 rounded-2xl transition-colors duration-300 ${hasChanges ? '' : 'bg-gray-500 text-gray-300 cursor-not-allowed'}`}
+            className={` shadow-dark-lg text-black px-20 py-3 rounded-2xl transition-colors duration-300 ${hasChanges ? 'bg-bg-blue-design text-black' : 'bg-gray-500 text-gray-300 cursor-not-allowed'}`}
             onClick={() => {
               setSelectedGroupId(selectedGroupId === group._id ? null : group._id);
               handleSave(); 
@@ -80,7 +80,7 @@ const GroupRow: FC<GroupRowProps> = ({
         </div>
         <div className="text-center px-2 py-1">
           <button
-            className="bg-red-500 text-white shadow-dark-lg px-20 py-3 rounded-2xl transition-colors duration-300"
+            className="bg-bg-blue-design text-black shadow-dark-lg px-20 py-3 rounded-2xl transition-colors duration-300"
             onClick={() => openDeleteModal(group._id)}
           >
             Видалити групу

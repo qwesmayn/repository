@@ -65,13 +65,13 @@ const ModalAddGroup: FC<ModalAddGroupProps> = ({ isOpen, onRequestClose, discipl
             <div className="flex justify-center space-x-4">
               <div>
                 <button
-                  className="border border-gray-300 rounded-lg p-2 w-64 transition duration-500 ease-in-out"
+                  className="bg-bg-blue-design border border-gray-300 rounded-lg p-2 w-64 transition duration-500 ease-in-out"
                   onClick={handleToggleGroupList}
                 >
                   Группа ▼
                 </button>
                 {isGroupListOpen && (
-                  <ul className=" mt-1 border border-gray-300 w-64 rounded-lg p-2 max-h-60 overflow-y-auto">
+                  <ul className="bg-bg-blue-design mt-1 border border-gray-300 w-64 rounded-lg p-2 max-h-60 overflow-y-auto">
                     {groups.map((group) => (
                       <li key={group._id}>
                         <button
@@ -89,19 +89,19 @@ const ModalAddGroup: FC<ModalAddGroupProps> = ({ isOpen, onRequestClose, discipl
                 <div className="flex justify-end mb-4">
                   <button
                     onClick={handleSubmit}
-                    className={`bg-blue-500 mr-3 text-white px-4 py-2 rounded-lg hover:bg-blue-600 ${selectedGroups.length === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
+                    className={`bg-bg-blue-design mr-3 text-black px-4 py-2 rounded-2xl shadow-dark-lg  ${selectedGroups.length === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
                     disabled={selectedGroups.length === 0}
                   >
                     Сохранить
                   </button>
                   <button
                     onClick={() => onRequestClose(false)}
-                    className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600"
+                    className="bg-bg-blue-design text-black py-2 px-4 rounded-2xl shadow-dark-lg"
                   >
                     Отмена
                   </button>
                 </div>
-                <div className="flex flex-col border border-gray-300 rounded-lg p-4">
+                <div className="bg-bg-blue-design flex flex-col border border-gray-300 rounded-lg p-4">
                   <h3 className="text-lg">Выбранные группы:</h3>
                   {selectedGroups.map(groupId => (
                     <p key={groupId} className="mt-2">{groups.find((group) => group._id === groupId)?.name}</p>

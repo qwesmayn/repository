@@ -52,7 +52,7 @@ const Header = () => {
         <input
           type="text"
           placeholder="Пошук матеріалу"
-          className="w-full px-2 py-1 border text-center border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-2 py-1 border text-center border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-bg-blue-design"
         />
       </div>
 
@@ -72,7 +72,7 @@ const Header = () => {
                 key={index}
                 to={page.link}
                 onClick={() => setMenuOpen(!menuOpen)}
-                className="block px-4 py-2 shadow-dark-lg "
+                className="bg-bg-blue-design block px-4 py-2 shadow-dark-lg mb-2"
               >
                 {page.name}
               </NavLink>

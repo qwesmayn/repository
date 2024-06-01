@@ -33,25 +33,25 @@ const ModalAddGroup: FC<ModalAddGroupProps> = ({
             type="text"
             value={nextId}
             readOnly
-            className="border p-2 w-12 text-center"
+            className="border p-2 w-12 text-center bg-bg-blue-design shadow-dark-lg"
             placeholder="Название группы"
           />
           <input
             type="text"
             value={groupName}
             onChange={(e) => setGroupName(e.target.value)}
-            className="border py-2 px-20 w-full text-center"
+            className="border py-2 px-20 w-full text-center bg-bg-blue-design shadow-dark-lg"
             placeholder="Название группы"
           />
           <div className="flex justify-end space-x-4">
           <button
-              className="bg-blue-500 text-white px-4 py-2 rounded"
+              className="bg-bg-blue-design text-black px-4 py-2 rounded-2xl shadow-dark-lg"
               onClick={handleSave}
             >
               Зберегти
             </button>
             <button
-              className="bg-gray-500 text-white px-4 py-2 rounded"
+              className="bg-bg-blue-design text-black px-4 py-2 rounded-2xl shadow-dark-lg"
               onClick={closeModal}
             >
               Відмінити

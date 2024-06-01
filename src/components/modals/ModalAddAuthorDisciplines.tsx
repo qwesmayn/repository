@@ -37,14 +37,14 @@ const ModalAddAuthorDiscipline: FC<ModalAddAuthorDisciplineProps> = ({ isModalOp
           <div className="flex-grow relative">
             <div className=" flex items-center mb-2">
             <button
-              className="border mr-5 border-gray-300 rounded-lg px-3 py-2 w-64 transition duration-500 ease-in-out"
+              className="bg-bg-blue-design border mr-5 border-gray-300 rounded-lg px-3 py-2 w-64 transition duration-500 ease-in-out"
               onClick={toggleDisciplineList}
             >
               Дисципліна ▼
             </button>
             <div className="flex">
             <button
-            className={`bg-blue-500 mr-5 text-white px-4 py-2 rounded-lg hover:bg-blue-600 ${
+            className={`bg-bg-blue-design mr-5 text-black px-4 py-2 rounded-lg ${
               selectedDisciplines.length === 0 ? "opacity-50 cursor-not-allowed" : ""
             }`}
             onClick={handleSave}
@@ -52,7 +52,7 @@ const ModalAddAuthorDiscipline: FC<ModalAddAuthorDisciplineProps> = ({ isModalOp
           >
             Зберегти
           </button>
-            <button className="bg-gray-300 text-black px-4 py-2 rounded-lg hover:bg-gray-400" onClick={closeModal}>
+            <button className="bg-bg-blue-design text-black px-4 py-2 rounded-lg hover:bg-gray-400" onClick={closeModal}>
             Відмінити
           </button>
             </div>
@@ -82,9 +82,9 @@ const ModalAddAuthorDiscipline: FC<ModalAddAuthorDisciplineProps> = ({ isModalOp
                 </li>
               ))}
             </ul>
-            <div className="flex-grow border border-gray-300 rounded-lg p-4">
+            <div className="flex-grow border border-gray-300 rounded-lg p-4 bg-bg-blue-design">
             <h3 className="text-lg">Выбранные дисциплины:</h3>
-            <ul className="mt-2">
+            <ul className="mt-2 ">
               {selectedDisciplines.map((selectedDiscipline) => (
                 <li key={selectedDiscipline} className="flex justify-between items-center">
                   <span>{disciplines.find((discipline) => discipline._id === selectedDiscipline)?.name}</span>

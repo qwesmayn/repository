@@ -71,8 +71,8 @@ const StudentRow: FC<StudentRowProps> = ({
 
   return (
     <div key={student._id} className="flex transition-all justify-between duration-300 border-2 border-black mb-5 p-3">
-      <div className="text-center align-top shadow-dark-lg w-20 h-max py-3">{index + 1}</div>
-      <div className="text-center align-top shadow-dark-lg w-96 h-max py-3 overflow-hidden whitespace-nowrap" onDoubleClick={handleDoubleClickFullName}>
+      <div className="text-center align-top shadow-dark-lg w-20 h-max py-3 bg-bg-blue-design">{index + 1}</div>
+      <div className="text-center align-top shadow-dark-lg w-96 h-max py-3 overflow-hidden whitespace-nowrap bg-bg-blue-design" onDoubleClick={handleDoubleClickFullName}>
         {isEditingFullName ? (
           <input
             type="text"
@@ -91,7 +91,7 @@ const StudentRow: FC<StudentRowProps> = ({
       <div className="text-center align-top">
         <div>
           <button
-            className="bg-white shadow-dark-lg px-6 text-black py-3 rounded-3xl transition-colors duration-300"
+            className="bg-bg-blue-design shadow-dark-lg px-6 text-black py-3 rounded-3xl transition-colors duration-300"
             onClick={() =>
               setSelectedStudentId(selectedStudentId === student._id ? null : student._id)
             }
@@ -103,7 +103,7 @@ const StudentRow: FC<StudentRowProps> = ({
               selectedStudentId === student._id ? "max-h-screen" : "max-h-0"
             }`}
           >
-            <ul className="m-auto mb-3 mt-5 w-max bg-white border border-gray-300 rounded shadow-dark-lg p-2 overflow-y-auto">
+            <ul className="m-auto mb-3 mt-5 w-max bg-bg-blue-design border border-gray-300 rounded shadow-dark-lg p-2 overflow-y-auto">
               {student.group ? (
                 <li className="flex justify-between items-center px-2 py-1 border-b">
                   <span className="mr-6">{student.group.name}</span>
@@ -127,7 +127,7 @@ const StudentRow: FC<StudentRowProps> = ({
           </div>
         </div>
       </div>
-      <div className="text-center align-top shadow-dark-lg w-72 h-max py-3 overflow-hidden whitespace-nowrap" onDoubleClick={handleDoubleClickLogin}>
+      <div className="bg-bg-blue-design text-center align-top shadow-dark-lg w-72 h-max py-3 overflow-hidden whitespace-nowrap" onDoubleClick={handleDoubleClickLogin}>
         {isEditingLogin ? (
           <input
             type="text"
@@ -142,7 +142,7 @@ const StudentRow: FC<StudentRowProps> = ({
           <div className="truncate">{editedStudent.login}</div>
         )}
       </div>
-      <div className="text-center align-top shadow-dark-lg w-96 h-max py-3 overflow-hidden whitespace-nowrap" onDoubleClick={handleDoubleClickPassword}>
+      <div className="bg-bg-blue-design text-center align-top shadow-dark-lg w-96 h-max py-3 overflow-hidden whitespace-nowrap" onDoubleClick={handleDoubleClickPassword}>
         {isEditingPassword ? (
           <input
             type="text"
@@ -159,8 +159,8 @@ const StudentRow: FC<StudentRowProps> = ({
       </div>
       <div className="text-center align-top">
         <button
-          className={`h-min py-3 px-3 rounded-2xl transition-colors duration-300 ${
-            hasChanges ? "bg-blue-500 text-white" : "bg-gray-500 text-gray-300 cursor-not-allowed"
+          className={`h-min py-3 px-3 rounded-2xl shadow-dark-lg transition-colors duration-300 ${
+            hasChanges ? "bg-bg-blue-design text-black" : "bg-gray-500 text-gray-300 cursor-not-allowed"
           }`}
           onClick={handleSave}
           disabled={!hasChanges}
@@ -170,7 +170,7 @@ const StudentRow: FC<StudentRowProps> = ({
       </div>
       <div className="text-center align-top">
         <button
-          className="bg-red-500 text-white shadow-dark-lg py-3 px-3 rounded-2xl transition-colors duration-300"
+          className="bg-bg-blue-design text-black shadow-dark-lg py-3 px-3 rounded-2xl transition-colors duration-300"
           onClick={() => openModal(student._id)}
         >
           Видалити користувача

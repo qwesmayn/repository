@@ -37,7 +37,7 @@ const AddUser: FC<AddUserProps> = ({ isAddUserModalOpen, closeAddModal, nextId, 
   return (
     isAddUserModalOpen && (
       <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-        <div className="bg-white rounded-lg p-8 shadow-lg w-max">
+        <div className="bg-white shadow-dark-lg p-8 w-max">
           <h2 className="text-xl mb-4">Додаті корістувача</h2>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="flex space-x-4">
@@ -46,20 +46,20 @@ const AddUser: FC<AddUserProps> = ({ isAddUserModalOpen, closeAddModal, nextId, 
                 id="ID"
                 value={nextId}
                 readOnly
-                className="border border-gray-300 px-3 py-2 rounded-lg flex-grow w-12 text-center"
+                className="bg-bg-blue-design border border-gray-300 px-3 py-2 shadow-dark-lg flex-grow w-12 text-center"
                 placeholder="ID"
               />
               <input
                 type="text"
                 id="fullName"
                 {...register("fullName", { required: true })}
-                className="border border-gray-300 px-3 py-2 rounded-lg flex-grow"
+                className="bg-bg-blue-design border border-gray-300 px-3 py-2 shadow-dark-lg flex-grow"
                 placeholder="ФИО"
               />
               <select
                 id="group"
                 {...register("group", { required: true })}
-                className="border border-gray-300 px-3 py-2 rounded-lg flex-grow"
+                className="bg-bg-blue-design border border-gray-300 px-3 py-2 shadow-dark-lg flex-grow"
               >
                 {groups.map((group) => (
                   <option key={group._id} value={group._id}>
@@ -71,24 +71,24 @@ const AddUser: FC<AddUserProps> = ({ isAddUserModalOpen, closeAddModal, nextId, 
                 type="text"
                 id="login"
                 {...register("login", { required: true })}
-                className="border border-gray-300 px-3 py-2 rounded-lg flex-grow"
+                className="bg-bg-blue-design border border-gray-300 px-3 py-2 shadow-dark-lg flex-grow"
                 placeholder="Логин"
               />
               <input
                 type="password"
                 id="password"
                 {...register("password", { required: true })}
-                className="border border-gray-300 px-3 py-2 rounded-lg flex-grow"
+                className="bg-bg-blue-design border border-gray-300 px-3 py-2 shadow-dark-lg flex-grow"
                 placeholder="Пароль"
               />
               <button
                 type="submit"
-                className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300"
+                className="bg-bg-blue-design text-black py-2 px-4 rounded-2xl shadow-dark-lg  transition duration-300"
               >
                 Зберегти
               </button>
 
-                <button className="bg-gray-300 text-black px-4 py-2 rounded-lg hover:bg-gray-400" onClick={closeAddModal}>
+                <button className="bg-bg-blue-design text-black px-4 py-2 rounded-2xl shadow-dark-lg" onClick={closeAddModal}>
               Відмінити
             </button>
             </div>
