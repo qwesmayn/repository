@@ -91,7 +91,7 @@ const LoadPage: FC = () => {
       previewImage: coverFile,
       materialFile: file,
     };
-    console.log(materialData);
+    dispatch(createMaterial(materialData))
   };
 
   return (

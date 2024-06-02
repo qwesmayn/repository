@@ -1,4 +1,4 @@
-import { FC, useState, ChangeEvent, useEffect, useRef } from "react";
+import { FC, useState, ChangeEvent, useEffect } from "react";
 import { IMaterials } from "../models/IMaterials";
 import { IAuthors } from "../models/IAuthors";
 import { IDiscipline } from "../models/IDiscipline";
@@ -81,11 +81,6 @@ const MaterialBlock: FC<MaterialBlockProps> = ({
 
   const toggleDescription = () => {
     setIsDescriptionExpanded(!isDescriptionExpanded);
-  };
-
-  const isTextOverflowing = (element: HTMLElement | null): boolean => {
-    if (!element) return false;
-    return element.scrollWidth > element.clientWidth;
   };
   
 

@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { FC, useState, ChangeEvent, KeyboardEvent } from "react";
+import { useNavigate } from "react-router-dom"; // Импорт useNavigate
 import logo from "../static/logo.png";
 import { ArrowRightStartOnRectangleIcon, Bars3Icon, GlobeAltIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { ADMIN_ROUTE, ANALITIC_ROUTE, DISCIPLINE_MANAGE_ROUTE, DOWNLOAD_ROUTE, GROUP_MANAGE_ROUTE, USER_MANAGE_ROUTE } from "../utils/consts";
@@ -6,11 +7,13 @@ import { setAuth } from "../store/reducers/userSlice";
 import { useAppDispatch } from "../hooks/typeHooks";
 import { NavLink } from "react-router-dom";
 
-const Header = () => {
+const Header: FC = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const [language, setLanguage] = useState<string>("ua");
   const [languageDropdownOpen, setLanguageDropdownOpen] = useState<boolean>(false);
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   const handleLanguageChange = (lang: string) => {
     setLanguage(lang);
@@ -20,6 +23,16 @@ const Header = () => {
   const handleLogout = () => {
     dispatch(setAuth(false));
     localStorage.clear();
+  };
+
+  const handleSearchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const handleSearchKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter" && searchQuery.trim() !== "") {
+      navigate(`${ANALITIC_ROUTE}?search=${searchQuery.trim()}`); 
+    }
   };
 
   const pages = [
@@ -52,6 +65,9 @@ const Header = () => {
         <input
           type="text"
           placeholder="Пошук матеріалу"
+          value={searchQuery}
+          onChange={handleSearchInputChange}
+          onKeyPress={handleSearchKeyPress}
           className="w-full px-2 py-1 border text-center border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-bg-blue-design"
         />
       </div>

@@ -1,16 +1,14 @@
 import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAppDispatch } from "../../hooks/typeHooks";
-import {
-  createAuthors
-} from "../../store/action_creators/actionCreatos";
+import { createAuthors } from "../../store/action_creators/actionCreatos";
 import { IDiscipline } from "../../models/IDiscipline";
 import Popup from "../Popup";
 
 interface FormData {
   fullName: string;
   position: string;
-  disciplines: string[]; 
+  disciplines: string[];
 }
 
 interface AddUserProps {
@@ -26,51 +24,39 @@ const ModalAddAuthors: FC<AddUserProps> = ({
   nextId,
   disciplines,
 }) => {
-  const { register, handleSubmit, setValue } = useForm<FormData>(); // Добавляем setValue из react-hook-form
+  const { register, handleSubmit } = useForm<FormData>();
   const dispatch = useAppDispatch();
-  const [selectedDisciplines, setSelectedDisciplines] = useState<IDiscipline[]>([]);
+  const [selectedDisciplines, setSelectedDisciplines] = useState<string[]>([]);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   const closeModalAdd = () => {
     setSelectedDisciplines([]);
     closeAddModal();
-  }
+  };
 
   const onSubmit = async (data: FormData) => {
-    const disciplineIds = selectedDisciplines.map((discipline) => discipline._id);
-    const authorData = { ...data, disciplines: disciplineIds };
+    const authorData = { ...data, disciplines: selectedDisciplines };
     await dispatch(createAuthors(authorData));
     setShowSuccessPopup(true);
   };
 
-  const handleDisciplineChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    const selectedOptions = event.target.selectedOptions;
-    const selectedDisciplines = Array.from(selectedOptions).map(option => {
-      const selectedId = option.value;
-      return disciplines.find((discipline) => discipline._id === selectedId);
-    });
-
-    setSelectedDisciplines(selectedDisciplines);
-  };
-
-  const removeDiscipline = (disciplineId: string) => {
-    setSelectedDisciplines(
-      selectedDisciplines.filter(
-        (discipline) => discipline._id !== disciplineId
-      )
-    );
-
-    // Обновляем значение defaultValue для select элемента
-    const defaultDisciplineId = selectedDisciplines[0]?.id || ""; // Получаем первую дисциплину в списке, если она есть
-    setValue("disciplines", defaultDisciplineId); // Устанавливаем defaultValue для поля disciplines
+  const toggleDiscipline = (disciplineId: string) => {
+    if (selectedDisciplines.includes(disciplineId)) {
+      setSelectedDisciplines((prevSelectedDisciplines) =>
+        prevSelectedDisciplines.filter((id) => id !== disciplineId)
+      );
+    } else {
+      setSelectedDisciplines((prevSelectedDisciplines) => [
+        ...prevSelectedDisciplines,
+        disciplineId,
+      ]);
+    }
   };
 
   const closePopup = () => {
     setShowSuccessPopup(false);
     closeModalAdd();
-  }
+  };
 
   return (
     isAddAuthorsModalOpen && (
@@ -107,21 +93,26 @@ const ModalAddAuthors: FC<AddUserProps> = ({
                   className="border border-gray-300 px-3 py-2 shadow-dark-lg bg-bg-blue-design"
                   defaultValue=""
                   {...register("disciplines", { required: true })}
-                  onChange={handleDisciplineChange}
+                  onChange={(e) => toggleDiscipline(e.target.value)}
                 >
                   <option value="" disabled>
-                  Дисципліни ▼
+                    Дисципліни ▼
                   </option>
                   {disciplines.map((discipline) => (
-                    <option key={discipline._id} value={discipline._id}>
+                    <option
+                      key={discipline._id}
+                      value={discipline._id}
+                      disabled={selectedDisciplines.includes(discipline._id)}
+                    >
                       {discipline.name}
                     </option>
                   ))}
                 </select>
+
                 <button
                   type="submit"
                   className="bg-bg-blue-design text-dark py-2 px-4 shadow-dark-lg transition duration-300 rounded-2xl"
-                  disabled={!selectedDisciplines.length} // Добавляем disabled, если не выбрано ни одной дисциплины
+                  disabled={!selectedDisciplines.length}
                 >
                   Зберегти
                 </button>
@@ -136,21 +127,26 @@ const ModalAddAuthors: FC<AddUserProps> = ({
               <div className="bg-bg-blue-design rounded-2xl border w-max border-gray-300 shadow-dark-lg p-4 overflow-hidden ml-auto">
                 <h3 className="text-lg">Доданы дисципліни:</h3>
                 <ul className="mt-2">
-                  {selectedDisciplines.map((discipline) => (
-                    <li
-                      key={discipline._id}
-                      className="flex justify-between items-center"
-                    >
-                      <span className="mr-5">{discipline.name}</span>
-                      <button
-                        type="button"
-                        className="text-red-500"
-                        onClick={() => removeDiscipline(discipline._id)}
+                  {selectedDisciplines.map((disciplineId) => {
+                    const discipline = disciplines.find(
+                      (d) => d._id === disciplineId
+                    );
+                    return (
+                      <li
+                        key={disciplineId}
+                        className="flex justify-between items-center"
                       >
-                        Видалити
-                      </button>
-                    </li>
-                  ))}
+                        <span className="mr-5">{discipline?.name}</span>
+                        <button
+                          type="button"
+                          className="text-red-500"
+                          onClick={() => toggleDiscipline(disciplineId)}
+                        >
+                          Видалити
+                        </button>
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             </div>
@@ -165,4 +161,3 @@ const ModalAddAuthors: FC<AddUserProps> = ({
 };
 
 export default ModalAddAuthors;
-

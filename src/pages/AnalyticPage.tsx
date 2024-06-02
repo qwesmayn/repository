@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/typeHooks";
 import {
   getMaterials,
@@ -11,13 +11,19 @@ import {
 import Dropdown from "../components/DropDown";
 import MaterialsList from "../components/MaterialList";
 import ModalDelete from "../components/modals/ModalDelete";
+import { useLocation } from "react-router-dom";
+import { IAuthors } from "../models/IAuthors";
 
-const AnalyticPage: FC = () => {
+interface AnalyticPageProps {}
+
+const AnalyticPage: FC<AnalyticPageProps> = () => {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const searchQuery = queryParams.get('search') || '';
+
   const dispatch = useAppDispatch();
   const { disciplines } = useAppSelector((state) => state.disciplineReducer);
-  const { materials, materialsTypes } = useAppSelector(
-    (state) => state.materialReducer
-  );
+  const { materials, materialsTypes } = useAppSelector((state) => state.materialReducer);
   const { authors } = useAppSelector((state) => state.userManageReducer);
   const [selectedDiscipline, setSelectedDiscipline] = useState<string>("");
   const [selectedMaterialType, setSelectedMaterialType] = useState<string>("");
@@ -72,14 +78,28 @@ const AnalyticPage: FC = () => {
     }
   };
 
+  const getAuthorNameById = (authorId: string, authors: IAuthors[]): string | undefined => {
+    const author = authors.find((authora )=> authora._id === authorId);
+    debugger
+    return author ? author.fullName : undefined;
+  };
+
   const filteredMaterials = materials.filter((material) => {
+    const matchesSearchQuery =
+      !searchQuery ||
+      (material.author &&
+        getAuthorNameById(material.author, authors)
+          ?.toLowerCase()
+          .includes(searchQuery.toLowerCase())) ||
+      material.title.toLowerCase().includes(searchQuery.toLowerCase());
+  
     return (
-      (selectedDiscipline === "" ||
-        material.discipline === selectedDiscipline) &&
-      (selectedMaterialType === "" ||
-        material.materialType === selectedMaterialType)
+      (selectedDiscipline === "" || material.discipline === selectedDiscipline) &&
+      (selectedMaterialType === "" || material.materialType === selectedMaterialType) &&
+      matchesSearchQuery
     );
   });
+  
 
   return (
     <div>
@@ -92,7 +112,7 @@ const AnalyticPage: FC = () => {
               value: discipline._id,
               label: discipline.name,
             }))}
-            placeholder="Вибір дисципліни"
+            placeholder="Выбор дисциплины"
           />
           <Dropdown
             value={selectedMaterialType}
@@ -101,7 +121,7 @@ const AnalyticPage: FC = () => {
               value: type._id,
               label: type.name,
             }))}
-            placeholder="Вибір типу матеріалу"
+            placeholder="Выбор типа материала"
           />
         </div>
         <MaterialsList

@@ -89,7 +89,6 @@ const ManageDisciplines: FC = () => {
             }
           })
         );
-
         // Удалить саму дисциплину
         const resultAction = await dispatch(deleteDisciplines(disciplineToDelete));
         if (deleteDisciplines.fulfilled.match(resultAction)) {
@@ -106,7 +105,6 @@ const ManageDisciplines: FC = () => {
       }
     }
   };
-  
 
   const handleDeleteGroup = async (groupId: string, disciplineId: string) => {
     const resultAction = await dispatch(deleteLink({ groupId, disciplineId }));
@@ -161,29 +159,30 @@ const ManageDisciplines: FC = () => {
         </button>
       </div>
 
-        <div className="overflow-x-auto">
-          <div className="grid grid-row-6 gap-4 border-[3px] border-black px-6 pt-14">
-            {disciplines
-              .filter(
-                (discipline) =>
-                  selectedDiscipline === "" ||
-                  discipline._id === selectedDiscipline
-              )
-              .map((discipline, index) => (
-                <DisciplineRow
-                  index={index}
-                  discipline={discipline}
-                  selectedDisciplineId={selectedDisciplineId}
-                  toggleDisciplineGroups={toggleDisciplineGroups}
-                  groupsById={groupsById}
-                  handleDeleteGroup={handleDeleteGroup}
-                  openModalAddGroup={openModalAddGroup}
-                  saveDisciplineChanges={saveDisciplineChanges}
-                  handleDeleteDiscipline={handleDeleteDiscipline}
-                />
-              ))}
-          </div>
-      </div>
+      <div className="overflow-x-auto">
+  <div className="grid grid-row-6 gap-4 border-[3px] border-black px-6 pt-14">
+    {disciplines
+      .filter(
+        (discipline) =>
+          selectedDiscipline === "" ||
+          (discipline._id === selectedDiscipline && discipline._id !== disciplineToDelete)
+      )
+      .map((discipline, index) => (
+        <DisciplineRow
+          key={discipline._id}
+          index={index}
+          discipline={discipline}
+          selectedDisciplineId={selectedDisciplineId}
+          toggleDisciplineGroups={toggleDisciplineGroups}
+          groupsById={groupsById}
+          handleDeleteGroup={handleDeleteGroup}
+          openModalAddGroup={openModalAddGroup}
+          saveDisciplineChanges={saveDisciplineChanges}
+          handleDeleteDiscipline={handleDeleteDiscipline}
+        />
+      ))}
+  </div>
+</div>
       <ModalDelete
         nameDel="дисципліну"
         description="Усі наявні зв'язки буде видалено"

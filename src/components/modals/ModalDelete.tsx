@@ -18,6 +18,12 @@ const ModalDelete: FC<ModalDeleteProps> = ({
 }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
+  const handleConfirmDelete = () => {
+    setIsPopupOpen(false);
+    confirmDelete();  
+    closeModal();
+  };
+
   return (
     isModalOpen && (
       <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
@@ -41,7 +47,7 @@ const ModalDelete: FC<ModalDeleteProps> = ({
             </button>
           </div>
         </div>
-        {isPopupOpen && <Popup message="Успішно видален(а)" closeModal={confirmDelete}/>}
+        {isPopupOpen && <Popup message="Успішно видален(а)" closeModal={handleConfirmDelete}/>}
       </div>
     )
   );

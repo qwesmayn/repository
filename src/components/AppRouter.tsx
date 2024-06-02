@@ -1,33 +1,25 @@
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import { ADMIN_ROUTE, LOGIN_ROUTE } from '../utils/consts';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { authRoutes, publicRoutes } from '../routes';
-import { useAppDispatch, useAppSelector } from '../hooks/typeHooks';
-import { getAuthors } from '../store/action_creators/actionCreatos';
-
-const ProtectedLogin: FC<{ element: JSX.Element }> = ({ element }) => {
-  const { isAuth } = useAppSelector((state) => state.userReducer);
-  return isAuth ? <Navigate to={ADMIN_ROUTE} replace /> : element;
-};
+import { useAppSelector } from '../hooks/typeHooks';
+import ProtectedRoute from './ProtectedRoute';
 
 const AppRouter: FC = () => {
   const { isAuth } = useAppSelector((state) => state.userReducer);
 
   return (
     <Routes>
-      {isAuth && authRoutes.map(({ path, Component }) => (
-        <Route key={path} path={path} element={<Component />} />
-      ))}
-      {publicRoutes.map(({ path, Component }) => (
-        <Route key={path} path={path} element={
-          path === LOGIN_ROUTE ? (
-            <ProtectedLogin element={<Component />} />
-          ) : (
-            <Component />
-          )
-        } />
-      ))}
-      <Route path="*" element={<Navigate to={LOGIN_ROUTE} replace />} />
+      {isAuth ? (
+        authRoutes.map(({ path, Component }) => (
+          <Route key={path} path={path} element={<Component />} />
+        ))
+      ) : (
+        publicRoutes.map(({ path, Component }) => (
+          <Route key={path} path={path} element={<ProtectedRoute element={<Component />} />} />
+        ))
+      )}
+      <Route path="*" element={<Navigate to={isAuth ? ADMIN_ROUTE : LOGIN_ROUTE} replace />} />
     </Routes>
   );
 };

@@ -1,7 +1,9 @@
 import { FC } from "react";
 import { useForm } from "react-hook-form";
-import logo from "../static/logo.png"
-import { useAppDispatch } from "../hooks/typeHooks";
+import { useNavigate } from "react-router-dom";
+import logo from "../static/logo.png";
+import { useAppDispatch, useAppSelector } from "../hooks/typeHooks";
+import { ADMIN_ROUTE } from "../utils/consts";
 import { Login } from "../store/action_creators/actionCreatos";
 
 interface FormData {
@@ -11,12 +13,19 @@ interface FormData {
 
 const AuthPage: FC = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
-    mode : "onBlur"
+    mode: "onBlur"
   });
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const { isLoading, error } = useAppSelector(state => state.userReducer);
 
-  const onSubmit = (data: FormData) => {
-    dispatch(Login(data))
+  const onSubmit = async (data: FormData) => {
+    try {
+      await dispatch(Login(data)).unwrap();
+      navigate(ADMIN_ROUTE);
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (
@@ -57,7 +66,7 @@ const AuthPage: FC = () => {
             <div>
               <div className="flex items-center justify-between">
                 <label className="block text-sm font-medium leading-6 text-gray-900">
-                Пароль
+                  Пароль
                 </label>
               </div>
               <div className="mt-2">
@@ -77,12 +86,13 @@ const AuthPage: FC = () => {
               <button
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                disabled={isLoading}
               >
-                Вхід
+                {isLoading ? 'Загрузка...' : 'Вхід'}
               </button>
+              {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
             </div>
           </form>
-
         </div>
       </div>
     </>

@@ -28,6 +28,21 @@ export const Login = createAsyncThunk(
   }
 );
 
+export const getAuth = createAsyncThunk(
+  "user/getAuth",
+  async (_, thunkAPI) => {
+    try {
+      const response = await $authHost.post<{ token: string }>(
+        "user-admin/renew-token"
+      );
+      localStorage.setItem("token", response.data.token);
+      return jwtDecode<IUser>(response.data.token)._id;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 // Запросы на получение данных
 
 export const getAuthors = createAsyncThunk(
