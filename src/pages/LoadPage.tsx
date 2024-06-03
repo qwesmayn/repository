@@ -25,6 +25,7 @@ const LoadPage: FC = () => {
   const [coverFile, setCoverFile] = useState<File | undefined>(undefined);
   const [coverPreview, setCoverPreview] = useState<string | null>(null);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [showErrorPopup, setShowErrorPopup] = useState(false);
   const { disciplines } = useAppSelector((state) => state.disciplineReducer);
   const { authors } = useAppSelector((state) => state.userManageReducer);
   const { materialsTypes } = useAppSelector((state) => state.materialReducer);
@@ -35,7 +36,7 @@ const LoadPage: FC = () => {
       dispatch(getAuthors()),
       dispatch(getMaterialsTypes()),
     ]);
-  }, []);
+  }, [dispatch]);
 
   const handleFileUploadClick = () => {
     if (fileInputRef.current) {
@@ -80,6 +81,11 @@ const LoadPage: FC = () => {
   };
 
   const onSubmit = (data: any) => {
+    if (!file || !coverFile) {
+      setShowErrorPopup(true);
+      return;
+    }
+
     const materialData = {
       title: data.title,
       description: data.description,
@@ -92,6 +98,16 @@ const LoadPage: FC = () => {
       materialFile: file,
     };
     dispatch(createMaterial(materialData))
+      .then(() => {
+        setShowSuccessPopup(true);
+        reset();
+        setFile(undefined);
+        setCoverFile(undefined);
+        setCoverPreview(null);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (
@@ -187,6 +203,9 @@ const LoadPage: FC = () => {
                     className="hidden"
                     onChange={handleFileChange}
                   />
+                  {errors.file && (
+                    <span className="text-red-500">Файл обов'язковий</span>
+                  )}
                 </div>
               ) : (
                 <input
@@ -245,6 +264,9 @@ const LoadPage: FC = () => {
           className="hidden"
           onChange={handleCoverChange}
         />
+        {errors.coverFile && (
+          <span className="text-red-500">Обкладинка обов'язкова</span>
+        )}
       </div>
       <div className="flex flex-col items-start space-y-4 mb-auto">
         <button
@@ -264,11 +286,17 @@ const LoadPage: FC = () => {
       </div>
       {showSuccessPopup && (
         <Popup
-          message="Матеріал успішно скасовано"
+          message="Матеріал успішно додано"
           closeModal={() => {
-            reset()
-            setShowSuccessPopup(false)
+            reset();
+            setShowSuccessPopup(false);
           }}
+        />
+      )}
+      {showErrorPopup && (
+        <Popup
+          message="Матеріал не може бути доданий без файлу або обкладинки"
+          closeModal={() => setShowErrorPopup(false)}
         />
       )}
     </div>

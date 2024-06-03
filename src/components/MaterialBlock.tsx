@@ -3,6 +3,7 @@ import { IMaterials } from "../models/IMaterials";
 import { IAuthors } from "../models/IAuthors";
 import { IDiscipline } from "../models/IDiscipline";
 import { ITypesMaterials } from "../models/ITypesMaterials";
+import { ChevronDownIcon } from "@heroicons/react/24/outline";
 
 interface MaterialBlockProps {
   material: IMaterials;
@@ -143,12 +144,13 @@ const MaterialBlock: FC<MaterialBlockProps> = ({
               )}
             </p>
           </div>
-          <button onClick={toggleDescription} className="text-blue-500 mb-4">
+          <button onClick={toggleDescription} className={`mb-4 w-6 transition-transform ${
+              isDescriptionExpanded ? "rotate-180" : ""
+            }`}>
             {editedMaterial.description &&
               editedMaterial.description.length >= 32 &&
-              (isDescriptionExpanded
-                ? "Скрыть описание"
-                : "Показать полное описание")}
+              <ChevronDownIcon />
+              }
           </button>
 
           <p className="text-xs mb-4 bg-white rounded-2xl">

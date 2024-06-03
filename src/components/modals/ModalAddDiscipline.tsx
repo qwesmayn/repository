@@ -26,6 +26,7 @@ const ModalAddDiscipline: FC<ModalAddDisciplineProps> = ({
   const [disciplineName, setDisciplineName] = useState("");
   const [selectedGroups, setSelectedGroups] = useState<string[]>([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [selectedGroup, setSelectedGroup] = useState<string>("");
 
   useEffect(() => {
     if (isOpen) {
@@ -38,8 +39,9 @@ const ModalAddDiscipline: FC<ModalAddDisciplineProps> = ({
   };
 
   const handleAddGroup = (groupId: string) => {
-    if (!isGroupSelected(groupId)) {
+    if (groupId && !isGroupSelected(groupId)) {
       setSelectedGroups((prevSelected) => [...prevSelected, groupId]);
+      setSelectedGroup("");
     }
   };
 
@@ -47,6 +49,7 @@ const ModalAddDiscipline: FC<ModalAddDisciplineProps> = ({
     setSelectedGroups((prevSelected) =>
       prevSelected.filter((id) => id !== groupId)
     );
+    setSelectedGroup("");
   };
 
   const handleSubmit = async () => {
@@ -96,11 +99,12 @@ const ModalAddDiscipline: FC<ModalAddDisciplineProps> = ({
                 className="bg-bg-blue-design w-1/4 p-2 border border-gray-300 rounded text-center shadow-dark-lg"
               />
               <select
+                value={selectedGroup}
                 onChange={(e) => handleAddGroup(e.target.value)}
                 disabled={isGroupsLoading}
                 className="bg-bg-blue-design w-1/4 p-2 border border-gray-300 text-center rounded-3xl shadow-dark-lg"
               >
-                <option value="" disabled selected>
+                <option value="" disabled>
                   Выберите группу
                 </option>
                 {groups.map((group) => (

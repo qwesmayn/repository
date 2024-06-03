@@ -24,10 +24,11 @@ const ModalAddAuthors: FC<AddUserProps> = ({
   nextId,
   disciplines,
 }) => {
-  const { register, handleSubmit } = useForm<FormData>();
+  const { register, handleSubmit, reset } = useForm<FormData>();
   const dispatch = useAppDispatch();
   const [selectedDisciplines, setSelectedDisciplines] = useState<string[]>([]);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [selectedDiscipline, setSelectedDiscipline] = useState<string>("");
 
   const closeModalAdd = () => {
     setSelectedDisciplines([]);
@@ -40,17 +41,19 @@ const ModalAddAuthors: FC<AddUserProps> = ({
     setShowSuccessPopup(true);
   };
 
-  const toggleDiscipline = (disciplineId: string) => {
-    if (selectedDisciplines.includes(disciplineId)) {
-      setSelectedDisciplines((prevSelectedDisciplines) =>
-        prevSelectedDisciplines.filter((id) => id !== disciplineId)
-      );
-    } else {
-      setSelectedDisciplines((prevSelectedDisciplines) => [
-        ...prevSelectedDisciplines,
-        disciplineId,
-      ]);
+  const handleDisciplineChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const disciplineId = event.target.value;
+    if (disciplineId && !selectedDisciplines.includes(disciplineId)) {
+      setSelectedDisciplines([...selectedDisciplines, disciplineId]);
+      setSelectedDiscipline("");
     }
+  };
+
+  const toggleDiscipline = (disciplineId: string) => {
+    setSelectedDisciplines((prevSelectedDisciplines) =>
+      prevSelectedDisciplines.filter((id) => id !== disciplineId)
+    );
+    setSelectedDiscipline("");
   };
 
   const closePopup = () => {
@@ -61,7 +64,7 @@ const ModalAddAuthors: FC<AddUserProps> = ({
   return (
     isAddAuthorsModalOpen && (
       <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-        <div className="bg-white shadow-dark-lg p-8 ">
+        <div className="bg-white shadow-dark-lg p-8">
           <h2 className="text-xl mb-4">Додати автора</h2>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 flex">
             <div className="flex flex-col space-y-4 flex-grow">
@@ -91,9 +94,8 @@ const ModalAddAuthors: FC<AddUserProps> = ({
                 <select
                   id="disciplines"
                   className="border border-gray-300 px-3 py-2 shadow-dark-lg bg-bg-blue-design"
-                  defaultValue=""
-                  {...register("disciplines", { required: true })}
-                  onChange={(e) => toggleDiscipline(e.target.value)}
+                  value={selectedDiscipline}
+                  onChange={handleDisciplineChange}
                 >
                   <option value="" disabled>
                     Дисципліни ▼

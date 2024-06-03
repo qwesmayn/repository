@@ -75,7 +75,6 @@ const AddUser: FC<AddUserProps> = ({ isAddUserModalOpen, closeAddModal, nextId, 
                 placeholder="Логин"
               />
               <input
-                type="password"
                 id="password"
                 {...register("password", { required: true })}
                 className="bg-bg-blue-design border border-gray-300 px-3 py-2 shadow-dark-lg flex-grow"
