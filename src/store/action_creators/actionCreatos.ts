@@ -13,32 +13,41 @@ import { IMaterials } from "../../models/IMaterials";
 // Авторизация
 
 export const Login = createAsyncThunk(
-  "user/login",
+  "admin/login",
   async (user: { email: string; password: string }, thunkAPI) => {
     try {
-      const response = await $host.post<{ token: string }>(
-        "/user-admin/login",
-        user
-      );
+      const response = await $host.post<{ token: string }>("/user-admin/login", user);
       localStorage.setItem("token", response.data.token);
-      return jwtDecode<IUser>(response.data.token)._id;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
+      return jwtDecode<IUser>(response.data.token);
+    } catch (error : any) {
+        return thunkAPI.rejectWithValue(error.response?.data?.message || 'Login failed');
     }
   }
 );
+
+export const studentLogin = createAsyncThunk(
+  "student/login",
+  async (user: { login: string; password: string }, thunkAPI) => {
+    try {
+      const response = await $host.post<{ token: string }>("/students/login", user);
+      localStorage.setItem("token", response.data.token);
+      return jwtDecode<IUser>(response.data.token);
+    } catch (error : any) {
+        return thunkAPI.rejectWithValue(error.response?.data?.message || 'Login failed');
+    }
+  }
+);
+
 
 export const getAuth = createAsyncThunk(
   "user/getAuth",
   async (_, thunkAPI) => {
     try {
-      const response = await $authHost.post<{ token: string }>(
-        "user-admin/renew-token"
-      );
+      const response = await $authHost.post<{ token: string }>("user-admin/renew-token");
       localStorage.setItem("token", response.data.token);
-      return jwtDecode<IUser>(response.data.token)._id;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
+      return jwtDecode<IUser>(response.data.token);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response?.data?.message || 'Authorization failed');
     }
   }
 );
@@ -477,6 +486,20 @@ export const changeDisciplines= createAsyncThunk(
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue("Не удалось изменить дисциплину");
+    }
+  }
+);
+
+export const changeDownloads= createAsyncThunk(
+  "changeDownloads",
+  async (id: string, thunkAPI) => {
+    try {
+      const response = await $authHost.post(
+        `/materials/download/${id}`,
+      );
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue("Не удалось изменить кол-во скачиваний");
     }
   }
 );

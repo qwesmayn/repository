@@ -7,6 +7,7 @@ import {
   GROUP_MANAGE_ROUTE,
   USER_MANAGE_ROUTE,
 } from "../utils/consts";
+import i18n from "../i18n";
 
 const MainNav: FC = () => {
   return (
@@ -14,29 +15,29 @@ const MainNav: FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 lg:gap-56 mb-8 md:mb-12 lg:mb-16">
         <NavLink to={ANALITIC_ROUTE} className="text-lg md:text-xl font-medium bg-bg-blue-design w-max rounded-3xl">
           <div className="w-[339px] h-[231px]  rounded-3xl shadow-dark-lg flex items-center justify-center text-center">
-            <span>Аналітика {">"}</span>
+            <span>{i18n.t('pages.anaLyticPage')}{">"}</span>
           </div>
         </NavLink>
         <NavLink to={USER_MANAGE_ROUTE} className="text-lg md:text-xl font-medium bg-bg-blue-design  w-max rounded-3xl">
           <div className="w-[339px] h-[231px] rounded-3xl shadow-dark-lg flex items-center justify-center text-center">
-            <span>Керування користувачами {">"}</span>
+            <span>{i18n.t('pages.userManagePage')}{">"}</span>
           </div>
         </NavLink>
         <NavLink to={DOWNLOAD_ROUTE} className="text-lg md:text-xl font-medium bg-bg-blue-design  w-max rounded-3xl">
           <div className="w-[339px] h-[231px] rounded-3xl shadow-dark-lg flex items-center justify-center text-center">
-            <span>Завантаження матеріалу {">"}</span>
+            <span>{i18n.t('pages.downloadPage')} {">"}</span>
           </div>
         </NavLink>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-56 ">
         <NavLink to={DISCIPLINE_MANAGE_ROUTE} className="text-lg md:text-xl font-medium bg-bg-blue-design  w-max rounded-3xl">
           <div className="w-[339px] h-[231px] rounded-3xl shadow-dark-lg flex items-center justify-center text-center">
-            <span>Керування дисциплінами {">"}</span>
+            <span>{i18n.t('pages.manageDisciplinePage')} {">"}</span>
           </div>
         </NavLink>
         <NavLink to={GROUP_MANAGE_ROUTE} className="text-lg md:text-xl font-medium bg-bg-blue-design  w-max rounded-3xl">
           <div className="w-[339px] h-[231px] rounded-3xl shadow-dark-lg flex items-center justify-center text-center">
-            <span>Керування групами {">"}</span>
+            <span>{i18n.t('pages.manageGroupPage')} {">"}</span>
           </div>
         </NavLink>
       </div>

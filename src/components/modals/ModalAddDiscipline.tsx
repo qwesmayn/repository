@@ -7,6 +7,7 @@ import {
   getDisciplines,
 } from "../../store/action_creators/actionCreatos";
 import Popup from "../Popup";
+import i18n from "../../i18n";
 
 interface ModalAddDisciplineProps {
   isOpen: boolean;
@@ -82,20 +83,20 @@ const ModalAddDiscipline: FC<ModalAddDisciplineProps> = ({
       {isOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-9/12">
-            <h2 className="text-xl mb-4">Додати дисципліну</h2>
+            <h2 className="text-xl mb-4">{i18n.t('disciplinesManage.addDiscipline')}</h2>
             <div className="flex flex-wrap justify-center items-center space-x-7">
               <input
                 type="text"
                 value={nextId}
                 readOnly
-                placeholder="Назва дисципліни"
+                placeholder="ID"
                 className="bg-bg-blue-design w-12 p-2 border border-gray-300 rounded text-center shadow-dark-lg"
               />
               <input
                 type="text"
                 value={disciplineName}
                 onChange={(e) => setDisciplineName(e.target.value)}
-                placeholder="Назва дисципліни"
+                placeholder={i18n.t('disciplinesManage.nameDiscipline')}
                 className="bg-bg-blue-design w-1/4 p-2 border border-gray-300 rounded text-center shadow-dark-lg"
               />
               <select
@@ -105,7 +106,7 @@ const ModalAddDiscipline: FC<ModalAddDisciplineProps> = ({
                 className="bg-bg-blue-design w-1/4 p-2 border border-gray-300 text-center rounded-3xl shadow-dark-lg"
               >
                 <option value="" disabled>
-                  Выберите группу
+                {i18n.t('userManage.sortByGroup')}
                 </option>
                 {groups.map((group) => (
                   <option
@@ -124,19 +125,19 @@ const ModalAddDiscipline: FC<ModalAddDisciplineProps> = ({
                 }
                 className="bg-bg-blue-design text-black py-2 px-20 rounded-2xl mr-2 shadow-dark-lg"
               >
-                Зберегти
+                {i18n.t('userManage.buttonSave')}
               </button>
 
               <button
                 onClick={() => onCloseModal(false)}
                 className="bg-bg-blue-design text-black py-2 px-20 rounded-2xl shadow-dark-lg"
               >
-                Відмінити
+                {i18n.t('userManage.buttonCancel')}
               </button>
             </div>
             <div className="flex justify-end mt-4 mr-7">
               <div className="bg-bg-blue-design p-4 rounded-lg shadow-dark-lg w-1/5 ">
-                <h3 className="text-lg mb-2">Вибрані групи:</h3>
+                <h3 className="text-lg mb-2">{i18n.t('disciplinesManage.selectedGroup')}</h3>
                 <ul className="mb-4">
                   {selectedGroups.map((groupId) => (
                     <li
@@ -150,7 +151,7 @@ const ModalAddDiscipline: FC<ModalAddDisciplineProps> = ({
                         onClick={() => handleRemoveGroup(groupId)}
                         className="text-red-500 hover:text-red-700"
                       >
-                        Видалити
+                        {i18n.t('material.buttonDeleteMaterial')}
                       </button>
                     </li>
                   ))}
@@ -159,7 +160,7 @@ const ModalAddDiscipline: FC<ModalAddDisciplineProps> = ({
             </div>
             {isPopupOpen && (
               <Popup
-                message="Дисципліна успішно створена"
+                message={i18n.t('disciplinesManage.succesAdd')}
                 closeModal={() => {
                   onCloseModal(false);
                 }}

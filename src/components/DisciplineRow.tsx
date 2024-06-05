@@ -1,6 +1,7 @@
 import { ChangeEvent, FC, useState, useEffect } from "react";
 import { IDiscipline } from "../models/IDiscipline";
 import { IGroupsByiD } from "../models/IGroupById";
+import i18n from "../i18n";
 
 interface DisciplineRowProps {
   index: number;
@@ -77,7 +78,7 @@ const DisciplineRow: FC<DisciplineRowProps> = ({
           className="bg-bg-blue-design shadow-dark-lg px-20 text-black py-3 rounded transition-colors duration-300"
           onClick={() => toggleDisciplineGroups(discipline._id)}
         >
-          Група ▼
+         {i18n.t('userManage.group')}
         </button>
         <div
           className={`overflow-hidden transition-all duration-700 ${
@@ -110,7 +111,7 @@ const DisciplineRow: FC<DisciplineRowProps> = ({
                   openModalAddGroup();
                 }}
               >
-                Додати групу
+         {i18n.t('userManage.addGroup')}
               </button>
             </li>
           </ul>
@@ -121,7 +122,7 @@ const DisciplineRow: FC<DisciplineRowProps> = ({
           className={` py-3 px-3 rounded-2xl shadow-dark-lg ${hasChanges ? 'bg-bg-blue-design text-black' : 'bg-gray-500 text-gray-300 cursor-not-allowed'}`}
           onClick={handleSave} 
           disabled={!hasChanges}>
-          Зберегти зміни
+          {i18n.t('material.buttonSaveChanges')}
         </button>
       </div>
       <div className="align-top">
@@ -129,7 +130,7 @@ const DisciplineRow: FC<DisciplineRowProps> = ({
           className="bg-bg-blue-design text-dark py-3 px-3 rounded-2xl mr-2 shadow-dark-lg"
           onClick={() => handleDeleteDiscipline(discipline._id)}
         >
-          Видалити дисципліну
+          {i18n.t('disciplinesManage.buttonDeleteDiscipline')}
         </button>
       </div>
     </div>

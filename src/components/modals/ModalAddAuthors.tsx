@@ -4,6 +4,7 @@ import { useAppDispatch } from "../../hooks/typeHooks";
 import { createAuthors } from "../../store/action_creators/actionCreatos";
 import { IDiscipline } from "../../models/IDiscipline";
 import Popup from "../Popup";
+import i18n from "../../i18n";
 
 interface FormData {
   fullName: string;
@@ -24,7 +25,7 @@ const ModalAddAuthors: FC<AddUserProps> = ({
   nextId,
   disciplines,
 }) => {
-  const { register, handleSubmit, reset } = useForm<FormData>();
+  const { register, handleSubmit } = useForm<FormData>();
   const dispatch = useAppDispatch();
   const [selectedDisciplines, setSelectedDisciplines] = useState<string[]>([]);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
@@ -65,7 +66,7 @@ const ModalAddAuthors: FC<AddUserProps> = ({
     isAddAuthorsModalOpen && (
       <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
         <div className="bg-white shadow-dark-lg p-8">
-          <h2 className="text-xl mb-4">Додати автора</h2>
+          <h2 className="text-xl mb-4">{i18n.t('userManage.addAuthor')}</h2>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 flex">
             <div className="flex flex-col space-y-4 flex-grow">
               <div className="flex space-x-4 items-center">
@@ -82,14 +83,14 @@ const ModalAddAuthors: FC<AddUserProps> = ({
                   id="fullName"
                   {...register("fullName", { required: true })}
                   className="border border-gray-300 px-3 py-2 shadow-dark-lg flex-grow bg-bg-blue-design"
-                  placeholder="Ввод ПІБ"
+                  placeholder={i18n.t('userManage.fullName')}
                 />
                 <input
                   type="text"
                   id="position"
                   {...register("position", { required: true })}
                   className="border border-gray-300 px-3 py-2 shadow-dark-lg flex-grow bg-bg-blue-design"
-                  placeholder="Посада/Звання"
+                  placeholder={i18n.t('userManage.position')}
                 />
                 <select
                   id="disciplines"
@@ -98,7 +99,7 @@ const ModalAddAuthors: FC<AddUserProps> = ({
                   onChange={handleDisciplineChange}
                 >
                   <option value="" disabled>
-                    Дисципліни ▼
+                  {i18n.t('userManage.discipline')}
                   </option>
                   {disciplines.map((discipline) => (
                     <option
@@ -116,18 +117,18 @@ const ModalAddAuthors: FC<AddUserProps> = ({
                   className="bg-bg-blue-design text-dark py-2 px-4 shadow-dark-lg transition duration-300 rounded-2xl"
                   disabled={!selectedDisciplines.length}
                 >
-                  Зберегти
+{i18n.t('userManage.buttonSave')}
                 </button>
                 <button
                   type="button"
                   className="bg-bg-blue-design text-black py-2 px-4 shadow-dark-lg transition duration-300 rounded-2xl"
                   onClick={closeModalAdd}
                 >
-                  Відмінити
+{i18n.t('userManage.buttonCancel')}
                 </button>
               </div>
               <div className="bg-bg-blue-design rounded-2xl border w-max border-gray-300 shadow-dark-lg p-4 overflow-hidden ml-auto">
-                <h3 className="text-lg">Доданы дисципліни:</h3>
+                <h3 className="text-lg">{i18n.t('userManage.addedDisciplines')}</h3>
                 <ul className="mt-2">
                   {selectedDisciplines.map((disciplineId) => {
                     const discipline = disciplines.find(
@@ -144,7 +145,7 @@ const ModalAddAuthors: FC<AddUserProps> = ({
                           className="text-red-500"
                           onClick={() => toggleDiscipline(disciplineId)}
                         >
-                          Видалити
+                         {i18n.t('material.buttonDeleteMaterial')}
                         </button>
                       </li>
                     );

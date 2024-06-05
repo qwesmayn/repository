@@ -5,6 +5,7 @@ import ModalAddGroup from "../components/modals/ModalAddGroup";
 import GroupTable from "../components/GroupTable";
 import Dropdown from "../components/DropDown";
 import Popup from "../components/Popup";
+import i18n from "../i18n";
 
 const ManageGroup: FC = () => {
   const dispatch = useAppDispatch();
@@ -49,13 +50,13 @@ const ManageGroup: FC = () => {
               label: group.name,
             })),
           ]}
-          placeholder="Выберите группу"
+          placeholder={i18n.t('userManage.sortByGroup')}
         />
         <button
           className="bg-bg-blue-design text-black broder border-gray-300 px-4 py-2 rounded-3xl shadow-dark-lg transition-colors duration-300"
           onClick={openAddGroupModal}
         >
-          Добавить группу
+          {i18n.t('userManage.addGroup')}
         </button>
       </div>
       <GroupTable groups={groups} selectedGroup={selectedGroup} />
@@ -67,7 +68,7 @@ const ManageGroup: FC = () => {
       />
       {isPopupOpen && (
         <Popup
-          message="Успішно додана"
+          message={i18n.t('groupManage.succesAdd')}
           closeModal={() => {
             dispatch(getGroups());
             closeAddGroupModal();

@@ -1,12 +1,16 @@
 import { FC, useState, ChangeEvent, useEffect } from "react";
 import { IAuthors } from "../models/IAuthors";
+import i18n from "../i18n";
 
 interface AuthorRowProps {
   author: IAuthors;
   index: number;
   selectedAuthorId: string | null;
   toggleSelectedAuthor: (id: string) => void;
-  changeDiscAuthors: (authorId: string, disciplineIdToDelete: string | null) => void;
+  changeDiscAuthors: (
+    authorId: string,
+    disciplineIdToDelete: string | null
+  ) => void;
   openAddDisciplineModal: (id: string) => void;
   openModal: (id: string) => void;
   saveAuthorChanges: (id: string, changes: { [key: string]: any }) => void;
@@ -28,10 +32,9 @@ const AuthorRow: FC<AuthorRowProps> = ({
   const [hasChanges, setHasChanges] = useState(false);
 
   useEffect(() => {
-    const isDifferent = (
+    const isDifferent =
       editedAuthor.fullName !== author.fullName ||
-      editedAuthor.position !== author.position
-    );
+      editedAuthor.position !== author.position;
     setHasChanges(isDifferent);
   }, [editedAuthor, author]);
 
@@ -63,9 +66,17 @@ const AuthorRow: FC<AuthorRowProps> = ({
   };
 
   return (
-    <tr key={author._id} className="flex transition-all justify-between duration-300 border-2 border-black mb-5 p-3">
-      <td className="text-center align-top shadow-dark-lg h-max py-3 px-5 bg-bg-blue-design">{index + 1}</td>
-      <td className="text-center align-top shadow-dark-lg w-80 h-max py-3 bg-bg-blue-design" onDoubleClick={handleDoubleClickFullName}>
+    <tr
+      key={author._id}
+      className="flex transition-all justify-between duration-300 border-2 border-black mb-5 p-3"
+    >
+      <td className="text-center align-top shadow-dark-lg h-max py-3 px-5 bg-bg-blue-design">
+        {index + 1}
+      </td>
+      <td
+        className="text-center align-top shadow-dark-lg w-80 h-max py-3 bg-bg-blue-design"
+        onDoubleClick={handleDoubleClickFullName}
+      >
         {isEditingFullName ? (
           <input
             type="text"
@@ -79,7 +90,10 @@ const AuthorRow: FC<AuthorRowProps> = ({
           editedAuthor.fullName
         )}
       </td>
-      <td className="text-center align-top shadow-dark-lg w-80 h-max py-3 bg-bg-blue-design" onDoubleClick={handleDoubleClickPosition}>
+      <td
+        className="text-center align-top shadow-dark-lg w-80 h-max py-3 bg-bg-blue-design"
+        onDoubleClick={handleDoubleClickPosition}
+      >
         {isEditingPosition ? (
           <input
             type="text"
@@ -99,7 +113,7 @@ const AuthorRow: FC<AuthorRowProps> = ({
             className="bg-bg-blue-design shadow-dark-lg text-black px-5 py-3 rounded transition-colors duration-300  w-80"
             onClick={() => toggleSelectedAuthor(author._id)}
           >
-            Дисципліни ▼
+            {i18n.t("userManage.discipline")}
           </button>
           <div
             className={`overflow-hidden transition-all duration-700 ${
@@ -115,7 +129,9 @@ const AuthorRow: FC<AuthorRowProps> = ({
                   <span className="mr-6">{discipline.name}</span>
                   <button
                     className="text-red-500 transition-colors duration-300"
-                    onClick={() => changeDiscAuthors(author._id, discipline._id)}
+                    onClick={() =>
+                      changeDiscAuthors(author._id, discipline._id)
+                    }
                   >
                     &times;
                   </button>
@@ -126,7 +142,7 @@ const AuthorRow: FC<AuthorRowProps> = ({
                   className="text-blue-500 transition-colors duration-300"
                   onClick={() => openAddDisciplineModal(author._id)}
                 >
-                  Додати дисципліну
+                  {i18n.t("userManage.addDiscipline")}
                 </button>
               </li>
             </ul>
@@ -135,11 +151,15 @@ const AuthorRow: FC<AuthorRowProps> = ({
       </td>
       <td className="text-center align-top">
         <button
-          className={` shadow-dark-lg text-black py-3 px-3 rounded-2xl transition-colors duration-300 ${hasChanges ? 'bg-bg-blue-design ' : 'cursor-not-allowed text-gray-300 bg-gray-500'}`}
+          className={` shadow-dark-lg text-black py-3 px-3 rounded-2xl transition-colors duration-300 ${
+            hasChanges
+              ? "bg-bg-blue-design "
+              : "cursor-not-allowed text-gray-300 bg-gray-500"
+          }`}
           onClick={handleSave}
           disabled={!hasChanges}
         >
-          Зберегти зміни
+          {i18n.t("material.buttonSaveChanges")}
         </button>
       </td>
       <td className="text-center align-top">
@@ -147,7 +167,7 @@ const AuthorRow: FC<AuthorRowProps> = ({
           className="bg-bg-blue-design shadow-dark-lg text-black py-3 px-3 rounded-2xl transition-colors duration-300"
           onClick={() => openModal(author._id)}
         >
-          Видалити користувача
+          {i18n.t("userManage.buttonDeleteAuthor")}
         </button>
       </td>
     </tr>

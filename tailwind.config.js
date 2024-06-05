@@ -6,6 +6,9 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily : {
+        inter : "inter"
+      },
       backgroundColor :{
         "bg-blue-design" : 'rgba(241, 246, 250, 1)'
       },

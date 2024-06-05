@@ -6,6 +6,7 @@ import ModalDelete from "./modals/ModalDelete";
 import ErrorAlert from "./ErrorAlert";
 import { clearErrors } from "../store/reducers/groupSlice";
 import GroupRow from "./GroupRow";
+import i18n from "../i18n";
 
 interface GroupTableProps {
   groups: IGroups[];
@@ -107,8 +108,8 @@ const GroupTable: FC<GroupTableProps> = ({ groups, selectedGroup }) => {
       </div>
 
       <ModalDelete
-        nameDel="группу"
-        description="Усі наявні зв'язки буде видалено"
+        nameDel={i18n.t('groupManage.nameDel')}
+        description={i18n.t('groupManage.groupDescr')}
         isModalOpen={isDeleteModalOpen}
         closeModal={closeDeleteModal}
         confirmDelete={confirmDelete}

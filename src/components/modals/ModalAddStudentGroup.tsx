@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { IGroups } from "../../models/IGroups";
-import Popup from "../Popup";
+import i18n from "../../i18n";
 
 interface ModalAddGroupProps {
   isModalOpen: boolean;
@@ -33,7 +33,7 @@ const ModalAddGroup: FC<ModalAddGroupProps> = ({ isModalOpen, closeModal, saveGr
             <XMarkIcon className="w-6" />
           </button>
         </div>
-        <h2 className="text-xl mb-4">Выбрать группу</h2>
+        <h2 className="text-xl mb-4">{i18n.t('userManage.sortByGroup')}</h2>
         <div className="flex space-x-4">
           <div className="flex-grow relative">
             <div className="flex items-center mb-3">
@@ -41,7 +41,7 @@ const ModalAddGroup: FC<ModalAddGroupProps> = ({ isModalOpen, closeModal, saveGr
                 className="bg-bg-blue-design border mr-5 border-gray-300 shadow-dark-lg px-3 py-2 w-64 transition duration-500 ease-in-out"
                 onClick={toggleGroupList}
               >
-                Группа ▼
+{i18n.t('userManage.group')}
               </button>
               <div className="flex">
               <button
@@ -51,10 +51,10 @@ const ModalAddGroup: FC<ModalAddGroupProps> = ({ isModalOpen, closeModal, saveGr
                 onClick={handleSave}
                 disabled={!selectedGroup}
               >
-                Зберегти
+{i18n.t('userManage.buttonSave')}
               </button>
               <button className="bg-bg-blue-design text-black px-4 py-2 shadow-dark-lg" onClick={closeModal}>
-                Відмінити
+              {i18n.t('userManage.buttonCancel')}
               </button>
               </div>
             </div>
@@ -80,8 +80,8 @@ const ModalAddGroup: FC<ModalAddGroupProps> = ({ isModalOpen, closeModal, saveGr
                 ))}
               </ul>
               <div className="flex-grow border border-gray-300 shadow-dark-lg p-4">
-                <h3 className="text-lg">Выбранная группа:</h3>
-                <p className="mt-2">{selectedGroup ? groups.find((group) => group._id === selectedGroup)?.name : "Не выбрана"}</p>
+                <h3 className="text-lg">{i18n.t('disciplinesManage.selectedGroup')}</h3>
+                <p className="mt-2">{selectedGroup ? groups.find((group) => group._id === selectedGroup)?.name : i18n.t('groupManage.choose')}</p>
               </div>
             </div>
           </div>

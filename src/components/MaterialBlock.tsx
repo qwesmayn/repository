@@ -4,13 +4,14 @@ import { IAuthors } from "../models/IAuthors";
 import { IDiscipline } from "../models/IDiscipline";
 import { ITypesMaterials } from "../models/ITypesMaterials";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import i18n from "../i18n";
+import { NavLink } from "react-router-dom";
 
 interface MaterialBlockProps {
   material: IMaterials;
   authors: IAuthors[];
   disciplines: IDiscipline[];
   materialsTypes: ITypesMaterials[];
-  onDownload: (id: string) => void;
   onSave: (id: string, change: object) => void;
   openModal: (id: string) => void;
 }
@@ -20,7 +21,6 @@ const MaterialBlock: FC<MaterialBlockProps> = ({
   authors,
   disciplines,
   materialsTypes,
-  onDownload,
   onSave,
   openModal,
 }) => {
@@ -85,7 +85,10 @@ const MaterialBlock: FC<MaterialBlockProps> = ({
   };
   
 
-  const { _id, previewImageUrl, createdAt } = material;
+  const { _id, previewImageUrl, createdAt, contentUrl } = material;
+
+  const imageUrl = "http://localhost:3001/uploads/" + previewImageUrl;
+  const fileUrl = "http://localhost:3001/uploads/" + contentUrl;
 
   return (
     <div
@@ -94,16 +97,15 @@ const MaterialBlock: FC<MaterialBlockProps> = ({
     >
       <img
         src={
-          previewImageUrl || "https://via.placeholder.com/250x100?text=No+Image"
+          previewImageUrl ? imageUrl : "https://via.placeholder.com/250x100?text=No+Image"
         }
         alt={editedMaterial.title}
-        className="object-cover rounded-lg mb-3"
-        style={{ width: "100%", height: "55%" }}
+        className="object-cover rounded-lg mb-3 w-full h-[100px]"
       />
       <div className="h-full flex flex-col text-center">
         <div>
           <p className="text-base mb-4 bg-white" onDoubleClick={handleDoubleClickTitle}>
-            <strong>Назва:</strong>{" "}
+            <strong>{i18n.t('material.materialName')}</strong>{" "}
             {isEditingTitle ? (
               <input
                 type="text"
@@ -126,7 +128,7 @@ const MaterialBlock: FC<MaterialBlockProps> = ({
                 textOverflow: "ellipsis",
               }}
             >
-              <strong>Опис:</strong>{" "}
+              <strong>{i18n.t('material.materialDescription')}</strong>{" "}
               {isEditingDescription ? (
                 <input
                   type="text"
@@ -154,7 +156,7 @@ const MaterialBlock: FC<MaterialBlockProps> = ({
           </button>
 
           <p className="text-xs mb-4 bg-white rounded-2xl">
-            <strong>Дисципліна:</strong>{" "}
+            <strong>{i18n.t('material.materialDiscipline')}</strong>{" "}
             <select
               name="discipline"
               value={editedMaterial.discipline}
@@ -170,8 +172,8 @@ const MaterialBlock: FC<MaterialBlockProps> = ({
 
           <div className="flex items-center justify-between">
             <div className="flex items-center flex-col space-y-4">
-              <p className="bg-white text-xs mb-4 rounded-2xl">
-                <strong>Тип матеріалу:</strong>{" "}
+              <p className="bg-white text-xs mb-4 rounded-2xl w-min">
+                <strong>{i18n.t('material.materialTypematerial')}</strong>{" "}
                 <select
                   name="materialType"
                   value={editedMaterial.materialType}
@@ -185,14 +187,14 @@ const MaterialBlock: FC<MaterialBlockProps> = ({
                   ))}
                 </select>
               </p>
-              <p className="text-xs mb-2 flex flex-col bg-white rounded-2xl">
-                <strong>К-сть переглядів:</strong>{" "}
+              <p className="text-xs flex flex-col bg-white rounded-2xl">
+                <strong>{i18n.t('material.materialCountViewers')}</strong>{" "}
                 {editedMaterial.downloadCount}
               </p>
             </div>
             <div className="flex items-center flex-col space-y-4 ">
-              <p className="text-xs mb-4 bg-white rounded-2xl">
-                <strong>Автор:</strong>
+              <p className="text-xs mb-4 bg-white rounded-2xl w-min">
+                <strong>{i18n.t('material.materialAuthor')}</strong>
                 <select
                   name="author"
                   value={editedMaterial.author}
@@ -207,19 +209,20 @@ const MaterialBlock: FC<MaterialBlockProps> = ({
                 </select>
               </p>
               <p className="text-xs flex flex-col bg-white rounded-2xl">
-                <strong>Дата завантаження:</strong>{" "}
+                <strong>{i18n.t('material.materialDateUpload')}</strong>{" "}
                 {new Date(createdAt).toLocaleDateString()}
               </p>
             </div>
           </div>
         </div>
         <div className="flex flex-col space-y-3 mt-2">
-          <button
-            onClick={() => onDownload(_id)}
-            className="bg-white shadow-dark-lg text-black px-4 py-2 rounded-lg text-sm"
+          <NavLink
+            to={fileUrl}
+            download
+            className="bg-white shadow-dark-lg text-black px-4 py-2 rounded-lg text-sm text-center"
           >
-            Скачати матеріал
-          </button>
+            {i18n.t('material.buttonDownloadMaterial')}
+          </NavLink>
           <button
             onClick={handleSave}
             className={`shadow-dark-lg px-4 py-2 rounded-lg text-sm ${
@@ -229,13 +232,13 @@ const MaterialBlock: FC<MaterialBlockProps> = ({
             }`}
             disabled={!hasChanges}
           >
-            Зберегти зміни
+            {i18n.t('material.buttonSaveChanges')}
           </button>
           <button
             onClick={() => openModal(_id)}
             className="bg-white shadow-dark-lg text-black px-4 py-2 rounded-lg text-sm"
           >
-            Видалити
+            {i18n.t('material.buttonDeleteMaterial')}
           </button>
         </div>
       </div>

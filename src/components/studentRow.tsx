@@ -1,5 +1,6 @@
 import { FC, useState, ChangeEvent, useEffect } from "react";
 import { IStudents } from "../models/IStudents";
+import i18n from "../i18n";
 
 interface StudentRowProps {
   student: IStudents;
@@ -96,7 +97,7 @@ const StudentRow: FC<StudentRowProps> = ({
               setSelectedStudentId(selectedStudentId === student._id ? null : student._id)
             }
           >
-            Група ▼
+            {i18n.t('userManage.group')}
           </button>
           <div
             className={`overflow-hidden transition-all duration-700 ${
@@ -120,7 +121,7 @@ const StudentRow: FC<StudentRowProps> = ({
                   className="text-blue-500 transition-colors duration-300"
                   onClick={() => openAddGroupModal(student._id)}
                 >
-                  Додати групу
+            {i18n.t('userManage.addGroup')}
                 </button>
               </li>
             </ul>
@@ -165,7 +166,7 @@ const StudentRow: FC<StudentRowProps> = ({
           onClick={handleSave}
           disabled={!hasChanges}
         >
-          Зберегти зміни
+          {i18n.t('material.buttonSaveChanges')}
         </button>
       </div>
       <div className="text-center align-top">
@@ -173,7 +174,7 @@ const StudentRow: FC<StudentRowProps> = ({
           className="bg-bg-blue-design text-black shadow-dark-lg py-3 px-3 rounded-2xl transition-colors duration-300"
           onClick={() => openModal(student._id)}
         >
-          Видалити користувача
+          {i18n.t('userManage.buttonDeleteStudent')}
         </button>
       </div>
     </div>

@@ -1,17 +1,21 @@
 import { FC } from 'react';
-import { ADMIN_ROUTE, LOGIN_ROUTE } from '../utils/consts';
-import { Navigate, Route, Routes } from 'react-router-dom';
-import { authRoutes, publicRoutes } from '../routes';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAppSelector } from '../hooks/typeHooks';
 import ProtectedRoute from './ProtectedRoute';
+import { ADMIN_LOGIN_ROUTE, ADMIN_ROUTE, STUDENT_MAIN_ROUTE } from '../utils/consts';
+import { authRoutesAdmin, authRoutesStudent, publicRoutes } from '../routes';
 
 const AppRouter: FC = () => {
-  const { isAuth } = useAppSelector((state) => state.userReducer);
-
+  const { isAuth, user } = useAppSelector((state) => state.userReducer);
+  
   return (
     <Routes>
-      {isAuth ? (
-        authRoutes.map(({ path, Component }) => (
+      {isAuth && user?.role === 'admin' ? (
+        authRoutesAdmin.map(({ path, Component }) => (
+          <Route key={path} path={path} element={<Component />} />
+        ))
+      ) : isAuth && user?.role === 'student' ? (
+        authRoutesStudent.map(({ path, Component }) => (
           <Route key={path} path={path} element={<Component />} />
         ))
       ) : (
@@ -19,7 +23,7 @@ const AppRouter: FC = () => {
           <Route key={path} path={path} element={<ProtectedRoute element={<Component />} />} />
         ))
       )}
-      <Route path="*" element={<Navigate to={isAuth ? ADMIN_ROUTE : LOGIN_ROUTE} replace />} />
+      <Route path="*" element={<Navigate to={isAuth ? (user?.role === 'admin' ? ADMIN_ROUTE : STUDENT_MAIN_ROUTE) : ADMIN_LOGIN_ROUTE} replace />} />
     </Routes>
   );
 };

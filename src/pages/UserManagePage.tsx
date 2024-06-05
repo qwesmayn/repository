@@ -12,6 +12,7 @@ import AddUser from "../components/modals/ModalAddUser";
 import Loading from "../components/Loadind";
 import ModalAddAuthors from "../components/modals/ModalAddAuthors";
 import Dropdown from "../components/DropDown";
+import i18n from "../i18n";
 
 const UserManagePage: FC = () => {
   const [view, setView] = useState<"users" | "authors">("users");
@@ -48,12 +49,12 @@ const UserManagePage: FC = () => {
 
   const handleCloseAddUserModal = async () => {
     setIsAddUserModalOpen(false);
-    dispatch(getStudents())
+    dispatch(getStudents());
   };
 
   const handleCloseAuthorsAddModal = () => {
     setIsAddAuthorsModalOpen(false);
-    dispatch(getAuthors())
+    dispatch(getAuthors());
   };
 
   const filteredStudents = useMemo(() => {
@@ -84,19 +85,23 @@ const UserManagePage: FC = () => {
           <div className="mr-40">
             <button
               className={`px-4 py-2 mr-2 shadow-dark-lg ${
-                view === "users" ? " text-black border border-black bg-bg-blue-design" : "bg-bg-blue-design"
+                view === "users"
+                  ? " text-black border border-black bg-bg-blue-design"
+                  : "bg-bg-blue-design"
               } transition-colors duration-300`}
               onClick={() => setView("users")}
             >
-              Користувачі
+              {i18n.t("userManage.student")}
             </button>
             <button
               className={`px-4 py-2 shadow-dark-lg ${
-                view === "authors" ? " text-black border border-black bg-bg-blue-design" : "bg-bg-blue-design"
+                view === "authors"
+                  ? " text-black border border-black bg-bg-blue-design"
+                  : "bg-bg-blue-design"
               } transition-colors duration-300`}
               onClick={() => setView("authors")}
             >
-              Автори
+              {i18n.t("userManage.author")}
             </button>
           </div>
           {view === "users" && (
@@ -104,14 +109,14 @@ const UserManagePage: FC = () => {
               value={selectedGroup}
               onChange={handleGroupChange}
               options={[
-                ...Array.from(
-                  new Set(groups.map((group) => group.name))
-                ).map((group) => ({
-                  value: group,
-                  label: group,
-                })),
+                ...Array.from(new Set(groups.map((group) => group.name))).map(
+                  (group) => ({
+                    value: group,
+                    label: group,
+                  })
+                ),
               ]}
-              placeholder="Виберіть групу"
+              placeholder={i18n.t("userManage.sortByGroup")}
             />
           )}
           {view === "authors" && (
@@ -130,7 +135,7 @@ const UserManagePage: FC = () => {
                   label: discipline,
                 })),
               ]}
-              placeholder="Виберіть дисципліну"
+              placeholder={i18n.t("material.sortByDiscipline")}
             />
           )}
         </div>
@@ -140,7 +145,7 @@ const UserManagePage: FC = () => {
               className="bg-bg-blue-design text-black px-6 py-2 shadow-dark-lg rounded-3xl transition-colors duration-300"
               onClick={() => setIsAddUserModalOpen(true)}
             >
-              Додати користувача
+              {i18n.t("userManage.addStudent")}
             </button>
           )}
           {view === "authors" && (
@@ -148,7 +153,7 @@ const UserManagePage: FC = () => {
               className="bg-bg-blue-design text-black px-6 py-2 shadow-dark-lg rounded-3xl transition-colors duration-300"
               onClick={() => setIsAddAuthorsModalOpen(true)}
             >
-              Додати автора
+              {i18n.t("userManage.addAuthor")}
             </button>
           )}
         </div>

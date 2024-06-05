@@ -2,8 +2,9 @@ import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import { IGroups } from "../../models/IGroups";
 import { useAppDispatch } from "../../hooks/typeHooks";
-import { createStudent, getStudents } from "../../store/action_creators/actionCreatos";
+import { createStudent} from "../../store/action_creators/actionCreatos";
 import Popup from "../Popup";
+import i18n from "../../i18n";
 
 interface FormData {
   fullName: string;
@@ -38,7 +39,7 @@ const AddUser: FC<AddUserProps> = ({ isAddUserModalOpen, closeAddModal, nextId, 
     isAddUserModalOpen && (
       <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
         <div className="bg-white shadow-dark-lg p-8 w-max">
-          <h2 className="text-xl mb-4">Додаті корістувача</h2>
+          <h2 className="text-xl mb-4">{i18n.t('userManage.titleAddStudent')}</h2>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="flex space-x-4">
               <input
@@ -54,7 +55,7 @@ const AddUser: FC<AddUserProps> = ({ isAddUserModalOpen, closeAddModal, nextId, 
                 id="fullName"
                 {...register("fullName", { required: true })}
                 className="bg-bg-blue-design border border-gray-300 px-3 py-2 shadow-dark-lg flex-grow"
-                placeholder="ФИО"
+                placeholder={i18n.t('userManage.fullName')}
               />
               <select
                 id="group"
@@ -72,23 +73,23 @@ const AddUser: FC<AddUserProps> = ({ isAddUserModalOpen, closeAddModal, nextId, 
                 id="login"
                 {...register("login", { required: true })}
                 className="bg-bg-blue-design border border-gray-300 px-3 py-2 shadow-dark-lg flex-grow"
-                placeholder="Логин"
+                placeholder={i18n.t('userManage.login')}
               />
               <input
                 id="password"
                 {...register("password", { required: true })}
                 className="bg-bg-blue-design border border-gray-300 px-3 py-2 shadow-dark-lg flex-grow"
-                placeholder="Пароль"
+                placeholder={i18n.t('userManage.password')}
               />
               <button
                 type="submit"
                 className="bg-bg-blue-design text-black py-2 px-4 rounded-2xl shadow-dark-lg  transition duration-300"
               >
-                Зберегти
+              {i18n.t('userManage.buttonSave')}
               </button>
 
                 <button className="bg-bg-blue-design text-black px-4 py-2 rounded-2xl shadow-dark-lg" onClick={closeAddModal}>
-              Відмінити
+                {i18n.t('userManage.buttonCancel')}
             </button>
             </div>
           </form>

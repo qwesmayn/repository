@@ -1,5 +1,6 @@
 import { FC, useState, ChangeEvent, useEffect } from "react";
 import { IGroups } from "../models/IGroups";
+import i18n from "../i18n";
 
 interface GroupRowProps {
   group: IGroups;
@@ -75,7 +76,7 @@ const GroupRow: FC<GroupRowProps> = ({
             }}
             disabled={!hasChanges}
           >
-            Зберегти зміни
+            {i18n.t('material.buttonSaveChanges')}
           </button>
         </div>
         <div className="text-center px-2 py-1">
@@ -83,7 +84,7 @@ const GroupRow: FC<GroupRowProps> = ({
             className="bg-bg-blue-design text-black shadow-dark-lg px-20 py-3 rounded-2xl transition-colors duration-300"
             onClick={() => openDeleteModal(group._id)}
           >
-            Видалити групу
+            {i18n.t('groupManage.deleteGroup')}
           </button>
         </div>
       </div>

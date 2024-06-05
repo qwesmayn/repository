@@ -17,6 +17,7 @@ import ModalAddGroup from "../components/modals/ModalAddLinkGroups";
 import Dropdown from "../components/DropDown";
 import DisciplineRow from "../components/DisciplineRow";
 import { IAuthors } from "../models/IAuthors";
+import i18n from "../i18n";
 
 const ManageDisciplines: FC = () => {
   const dispatch = useAppDispatch();
@@ -149,13 +150,13 @@ const ManageDisciplines: FC = () => {
               label: discipline.name,
             })),
           ]}
-          placeholder="Виберіть дисципліну"
+          placeholder={i18n.t('material.sortByDiscipline')}
         />
         <button
           className="bg-bg-blue-design text-black border border-gray-300 px-4 py-2 rounded-3xl shadow-dark-lg transition-colors duration-300"
           onClick={() => setIsModalAddOpen(true)}
         >
-          Додати дисципліну
+          {i18n.t('userManage.addDiscipline')}
         </button>
       </div>
 
@@ -184,8 +185,8 @@ const ManageDisciplines: FC = () => {
   </div>
 </div>
       <ModalDelete
-        nameDel="дисципліну"
-        description="Усі наявні зв'язки буде видалено"
+        nameDel={i18n.t('disciplinesManage.deleteDiscipline')}
+        description={i18n.t('disciplinesManage.deleteDisciplineDescr')}
         isModalOpen={isModalOpen}
         closeModal={() => setIsModalOpen(false)}
         confirmDelete={confirmDeleteDiscipline}

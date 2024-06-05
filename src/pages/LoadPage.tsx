@@ -9,6 +9,7 @@ import {
 } from "../store/action_creators/actionCreatos";
 import { useForm } from "react-hook-form";
 import Popup from "../components/Popup";
+import i18n from "../i18n";
 
 const LoadPage: FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -118,23 +119,23 @@ const LoadPage: FC = () => {
             <input
               id="title"
               type="text"
-              placeholder="Введіть назву:"
+              placeholder={i18n.t('materialAdd.nameMaterial')}
               className="bg-bg-blue-design w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500"
               {...register("title", { required: true })}
             />
             {errors.title && (
-              <span className="text-red-500">Назва обов'язкова</span>
+              <span className="text-red-500">{i18n.t('materialAdd.requieridName')}</span>
             )}
           </div>
           <div className="mb-9 shadow-dark-lg">
             <textarea
               id="description"
-              placeholder="Введіть опис:"
+              placeholder={i18n.t('materialAdd.desctipMaterial')}
               className="bg-bg-blue-design w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500"
               {...register("description", { required: true })}
             ></textarea>
             {errors.description && (
-              <span className="text-red-500">Опис обов'язковий</span>
+              <span className="text-red-500">{i18n.t('materialAdd.requieridDesctip')}</span>
             )}
           </div>
           <div className="mb-9 shadow-dark-lg">
@@ -181,20 +182,20 @@ const LoadPage: FC = () => {
               {!isLinkChecked ? (
                 <div className="mb-9 ">
                   <p className="text-sm font-medium text-center bg-bg-blue-design">
-                    Перетягніть файл
+                  {i18n.t('materialAdd.touchFile')}
                   </p>
                   <div className="w-full flex justify-center mb-4 bg-bg-blue-design">
                     <ArrowUpTrayIcon className="w-16" />
                   </div>
                   <p className="text-sm text-yellow-600 mb-2 text-center">
-                    *Розмір файлу не повинен перевищувати 10 МБ.
+                  {i18n.t('materialAdd.szieFile')}
                   </p>
                   <button
                     type="button"
                     className="w-full bg-bg-blue-design text-black rounded-2xl px-4 py-2 shadow-dark-lg transition-colors duration-300"
                     onClick={handleFileUploadClick}
                   >
-                    Завантажити файл
+{i18n.t('materialAdd.addFile')}
                   </button>
                   <input
                     ref={fileInputRef}
@@ -211,7 +212,7 @@ const LoadPage: FC = () => {
                 <input
                   id="link"
                   type="text"
-                  placeholder="Вставте посилання:"
+                  placeholder={i18n.t('materialAdd.addLink')}
                   className={`bg-bg-blue-design w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500 ${
                     isLinkChecked ? "" : "opacity-50 cursor-not-allowed"
                   }`}
@@ -228,7 +229,7 @@ const LoadPage: FC = () => {
                 onChange={handleLinkCheckboxChange}
                 className="mr-2"
               />
-              <label htmlFor="linkCheckbox">Посилання?</label>
+              <label htmlFor="linkCheckbox">{i18n.t('materialAdd.link')}</label>
             </div>
           </div>
         </form>
@@ -239,7 +240,7 @@ const LoadPage: FC = () => {
         onDragOver={(e) => e.preventDefault()}
         onClick={() => coverInputRef.current?.click()}
       >
-        <p className="text-sm font-medium ">Перетягніть обкладинку</p>
+        <p className="text-sm font-medium ">{i18n.t('materialAdd.touchImage')}</p>
         <div className="w-full flex justify-center shadow-dark-lg my-4 bg-bg-blue-design">
           {coverPreview ? (
             <img
@@ -252,10 +253,10 @@ const LoadPage: FC = () => {
           )}
         </div>
         <p className="text-sm text-yellow-600 mb-2">
-          *Розмір файлу не повинен перевищувати 10 МБ.
+        {i18n.t('materialAdd.szieFile')}
         </p>
         <button className="px-6 py-2 bg-bg-blue-design text-black rounded-2xl shadow-dark-lg transition-colors duration-300">
-          Завантажити обкладинку
+        {i18n.t('materialAdd.addImage')}
         </button>
         <input
           ref={coverInputRef}
@@ -274,19 +275,19 @@ const LoadPage: FC = () => {
           className="px-6 py-2 bg-bg-blue-design w-full text-black rounded-2xl shadow-dark-lg  transition-colors duration-300"
           onClick={handleSubmit(onSubmit)}
         >
-          Додати
+        {i18n.t('materialAdd.addMaterial')}
         </button>
         <button
           type="button"
           className="px-6 py-2 bg-bg-blue-design w-full text-black rounded-2xl shadow-dark-lg transition-colors duration-300"
           onClick={() => setShowSuccessPopup(true)}
         >
-          Скасувати
+        {i18n.t('materialAdd.clearAll')}
         </button>
       </div>
       {showSuccessPopup && (
         <Popup
-          message="Матеріал успішно додано"
+          message={i18n.t('materialAdd.reset')}
           closeModal={() => {
             reset();
             setShowSuccessPopup(false);
@@ -295,7 +296,7 @@ const LoadPage: FC = () => {
       )}
       {showErrorPopup && (
         <Popup
-          message="Матеріал не може бути доданий без файлу або обкладинки"
+          message={i18n.t('materialAdd.reqParams')}
           closeModal={() => setShowErrorPopup(false)}
         />
       )}

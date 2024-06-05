@@ -11,6 +11,7 @@ import ModalAddGroup from "./modals/ModalAddStudentGroup";
 import { IGroups } from "../models/IGroups";
 import StudentRow from "./studentRow";
 import Popup from "./Popup";
+import i18n from "../i18n";
 
 interface UserTableProps {
   students: IStudents[];
@@ -95,7 +96,7 @@ const UsersTable: FC<UserTableProps> = ({ students, groups }) => {
       </div>
 
       <ModalDelete
-        nameDel="користувача"
+        nameDel={i18n.t('userManage.deleteWhatStudent')}
         isModalOpen={isDeleteModalOpen}
         closeModal={closeModal}
         confirmDelete={confirmDelete}
