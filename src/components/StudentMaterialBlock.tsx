@@ -55,7 +55,6 @@ const StudentMaterialBlock: FC<StudentMaterialBlockProps> = ({
     title,
     description,
     createdAt,
-    downloadCount,
     contentUrl,
   } = material;
 

@@ -11,16 +11,17 @@ const ProtectedRoute: FC<ProtectedRouteProps> = ({ element }) => {
   const { isAuth, user } = useAppSelector((state) => state.userReducer);
 
   if (isAuth) {
-    // Проверяем роль пользователя
+    // Перевіряємо роль користувача
     if (user?.role === 'admin') {
-      // Если пользователь админ, перенаправляем на админскую страницу
       return <Navigate to={ADMIN_ROUTE} replace />;
     } else if (user?.role === 'student') {
       return <Navigate to={STUDENT_MAIN_ROUTE} replace />;
     }
   } else {
-    return element
+    return element;
   }
+
+  return element;
 };
 
 export default ProtectedRoute;

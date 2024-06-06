@@ -7,7 +7,8 @@ import { authRoutesAdmin, authRoutesStudent, publicRoutes } from '../routes';
 
 const AppRouter: FC = () => {
   const { isAuth, user } = useAppSelector((state) => state.userReducer);
-  
+  const lastPathname = localStorage.getItem('lastPathname') || ADMIN_LOGIN_ROUTE;
+
   return (
     <Routes>
       {isAuth && user?.role === 'admin' ? (
@@ -23,7 +24,7 @@ const AppRouter: FC = () => {
           <Route key={path} path={path} element={<ProtectedRoute element={<Component />} />} />
         ))
       )}
-      <Route path="*" element={<Navigate to={isAuth ? (user?.role === 'admin' ? ADMIN_ROUTE : STUDENT_MAIN_ROUTE) : ADMIN_LOGIN_ROUTE} replace />} />
+      <Route path="*" element={<Navigate to={isAuth ? (user?.role === 'admin' ? ADMIN_ROUTE : STUDENT_MAIN_ROUTE) : lastPathname} replace />} />
     </Routes>
   );
 };

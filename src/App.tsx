@@ -1,18 +1,21 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import './App.css';
-import AppRouter from './components/AppRouter';
 import Header from './components/Header';
 import { useLocation } from 'react-router-dom';
-import useAuth from './hooks/useAuth';
 import { useAppSelector } from './hooks/typeHooks';
 import { ADMIN_LOGIN_ROUTE, STUDENT_LOGIN_ROUTE } from './utils/consts';
+import withAuth from './hoc/withAuth';
+import AppRouter from './components/AppRouter';
 import Loading from './components/Loadind';
 
 const App: FC = () => {
-  const { pathname } = useLocation();
-  const loginPage = pathname === ADMIN_LOGIN_ROUTE || pathname === STUDENT_LOGIN_ROUTE;
-  useAuth();
+  const location = useLocation();
+  const { pathname } = location;
   const { isLoading, isAuth } = useAppSelector((state) => state.userReducer);
+
+  useEffect(() => {
+    localStorage.setItem('lastPathname', pathname);
+  }, [pathname]); 
 
   if (isLoading) {
     return <Loading />;
@@ -20,10 +23,10 @@ const App: FC = () => {
 
   return (
     <div className='font-inter'>
-      {isAuth && !loginPage && <Header />}
-      <AppRouter />
+      {isAuth && ![ADMIN_LOGIN_ROUTE, STUDENT_LOGIN_ROUTE].includes(pathname) && <Header />}
+      <AppRouter/>
     </div>
   );
 };
 
-export default App;
+export default withAuth(App);

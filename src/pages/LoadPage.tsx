@@ -184,10 +184,10 @@ const LoadPage: FC = () => {
                   {file ? (
                     <div className="mb-9">
                       <p className="text-sm font-medium text-center bg-bg-blue-design">
-                        {i18n.t('materialAdd.fileSelected')}:
+                        {i18n.t('materialAdd.touchFile')}:
                       </p>
                       <div className="w-full flex justify-center mb-4 bg-bg-blue-design">
-                        <CheckIcon className="w-16" /> {/* Замените здесь значок на CheckIcon */}
+                        <CheckIcon className="w-16" /> 
                       </div>
                       <p className="text-sm text-yellow-600 mb-2 text-center">{file.name}</p>
                     </div>
