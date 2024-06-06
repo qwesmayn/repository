@@ -22,33 +22,42 @@ const StudentMaterialBlock: FC<StudentMaterialBlockProps> = ({
   disciplines,
   materialsTypes,
 }) => {
-  const [isDescriptionExpanded, setIsDescriptionExpanded] = React.useState(false);
-  const dispatch = useAppDispatch()
+  const [isDescriptionExpanded, setIsDescriptionExpanded] =
+    React.useState(false);
+  const dispatch = useAppDispatch();
 
   const toggleDescription = () => {
     setIsDescriptionExpanded(!isDescriptionExpanded);
   };
 
   const getDisciplineName = (id: string) => {
-    const discipline = disciplines.find(d => d._id === id);
+    const discipline = disciplines.find((d) => d._id === id);
     return discipline ? discipline.name : "Unknown Discipline";
   };
 
   const getMaterialTypeName = (id: string) => {
-    const type = materialsTypes.find(t => t._id === id);
+    const type = materialsTypes.find((t) => t._id === id);
     return type ? type.name : "Unknown Type";
   };
 
   const getAuthorName = (id: string) => {
-    const author = authors.find(a => a._id === id);
+    const author = authors.find((a) => a._id === id);
     return author ? author.fullName : "Unknown Author";
   };
 
-  const handleSetDownload = (id : string) => {
-    dispatch(changeDownloads(id))
-  }
+  const handleSetDownload = (id: string) => {
+    dispatch(changeDownloads(id));
+  };
 
-  const { _id, previewImageUrl, title, description, createdAt, downloadCount, contentUrl } = material;
+  const {
+    _id,
+    previewImageUrl,
+    title,
+    description,
+    createdAt,
+    downloadCount,
+    contentUrl,
+  } = material;
 
   const imageUrl = "http://localhost:3001/uploads/" + previewImageUrl;
   const fileUrl = "http://localhost:3001/uploads/" + contentUrl;
@@ -60,63 +69,74 @@ const StudentMaterialBlock: FC<StudentMaterialBlockProps> = ({
     >
       <img
         src={
-          previewImageUrl ? imageUrl : "https://via.placeholder.com/250x100?text=No+Image"
+          previewImageUrl
+            ? imageUrl
+            : "https://via.placeholder.com/250x100?text=No+Image"
         }
         alt={title}
         className="object-cover rounded-lg mb-3 w-full h-[100px]"
       />
       <div className="h-full flex flex-col text-center">
         <div>
-          <p className="text-base mb-4 bg-white">
-            <strong>{i18n.t('material.materialName')}</strong> {title}
+          <p className="text-base mb-4 bg-white p-1">
+            <strong>{i18n.t("material.materialName")}</strong> {title}
           </p>
           <div className="relative">
             <p
-              className="text-sm mb-4 bg-white"
+              className="text-sm mb-4 bg-white p-1"
               style={{
                 whiteSpace: isDescriptionExpanded ? "normal" : "nowrap",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
               }}
             >
-              <strong>{i18n.t('material.materialDescription')}</strong> {description}
+              <strong>{i18n.t("material.materialDescription")}</strong>{" "}
+              {description}
             </p>
           </div>
-          <button onClick={toggleDescription} className={`mb-4 w-6 transition-transform ${isDescriptionExpanded ? "rotate-180" : ""}`}>
-            {description && description.length >= 32 && <ChevronDownIcon />}
-          </button>
 
-          <p className="text-xs mb-4 bg-white rounded-2xl">
-            <strong>{i18n.t('material.materialDiscipline')}</strong> {getDisciplineName(material.discipline)}
+          {description && description.length >= 32 && (
+            <button
+              onClick={toggleDescription}
+              className={` w-6 transition-transform ${
+                isDescriptionExpanded ? "rotate-180" : ""
+              }`}
+            >
+              <ChevronDownIcon />
+            </button>
+          )}
+          <p className="text-xs mb-4 bg-white rounded-2xl p-1">
+            <strong>{i18n.t("material.materialDiscipline")}</strong>{" "}
+            {getDisciplineName(material.discipline)}
+          </p>
+          <p className="text-xs mb-4 bg-white rounded-2xl p-1">
+            <strong>{i18n.t("material.materialAuthor")}</strong>{" "}
+            {getAuthorName(material.author)}
           </p>
 
           <div className="flex items-center justify-between">
             <div className="flex items-center flex-col space-y-4">
-              <p className="bg-white text-xs mb-4 rounded-2xl">
-                <strong>{i18n.t('material.materialTypematerial')}</strong> {getMaterialTypeName(material.materialType)}
-              </p>
-              <p className="text-xs mb-2 flex flex-col bg-white rounded-2xl">
-                <strong>{i18n.t('material.materialCountViewers')}</strong> {downloadCount}
+              <p className="bg-white text-xs rounded-2xl p-1">
+                <strong>{i18n.t("material.materialTypematerial")}</strong>
+                <br /> {getMaterialTypeName(material.materialType)}
               </p>
             </div>
             <div className="flex items-center flex-col space-y-4 ">
-              <p className="text-xs mb-4 bg-white rounded-2xl">
-                <strong>{i18n.t('material.materialAuthor')}</strong> {getAuthorName(material.author)}
-              </p>
-              <p className="text-xs flex flex-col bg-white rounded-2xl">
-                <strong>{i18n.t('material.materialDateUpload')}</strong> {new Date(createdAt).toLocaleDateString()}
+              <p className="text-xs flex flex-col bg-white rounded-2xl p-1">
+                <strong>{i18n.t("material.materialDateUpload")}</strong>{" "}
+                {new Date(createdAt).toLocaleDateString()}
               </p>
             </div>
           </div>
         </div>
         <div className="flex flex-col space-y-3 mt-2">
-        <NavLink
+          <NavLink
             to={fileUrl}
             download
             onClick={() => handleSetDownload(_id)}
             className="bg-white shadow-dark-lg text-black px-4 py-2 rounded-lg text-sm text-center"
           >
-            {i18n.t('material.buttonDownloadMaterial')}
+            {i18n.t("material.buttonDownloadMaterial")}
           </NavLink>
         </div>
       </div>

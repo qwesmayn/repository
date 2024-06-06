@@ -83,7 +83,6 @@ const MaterialBlock: FC<MaterialBlockProps> = ({
   const toggleDescription = () => {
     setIsDescriptionExpanded(!isDescriptionExpanded);
   };
-  
 
   const { _id, previewImageUrl, createdAt, contentUrl } = material;
 
@@ -97,15 +96,20 @@ const MaterialBlock: FC<MaterialBlockProps> = ({
     >
       <img
         src={
-          previewImageUrl ? imageUrl : "https://via.placeholder.com/250x100?text=No+Image"
+          previewImageUrl
+            ? imageUrl
+            : "https://via.placeholder.com/250x100?text=No+Image"
         }
         alt={editedMaterial.title}
         className="object-cover rounded-lg mb-3 w-full h-[100px]"
       />
       <div className="h-full flex flex-col text-center">
         <div>
-          <p className="text-base mb-4 bg-white" onDoubleClick={handleDoubleClickTitle}>
-            <strong>{i18n.t('material.materialName')}</strong>{" "}
+          <p
+            className="text-base mb-4 bg-white  p-1"
+            onDoubleClick={handleDoubleClickTitle}
+          >
+            <strong>{i18n.t("material.materialName")}</strong>{" "}
             {isEditingTitle ? (
               <input
                 type="text"
@@ -120,7 +124,7 @@ const MaterialBlock: FC<MaterialBlockProps> = ({
           </p>
           <div className="relative">
             <p
-              className="text-sm mb-4 bg-white"
+              className="text-sm mb-4 bg-white p-1"
               onDoubleClick={handleDoubleClickDescription}
               style={{
                 whiteSpace: isDescriptionExpanded ? "normal" : "nowrap",
@@ -128,7 +132,7 @@ const MaterialBlock: FC<MaterialBlockProps> = ({
                 textOverflow: "ellipsis",
               }}
             >
-              <strong>{i18n.t('material.materialDescription')}</strong>{" "}
+              <strong>{i18n.t("material.materialDescription")}</strong>{" "}
               {isEditingDescription ? (
                 <input
                   type="text"
@@ -146,17 +150,20 @@ const MaterialBlock: FC<MaterialBlockProps> = ({
               )}
             </p>
           </div>
-          <button onClick={toggleDescription} className={`mb-4 w-6 transition-transform ${
-              isDescriptionExpanded ? "rotate-180" : ""
-            }`}>
-            {editedMaterial.description &&
-              editedMaterial.description.length >= 32 &&
-              <ChevronDownIcon />
-              }
-          </button>
+          {editedMaterial.description &&
+            editedMaterial.description.length >= 32 && (
+              <button
+                onClick={toggleDescription}
+                className={`mb-4 w-6 transition-transform ${
+                  isDescriptionExpanded ? "rotate-180" : ""
+                }`}
+              >
+                <ChevronDownIcon />
+              </button>
+            )}
 
-          <p className="text-xs mb-4 bg-white rounded-2xl">
-            <strong>{i18n.t('material.materialDiscipline')}</strong>{" "}
+          <p className="text-xs mb-4 bg-white rounded-2xl  p-1">
+            <strong>{i18n.t("material.materialDiscipline")}</strong>{" "}
             <select
               name="discipline"
               value={editedMaterial.discipline}
@@ -172,8 +179,8 @@ const MaterialBlock: FC<MaterialBlockProps> = ({
 
           <div className="flex items-center justify-between">
             <div className="flex items-center flex-col space-y-4">
-              <p className="bg-white text-xs mb-4 rounded-2xl w-min">
-                <strong>{i18n.t('material.materialTypematerial')}</strong>{" "}
+              <p className="bg-white text-xs mb-4 rounded-2xl w-min  p-1">
+                <strong>{i18n.t("material.materialTypematerial")}</strong>{" "}
                 <select
                   name="materialType"
                   value={editedMaterial.materialType}
@@ -187,14 +194,14 @@ const MaterialBlock: FC<MaterialBlockProps> = ({
                   ))}
                 </select>
               </p>
-              <p className="text-xs flex flex-col bg-white rounded-2xl">
-                <strong>{i18n.t('material.materialCountViewers')}</strong>{" "}
+              <p className="text-xs flex flex-col bg-white rounded-2xl  p-1">
+                <strong>{i18n.t("material.materialCountViewers")}</strong>{" "}
                 {editedMaterial.downloadCount}
               </p>
             </div>
             <div className="flex items-center flex-col space-y-4 ">
-              <p className="text-xs mb-4 bg-white rounded-2xl w-min">
-                <strong>{i18n.t('material.materialAuthor')}</strong>
+              <p className="text-xs mb-4 bg-white rounded-2xl w-min  p-1">
+                <strong>{i18n.t("material.materialAuthor")}</strong>
                 <select
                   name="author"
                   value={editedMaterial.author}
@@ -208,8 +215,8 @@ const MaterialBlock: FC<MaterialBlockProps> = ({
                   ))}
                 </select>
               </p>
-              <p className="text-xs flex flex-col bg-white rounded-2xl">
-                <strong>{i18n.t('material.materialDateUpload')}</strong>{" "}
+              <p className="text-xs flex flex-col bg-white rounded-2xl  p-1">
+                <strong>{i18n.t("material.materialDateUpload")}</strong>{" "}
                 {new Date(createdAt).toLocaleDateString()}
               </p>
             </div>
@@ -221,7 +228,7 @@ const MaterialBlock: FC<MaterialBlockProps> = ({
             download
             className="bg-white shadow-dark-lg text-black px-4 py-2 rounded-lg text-sm text-center"
           >
-            {i18n.t('material.buttonDownloadMaterial')}
+            {i18n.t("material.buttonDownloadMaterial")}
           </NavLink>
           <button
             onClick={handleSave}
@@ -232,13 +239,13 @@ const MaterialBlock: FC<MaterialBlockProps> = ({
             }`}
             disabled={!hasChanges}
           >
-            {i18n.t('material.buttonSaveChanges')}
+            {i18n.t("material.buttonSaveChanges")}
           </button>
           <button
             onClick={() => openModal(_id)}
             className="bg-white shadow-dark-lg text-black px-4 py-2 rounded-lg text-sm"
           >
-            {i18n.t('material.buttonDeleteMaterial')}
+            {i18n.t("material.buttonDeleteMaterial")}
           </button>
         </div>
       </div>
