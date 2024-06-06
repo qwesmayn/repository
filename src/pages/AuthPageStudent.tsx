@@ -14,17 +14,19 @@ interface FormData {
 }
 
 const AuthPageStudent: FC = () => {
+  const [lang, setLang] = useState("uk");
+
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
     mode: "onBlur"
   });
-  const [lang, setLang] = useState("uk");
+
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { isLoading, error } = useAppSelector(state => state.userReducer);
 
   const onSubmit = async (data: FormData) => {
     try {
-      await dispatch(studentLogin(data));
+      await dispatch(studentLogin(data)).unwrap();
       navigate(STUDENT_MAIN_ROUTE);
     } catch (e) {
       console.error(e);
@@ -35,19 +37,15 @@ const AuthPageStudent: FC = () => {
     dispatch(setLanguage(lang));
     i18n.changeLanguage(lang);
     localStorage.setItem("language", lang);
-    setLang(lang)
+    setLang(lang);
   };
 
   return (
-    <div className="flex min-h-full flex-1 flex-col justify-center px-6 pb-12 lg:px-8 bg-bg-blue-design h-screen">
+    <div className="flex min-h-full flex-1 flex-col justify-start px-6 pt-[89px] lg:px-[128px] bg-bg-blue-design h-screen">
+      <img className="w-[160px] mb-24" src={logo} alt="Your Company" />
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <img
-          className="mx-auto h-24 w-auto"
-          src={logo}
-          alt="Your Company"
-        />
-        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-        {i18n.t('nameUniversity')}
+        <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+          {i18n.t('nameUniversity')}
         </h2>
       </div>
 
@@ -75,7 +73,7 @@ const AuthPageStudent: FC = () => {
           <div>
             <div className="flex items-center justify-between">
               <label className="block text-sm font-medium leading-6 text-gray-900">
-              {i18n.t('userManage.password')}
+                {i18n.t('userManage.password')}
               </label>
             </div>
             <div className="mt-2">
@@ -94,10 +92,13 @@ const AuthPageStudent: FC = () => {
           </div>
 
           <div className="flex justify-center cursor-pointer">
-        <div onClick={() => handleLanguageChange(lang === "uk" ? "en" : "uk")}>
-          {lang === "uk" ? "EN" : "UK"}
-        </div>
-      </div>
+            <div onClick={() => handleLanguageChange("en")} className={`mr-[34px] ${lang === "en" && "border-b border-black"}`}>
+              EN
+            </div>
+            <div onClick={() => handleLanguageChange("uk")} className={`${lang === "uk" && "border-b border-black"}`}>
+              UK
+            </div>
+          </div>
 
           <div>
             <button

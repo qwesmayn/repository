@@ -4,7 +4,7 @@ import i18n from "../i18n";
 
 const InformationPage: FC = () => {
   return (
-    <div className="max-w-[962px] py-[77px] mx-auto mt-[95px] inter bg-bg-blue-design">
+    <div className="max-w-[1380px] py-[77px] px-[210px] mx-auto mt-[95px] inter rounded-3xl bg-bg-blue-design">
       <div className="mb-9">
         <h2 className="text-[32px]">{i18n.t('aboutPage.history')}</h2>
         <span>

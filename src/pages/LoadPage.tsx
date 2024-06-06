@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useRef, useState } from "react";
-import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
+import { ArrowUpTrayIcon, CheckIcon } from "@heroicons/react/24/outline"; // Импортируем CheckIcon
 import { useAppDispatch, useAppSelector } from "../hooks/typeHooks";
 import {
   getDisciplines,
@@ -180,32 +180,46 @@ const LoadPage: FC = () => {
           <div className="mb flex items-center">
             <div className="flex-1">
               {!isLinkChecked ? (
-                <div className="mb-9 ">
-                  <p className="text-sm font-medium text-center bg-bg-blue-design">
-                  {i18n.t('materialAdd.touchFile')}
-                  </p>
-                  <div className="w-full flex justify-center mb-4 bg-bg-blue-design">
-                    <ArrowUpTrayIcon className="w-16" />
-                  </div>
-                  <p className="text-sm text-yellow-600 mb-2 text-center">
-                  {i18n.t('materialAdd.szieFile')}
-                  </p>
-                  <button
-                    type="button"
-                    className="w-full bg-bg-blue-design text-black rounded-2xl px-4 py-2 shadow-dark-lg transition-colors duration-300"
-                    onClick={handleFileUploadClick}
-                  >
-{i18n.t('materialAdd.addFile')}
-                  </button>
-                  <input
-                    ref={fileInputRef}
-                    id="file"
-                    type="file"
-                    className="hidden"
-                    onChange={handleFileChange}
-                  />
-                  {errors.file && (
-                    <span className="text-red-500">Файл обов'язковий</span>
+                <div className="mb-9">
+                  {file ? (
+                    <div className="mb-9">
+                      <p className="text-sm font-medium text-center bg-bg-blue-design">
+                        {i18n.t('materialAdd.fileSelected')}:
+                      </p>
+                      <div className="w-full flex justify-center mb-4 bg-bg-blue-design">
+                        <CheckIcon className="w-16" /> {/* Замените здесь значок на CheckIcon */}
+                      </div>
+                      <p className="text-sm text-yellow-600 mb-2 text-center">{file.name}</p>
+                    </div>
+                  ) : (
+                    <>
+                      <p className="text-sm font-medium text-center bg-bg-blue-design">
+                        {i18n.t('materialAdd.touchFile')}
+                      </p>
+                      <div className="w-full flex justify-center mb-4 bg-bg-blue-design">
+                        <ArrowUpTrayIcon className="w-16" />
+                      </div>
+                      <p className="text-sm text-yellow-600 mb-2 text-center">
+                        {i18n.t('materialAdd.szieFile')}
+                      </p>
+                      <button
+                        type="button"
+                        className="w-full bg-bg-blue-design text-black rounded-2xl px-4 py-2 shadow-dark-lg transition-colors duration-300"
+                        onClick={handleFileUploadClick}
+                      >
+                        {i18n.t('materialAdd.addFile')}
+                      </button>
+                      <input
+                        ref={fileInputRef}
+                        id="file"
+                        type="file"
+                        className="hidden"
+                        onChange={handleFileChange}
+                      />
+                      {errors.file && (
+                        <span className="text-red-500">Файл обов'язковий</span>
+                      )}
+                    </>
                   )}
                 </div>
               ) : (
@@ -213,10 +227,7 @@ const LoadPage: FC = () => {
                   id="link"
                   type="text"
                   placeholder={i18n.t('materialAdd.addLink')}
-                  className={`bg-bg-blue-design w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500 ${
-                    isLinkChecked ? "" : "opacity-50 cursor-not-allowed"
-                  }`}
-                  disabled={!isLinkChecked}
+                  className="bg-bg-blue-design w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500"
                   {...register("link")}
                 />
               )}
@@ -253,10 +264,10 @@ const LoadPage: FC = () => {
           )}
         </div>
         <p className="text-sm text-yellow-600 mb-2">
-        {i18n.t('materialAdd.szieFile')}
+          {i18n.t('materialAdd.szieFile')}
         </p>
         <button className="px-6 py-2 bg-bg-blue-design text-black rounded-2xl shadow-dark-lg transition-colors duration-300">
-        {i18n.t('materialAdd.addImage')}
+          {i18n.t('materialAdd.addImage')}
         </button>
         <input
           ref={coverInputRef}
@@ -275,14 +286,14 @@ const LoadPage: FC = () => {
           className="px-6 py-2 bg-bg-blue-design w-full text-black rounded-2xl shadow-dark-lg  transition-colors duration-300"
           onClick={handleSubmit(onSubmit)}
         >
-        {i18n.t('materialAdd.addMaterial')}
+          {i18n.t('materialAdd.addMaterial')}
         </button>
         <button
           type="button"
           className="px-6 py-2 bg-bg-blue-design w-full text-black rounded-2xl shadow-dark-lg transition-colors duration-300"
           onClick={() => setShowSuccessPopup(true)}
         >
-        {i18n.t('materialAdd.clearAll')}
+          {i18n.t('materialAdd.clearAll')}
         </button>
       </div>
       {showSuccessPopup && (
