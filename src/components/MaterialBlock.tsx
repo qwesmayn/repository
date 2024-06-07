@@ -89,6 +89,32 @@ const MaterialBlock: FC<MaterialBlockProps> = ({
   const imageUrl = "http://localhost:3001/uploads/" + previewImageUrl;
   const fileUrl = "http://localhost:3001/uploads/" + contentUrl;
 
+  const renderAuthorsOptions = () => {
+    const options = authors.map((author) => ({
+      value: author._id,
+      label: author.fullName,
+    }));
+    if (!options.some((option) => option.value === editedMaterial.author)) {
+      options.unshift({ value: "", label: "Выберите автора" });
+    }
+    return options;
+  };
+
+  const renderDisciplinesOptions = () => {
+    const options = disciplines.map((discipline) => ({
+      value: discipline._id,
+      label: discipline.name,
+    }));
+    if (
+      !options.some(
+        (option) => option.value === editedMaterial.discipline
+      )
+    ) {
+      options.unshift({ value: "", label: "Выберите дисциплину" });
+    }
+    return options;
+  };
+
   return (
     <div
       key={_id}
@@ -140,117 +166,118 @@ const MaterialBlock: FC<MaterialBlockProps> = ({
                   value={editedMaterial.description}
                   onChange={handleChange}
                   onBlur={() => setIsEditingDescription(false)}
-                />
-              ) : isDescriptionExpanded ? (
-                <div className="mt-4 border-t border-gray-200 break-words">
-                  <p className="text-sm">{editedMaterial.description}</p>
-                </div>
-              ) : (
-                editedMaterial.description
+                  />
+                ) : isDescriptionExpanded ? (
+                  <div className="mt-4 border-t border-gray-200 break-words">
+                    <p className="text-sm">{editedMaterial.description}</p>
+                  </div>
+                ) : (
+                  editedMaterial.description
+                )}
+              </p>
+            </div>
+            {editedMaterial.description &&
+              editedMaterial.description.length >= 32 && (
+                <button
+                  onClick={toggleDescription}
+                  className={`mb-4 w-6 transition-transform ${
+                    isDescriptionExpanded ? "rotate-180" : ""
+                  }`}
+                >
+                  <ChevronDownIcon />
+                </button>
               )}
-            </p>
-          </div>
-          {editedMaterial.description &&
-            editedMaterial.description.length >= 32 && (
-              <button
-                onClick={toggleDescription}
-                className={`mb-4 w-6 transition-transform ${
-                  isDescriptionExpanded ? "rotate-180" : ""
-                }`}
+  
+            <p className="text-xs mb-4 bg-white rounded-2xl  p-1">
+              <strong>{i18n.t("material.materialDiscipline")}</strong>{" "}
+              <select
+                name="discipline"
+                value={editedMaterial.discipline}
+                onChange={handleChange}
               >
-                <ChevronDownIcon />
-              </button>
-            )}
-
-          <p className="text-xs mb-4 bg-white rounded-2xl  p-1">
-            <strong>{i18n.t("material.materialDiscipline")}</strong>{" "}
-            <select
-              name="discipline"
-              value={editedMaterial.discipline}
-              onChange={handleChange}
-            >
-              {disciplines.map((discipline) => (
-                <option key={discipline._id} value={discipline._id}>
-                  {discipline.name}
-                </option>
-              ))}
-            </select>
-          </p>
-
-          <div className="flex items-center justify-between">
-            <div className="flex items-center flex-col space-y-4">
-              <p className="bg-white text-xs mb-4 rounded-2xl w-min  p-1">
-                <strong>{i18n.t("material.materialTypematerial")}</strong>{" "}
-                <select
-                  name="materialType"
-                  value={editedMaterial.materialType}
-                  onChange={handleChange}
-                  className="text-center"
-                >
-                  {materialsTypes.map((type) => (
-                    <option key={type._id} value={type._id}>
-                      {type.name}
-                    </option>
-                  ))}
-                </select>
-              </p>
-              <p className="text-xs flex flex-col bg-white rounded-2xl  p-1">
-                <strong>{i18n.t("material.materialCountViewers")}</strong>{" "}
-                {editedMaterial.downloadCount}
-              </p>
-            </div>
-            <div className="flex items-center flex-col space-y-4 ">
-              <p className="text-xs mb-4 bg-white rounded-2xl w-min  p-1">
-                <strong>{i18n.t("material.materialAuthor")}</strong>
-                <select
-                  name="author"
-                  value={editedMaterial.author}
-                  onChange={handleChange}
-                  className="text-center rounded-2xl"
-                >
-                  {authors.map((author) => (
-                    <option key={author._id} value={author._id}>
-                      {author.fullName}
-                    </option>
-                  ))}
-                </select>
-              </p>
-              <p className="text-xs flex flex-col bg-white rounded-2xl  p-1">
-                <strong>{i18n.t("material.materialDateUpload")}</strong>{" "}
-                {new Date(createdAt).toLocaleDateString()}
-              </p>
+                {renderDisciplinesOptions().map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </p>
+  
+            <div className="flex items-center justify-between">
+              <div className="flex items-center flex-col space-y-4">
+                <p className="bg-white text-xs mb-4 rounded-2xl w-min  p-1">
+                  <strong>{i18n.t("material.materialTypematerial")}</strong>{" "}
+                  <select
+                    name="materialType"
+                    value={editedMaterial.materialType}
+                    onChange={handleChange}
+                    className="text-center"
+                  >
+                    {materialsTypes.map((type) => (
+                      <option key={type._id} value={type._id}>
+                        {type.name}
+                      </option>
+                    ))}
+                  </select>
+                </p>
+                <p className="text-xs flex flex-col bg-white rounded-2xl  p-1">
+                  <strong>{i18n.t("material.materialCountViewers")}</strong>{" "}
+                  {editedMaterial.downloadCount}
+                </p>
+              </div>
+              <div className="flex items-center flex-col space-y-4 ">
+                <p className="text-xs mb-4 bg-white rounded-2xl w-min  p-1">
+                  <strong>{i18n.t("material.materialAuthor")}</strong>
+                  <select
+                    name="author"
+                    value={editedMaterial.author}
+                    onChange={handleChange}
+                    className="text-center rounded-2xl"
+                  >
+                    {renderAuthorsOptions().map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </p>
+                <p className="text-xs flex flex-col bg-white rounded-2xl  p-1">
+                  <strong>{i18n.t("material.materialDateUpload")}</strong>{" "}
+                  {new Date(createdAt).toLocaleDateString()}
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="flex flex-col space-y-3 mt-2">
-          <NavLink
-            to={fileUrl}
-            download
-            className="bg-white shadow-dark-lg text-black px-4 py-2 rounded-lg text-sm text-center"
-          >
-            {i18n.t("material.buttonDownloadMaterial")}
-          </NavLink>
-          <button
-            onClick={handleSave}
-            className={`shadow-dark-lg px-4 py-2 rounded-lg text-sm ${
-              hasChanges
-                ? "bg-white text-black"
-                : "bg-gray-500 text-gray-300 cursor-not-allowed"
-            }`}
-            disabled={!hasChanges}
-          >
-            {i18n.t("material.buttonSaveChanges")}
-          </button>
-          <button
-            onClick={() => openModal(_id)}
-            className="bg-white shadow-dark-lg text-black px-4 py-2 rounded-lg text-sm"
-          >
-            {i18n.t("material.buttonDeleteMaterial")}
-          </button>
+          <div className="flex flex-col space-y-3 mt-2">
+            <NavLink
+              to={fileUrl}
+              download
+              className="bg-white shadow-dark-lg text-black px-4 py-2 rounded-lg text-sm text-center"
+            >
+              {i18n.t("material.buttonDownloadMaterial")}
+            </NavLink>
+            <button
+              onClick={handleSave}
+              className={`shadow-dark-lg px-4 py-2 rounded-lg text-sm ${
+                hasChanges
+                  ? "bg-white text-black"
+                  : "bg-gray-500 text-gray-300 cursor-not-allowed"
+              }`}
+              disabled={!hasChanges}
+            >
+              {i18n.t("material.buttonSaveChanges")}
+            </button>
+            <button
+              onClick={() => openModal(_id)}
+              className="bg-white shadow-dark-lg text-black px-4 py-2 rounded-lg text-sm"
+            >
+              {i18n.t("material.buttonDeleteMaterial")}
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  );
-};
-
-export default MaterialBlock;
+    );
+  };
+  
+  export default MaterialBlock;
+  

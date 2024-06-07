@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useRef, useState } from "react";
-import { ArrowUpTrayIcon, CheckIcon } from "@heroicons/react/24/outline"; // Импортируем CheckIcon
+import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
 import { useAppDispatch, useAppSelector } from "../hooks/typeHooks";
 import {
   getDisciplines,
@@ -10,6 +10,7 @@ import {
 import { useForm } from "react-hook-form";
 import Popup from "../components/Popup";
 import i18n from "../i18n";
+import { FileIcon, FileIconProps, defaultStyles } from "react-file-icon";
 
 const LoadPage: FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -47,13 +48,13 @@ const LoadPage: FC = () => {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0] || null;
-    setFile(selectedFile ?? undefined);
+    selectedFile && selectedFile?.size < 100000000 ? setFile(selectedFile ?? undefined) : console.error("Выбранный файл слишком большой.")
   };
 
   const handleCoverChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedCoverFile = event.target.files?.[0] || null;
-    setCoverFile(selectedCoverFile ?? undefined);
-    if (selectedCoverFile) {
+    selectedCoverFile && selectedCoverFile?.size < 10000000 ? setCoverFile(selectedCoverFile ?? undefined) : console.error("Выбранный файл слишком большой.")
+    if (selectedCoverFile && selectedCoverFile?.size < 10000000 ) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setCoverPreview(reader.result as string);
@@ -110,6 +111,10 @@ const LoadPage: FC = () => {
         console.error(error);
       });
   };
+  const extension = file?.name.split(".").pop()?.toLowerCase();
+  const fileIconProps =
+    extension &&
+    (defaultStyles as Record<string, Partial<FileIconProps>>)[extension];
 
   return (
     <div className="flex justify-between items-start mt-16 px-12 h-max">
@@ -119,23 +124,27 @@ const LoadPage: FC = () => {
             <input
               id="title"
               type="text"
-              placeholder={i18n.t('materialAdd.nameMaterial')}
+              placeholder={i18n.t("materialAdd.nameMaterial")}
               className="bg-bg-blue-design w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500"
               {...register("title", { required: true })}
             />
             {errors.title && (
-              <span className="text-red-500">{i18n.t('materialAdd.requieridName')}</span>
+              <span className="text-red-500">
+                {i18n.t("materialAdd.requieridName")}
+              </span>
             )}
           </div>
           <div className="mb-9 shadow-dark-lg">
             <textarea
               id="description"
-              placeholder={i18n.t('materialAdd.desctipMaterial')}
+              placeholder={i18n.t("materialAdd.desctipMaterial")}
               className="bg-bg-blue-design w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500"
               {...register("description", { required: true })}
             ></textarea>
             {errors.description && (
-              <span className="text-red-500">{i18n.t('materialAdd.requieridDesctip')}</span>
+              <span className="text-red-500">
+                {i18n.t("materialAdd.requieridDesctip")}
+              </span>
             )}
           </div>
           <div className="mb-9 shadow-dark-lg">
@@ -182,32 +191,36 @@ const LoadPage: FC = () => {
               {!isLinkChecked ? (
                 <div className="mb-9">
                   {file ? (
-                    <div className="mb-9">
+                    <div className=" mb-9">
                       <p className="text-sm font-medium text-center bg-bg-blue-design">
-                        {i18n.t('materialAdd.touchFile')}:
+                        {i18n.t("materialAdd.touchFile")}:
                       </p>
-                      <div className="w-full flex justify-center mb-4 bg-bg-blue-design">
-                        <CheckIcon className="w-16" /> 
+                      <div className="w-full flex justify-center my-4 bg-bg-blue-design">
+                        <div className="w-16">  
+                          <FileIcon extension={extension} {...fileIconProps}/>
+                        </div>
                       </div>
-                      <p className="text-sm text-yellow-600 mb-2 text-center">{file.name}</p>
+                      <p className="text-sm text-yellow-600 mb-2 text-center">
+                        {file.name}
+                      </p>
                     </div>
                   ) : (
                     <>
                       <p className="text-sm font-medium text-center bg-bg-blue-design">
-                        {i18n.t('materialAdd.touchFile')}
+                        {i18n.t("materialAdd.touchFile")}
                       </p>
                       <div className="w-full flex justify-center mb-4 bg-bg-blue-design">
                         <ArrowUpTrayIcon className="w-16" />
                       </div>
                       <p className="text-sm text-yellow-600 mb-2 text-center">
-                        {i18n.t('materialAdd.szieFile')}
+                        {i18n.t("materialAdd.sizeFile")}
                       </p>
                       <button
                         type="button"
                         className="w-full bg-bg-blue-design text-black rounded-2xl px-4 py-2 shadow-dark-lg transition-colors duration-300"
                         onClick={handleFileUploadClick}
                       >
-                        {i18n.t('materialAdd.addFile')}
+                        {i18n.t("materialAdd.addFile")}
                       </button>
                       <input
                         ref={fileInputRef}
@@ -226,7 +239,7 @@ const LoadPage: FC = () => {
                 <input
                   id="link"
                   type="text"
-                  placeholder={i18n.t('materialAdd.addLink')}
+                  placeholder={i18n.t("materialAdd.addLink")}
                   className="bg-bg-blue-design w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500"
                   {...register("link")}
                 />
@@ -240,7 +253,7 @@ const LoadPage: FC = () => {
                 onChange={handleLinkCheckboxChange}
                 className="mr-2"
               />
-              <label htmlFor="linkCheckbox">{i18n.t('materialAdd.link')}</label>
+              <label htmlFor="linkCheckbox">{i18n.t("materialAdd.link")}</label>
             </div>
           </div>
         </form>
@@ -251,7 +264,9 @@ const LoadPage: FC = () => {
         onDragOver={(e) => e.preventDefault()}
         onClick={() => coverInputRef.current?.click()}
       >
-        <p className="text-sm font-medium ">{i18n.t('materialAdd.touchImage')}</p>
+        <p className="text-sm font-medium ">
+          {i18n.t("materialAdd.touchImage")}
+        </p>
         <div className="w-full flex justify-center shadow-dark-lg my-4 bg-bg-blue-design">
           {coverPreview ? (
             <img
@@ -264,10 +279,10 @@ const LoadPage: FC = () => {
           )}
         </div>
         <p className="text-sm text-yellow-600 mb-2">
-          {i18n.t('materialAdd.szieFile')}
+          {i18n.t("materialAdd.sizaImage")}
         </p>
         <button className="px-6 py-2 bg-bg-blue-design text-black rounded-2xl shadow-dark-lg transition-colors duration-300">
-          {i18n.t('materialAdd.addImage')}
+          {i18n.t("materialAdd.addImage")}
         </button>
         <input
           ref={coverInputRef}
@@ -286,28 +301,31 @@ const LoadPage: FC = () => {
           className="px-6 py-2 bg-bg-blue-design w-full text-black rounded-2xl shadow-dark-lg  transition-colors duration-300"
           onClick={handleSubmit(onSubmit)}
         >
-          {i18n.t('materialAdd.addMaterial')}
+          {i18n.t("materialAdd.addMaterial")}
         </button>
         <button
           type="button"
           className="px-6 py-2 bg-bg-blue-design w-full text-black rounded-2xl shadow-dark-lg transition-colors duration-300"
           onClick={() => setShowSuccessPopup(true)}
         >
-          {i18n.t('materialAdd.clearAll')}
+          {i18n.t("materialAdd.clearAll")}
         </button>
       </div>
       {showSuccessPopup && (
         <Popup
-          message={i18n.t('materialAdd.reset')}
+          message={i18n.t("materialAdd.reset")}
           closeModal={() => {
             reset();
+            setFile(undefined);
+            setCoverFile(undefined);
+            setCoverPreview(null);
             setShowSuccessPopup(false);
           }}
         />
       )}
       {showErrorPopup && (
         <Popup
-          message={i18n.t('materialAdd.reqParams')}
+          message={i18n.t("materialAdd.reqParams")}
           closeModal={() => setShowErrorPopup(false)}
         />
       )}

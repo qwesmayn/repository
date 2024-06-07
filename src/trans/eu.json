@@ -12,6 +12,7 @@
   },
   "material": {
     "sortByDiscipline": "Selection of Discipline",
+    "chooseAuthor": "Choose Author",
     "sortByMaterial": "Selection of material type",
     "clearSearch": "Clear Search Options",
     "deleteMessage": "You are sure you want to delete",
@@ -60,7 +61,8 @@
     "requieridDesctip": "Description is required",
     "addLink": "Insert link:",
     "touchFile": " Drag the file",
-    "szieFile": "*File size must not exceed 10 MB.",
+    "sizeFile": "*File size must not exceed 100 MB.",
+    "sizaImage" : "*The file size must not exceed 10 MB.",
     "addFile": "Upload File",
     "link": "Link?",
     "touchImage": "Drag Cover",
