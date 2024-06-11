@@ -1,30 +1,41 @@
 import { ChangeEvent, FC, useState, useEffect } from "react";
 import { IDiscipline } from "../models/IDiscipline";
-import { IGroupsByiD } from "../models/IGroupById";
 import i18n from "../i18n";
+import { IGroupsByiD } from "../models/IGroupById";
+import { IStudentById } from "../models/IStudentById";
 
 interface DisciplineRowProps {
   index: number;
-  discipline: IDiscipline;
+  discipline: any;
   selectedDisciplineId: string | null;
+  selectedDisciplineStudentId: string | null;
   toggleDisciplineGroups: (disciplineId: string) => void;
-  groupsById: IGroupsByiD[];
+  toggleDisciplineStudents: (disciplineId: string) => void;
+  groups: IGroupsByiD[];
+  students: IStudentById[];
   handleDeleteGroup: (groupId: string, disciplineId: string) => void;
   openModalAddGroup: () => void;
   saveDisciplineChanges: (id: string, changes: { [key: string]: any }) => void;
   handleDeleteDiscipline: (disciplineId: string) => void;
+  openModalAddStudent: () => void;
+  handleDeleteStudent: (studentId: string, disciplineId: string) => void;
 }
 
-const DisciplineRow: FC<DisciplineRowProps> = ({
+const DisciplineRow: React.FC<DisciplineRowProps> = ({
   index,
   discipline,
   selectedDisciplineId,
+  selectedDisciplineStudentId,
   toggleDisciplineGroups,
-  groupsById,
+  toggleDisciplineStudents,
+  groups,
+  students,
   handleDeleteGroup,
   openModalAddGroup,
-  handleDeleteDiscipline,
   saveDisciplineChanges,
+  handleDeleteDiscipline,
+  openModalAddStudent,
+  handleDeleteStudent,
 }) => {
   const [editedDiscipline, setEditedDiscipline] = useState<IDiscipline>({ ...discipline });
   const [isEditingName, setIsEditingName] = useState(false);
@@ -86,7 +97,7 @@ const DisciplineRow: FC<DisciplineRowProps> = ({
           }`}
         >
           <ul className="m-auto mb-3 mt-5 w-max bg-bg-blue-design border border-gray-300 rounded shadow-dark-lg p-2 overflow-y-auto">
-            {groupsById
+            {groups
               .filter((group) => group.discipline === discipline._id)
               .map((group) => (
                 <li
@@ -112,6 +123,50 @@ const DisciplineRow: FC<DisciplineRowProps> = ({
                 }}
               >
          {i18n.t('userManage.addGroup')}
+              </button>
+            </li>
+          </ul>
+        </div>  
+      </div>
+      <div className="align-top">
+        <button
+          className="bg-bg-blue-design shadow-dark-lg px-20 text-black py-3 rounded transition-colors duration-300"
+          onClick={() => toggleDisciplineStudents(discipline._id)}
+        >
+                {i18n.t('disciplinesManage.student')}
+        </button>
+        <div
+          className={`overflow-hidden transition-all duration-700 ${
+            selectedDisciplineStudentId === discipline._id ? "max-h-screen" : "max-h-0"
+          }`}
+        >
+          <ul className="m-auto mb-3 mt-5 w-max bg-bg-blue-design border border-gray-300 rounded shadow-dark-lg p-2 overflow-y-auto">
+            {students
+              .filter((student) => student.discipline === discipline._id)
+              .map((student) => (
+                <li
+                  key={student._id}
+                  className="flex justify-between items-center px-2 py-1 border-b"
+                >
+                  <span className="mr-6">{student.student.fullName}</span>
+                  <button
+                    className="text-red-500 transition-colors duration-300"
+                    onClick={() =>
+                      handleDeleteStudent(student.student._id, discipline._id)
+                    }
+                  >
+                    &times;
+                  </button>
+                </li>
+              ))}
+            <li className="flex justify-between items-center px-2 py-1 border-b">
+              <button
+                className="text-blue-500 transition-colors duration-300"
+                onClick={() => {
+                  openModalAddStudent()
+                }}
+              >
+                {i18n.t('userManage.addStudent')}
               </button>
             </li>
           </ul>

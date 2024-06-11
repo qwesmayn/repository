@@ -1,26 +1,26 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import {
-  createLink,
-  deleteLink,
-  getGroupsOnIdDiscipline,
+  createLinkStudnet,
+  deleteLinkStudent,
+  getStudentsByDisciplineIds,
 } from "../action_creators/actionCreatos";
-import { IGroupsByiD } from "../../models/IGroupById";
+import { IStudentById } from "../../models/IStudentById";
 
-export interface groupsByIdState {
+export interface studentByIdState {
   isLoading: boolean;
-  groupsById: IGroupsByiD[];
+  studentsById: IStudentById[];
   error: string;
 }
 
-const initialState: groupsByIdState = {
+const initialState: studentByIdState = {
   isLoading: false,
-  groupsById: [],
+  studentsById: [],
   error: "",
 };
 
-export const groupsByIdSlice = createSlice({
-  name: "groupsById",
+export const studentByIdSlice = createSlice({
+  name: "studentById",
   initialState,
   reducers: {
     clearErrors(state) {
@@ -29,19 +29,20 @@ export const groupsByIdSlice = createSlice({
   },
   extraReducers: (builder) => {
     // обработка получения связи
-    builder.addCase(getGroupsOnIdDiscipline.pending.type, (state) => {
+    builder.addCase(getStudentsByDisciplineIds.pending.type, (state) => {
       state.isLoading = true;
     }),
       builder.addCase(
-        getGroupsOnIdDiscipline.fulfilled.type,
-        (state, action: PayloadAction<IGroupsByiD[]>) => {
+        getStudentsByDisciplineIds.fulfilled.type,
+        (state, action: PayloadAction<IStudentById[]>) => {
           state.isLoading = false;
           state.error = "";
-          state.groupsById = action.payload;
+          state.studentsById = action.payload;
+          debugger
         }
       ),
       builder.addCase(
-        getGroupsOnIdDiscipline.rejected.type,
+        getStudentsByDisciplineIds.rejected.type,
         (state, action: PayloadAction<string>) => {
           state.isLoading = false;
           state.error = action.payload;
@@ -49,14 +50,14 @@ export const groupsByIdSlice = createSlice({
       );
     // обработка создания связи
     builder.addCase(
-      createLink.rejected.type,
+      createLinkStudnet.rejected.type,
       (state, action: PayloadAction<string>) => {
         state.error = action.payload;
       }
     );
     // обработка удаления связи
     builder.addCase(
-      deleteLink.rejected.type,
+      deleteLinkStudent.rejected.type,
       (state, action: PayloadAction<string>) => {
         state.error = action.payload;
       }
@@ -64,4 +65,4 @@ export const groupsByIdSlice = createSlice({
   },
 });
 
-export default groupsByIdSlice.reducer;
+export default studentByIdSlice.reducer;

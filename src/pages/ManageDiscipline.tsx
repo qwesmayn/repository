@@ -8,6 +8,8 @@ import {
   deleteDisciplines,
   changeAuthors,
   getAuthors,
+  getStudentsByDisciplineIds,
+  deleteLinkStudent,
 } from "../store/action_creators/actionCreatos";
 import ModalDelete from "../components/modals/ModalDelete";
 import ErrorAlert from "../components/ErrorAlert";
@@ -18,6 +20,7 @@ import Dropdown from "../components/DropDown";
 import DisciplineRow from "../components/DisciplineRow";
 import { IAuthors } from "../models/IAuthors";
 import i18n from "../i18n";
+import ModalAddStudent from "../components/modals/ModalAddStudent";
 
 const ManageDisciplines: FC = () => {
   const dispatch = useAppDispatch();
@@ -27,6 +30,7 @@ const ManageDisciplines: FC = () => {
     error,
   } = useAppSelector((state) => state.disciplineReducer);
   const { groupsById } = useAppSelector((state) => state.groupsByIdReducer);
+  const { studentsById } = useAppSelector((state) => state.studentByIdReducer);
   const {authors} = useAppSelector((state) => state.userManageReducer)
   const [selectedDisciplineId, setSelectedDisciplineId] = useState<
     string | null
@@ -39,7 +43,9 @@ const ManageDisciplines: FC = () => {
   const [localError, setLocalError] = useState<string | null>(null);
   const [isModalAddGroupOpen, setIsModalAddGroupOpen] =
     useState<boolean>(false);
+  const [isModalAddStudentOpen, setIsModalAddStudentOpen] = useState<boolean>(false);
   const [selectedDiscipline, setSelectedDiscipline] = useState<string>("");
+  const [selectedDisciplineStudentId, setSelectedDisciplineStudentId] = useState<string | null>(null);
 
   useEffect(() => {
     dispatch(getAuthors())
@@ -49,7 +55,9 @@ const ManageDisciplines: FC = () => {
   useEffect(() => {
     if (!isDisciplinesLoading && disciplines.length > 0) {
       const disciplineIds = disciplines.map((discipline) => discipline._id);
+      debugger
       dispatch(getGroupsOnIdDiscipline(disciplineIds));
+      dispatch(getStudentsByDisciplineIds(disciplineIds));
     }
   }, [dispatch, disciplines, isDisciplinesLoading]);
 
@@ -65,6 +73,14 @@ const ManageDisciplines: FC = () => {
 
   const closeModalAddGroup = () => {
     setIsModalAddGroupOpen(false);
+  };
+
+  const openModalAddStudent = () => {
+    setIsModalAddStudentOpen(true);
+  };
+
+  const closeModalAddStudent = () => {
+    setIsModalAddStudentOpen(false);
   };
 
   const handleDeleteDiscipline = (disciplineId: string) => {
@@ -116,11 +132,27 @@ const ManageDisciplines: FC = () => {
     }
   };
 
+  const handleDeleteStudent = async (studentId: string, disciplineId: string) => {
+    const resultAction = await dispatch(deleteLinkStudent({ studentId, disciplineId }));
+    if (deleteLinkStudent.fulfilled.match(resultAction)) {
+      dispatch(getStudentsByDisciplineIds([disciplineId]));
+    } else if (deleteLinkStudent.rejected.match(resultAction)) {
+      setLocalError("Не удалось удалить связь с студентом.");
+    }
+  };
+
   const toggleDisciplineGroups = (disciplineId: string) => {
     setSelectedDisciplineId(
       selectedDisciplineId === disciplineId ? null : disciplineId
     );
   };
+
+  const toggleDisciplineStudents = (disciplineId: string) => {
+    setSelectedDisciplineStudentId(
+      selectedDisciplineStudentId === disciplineId ? null : disciplineId
+    );
+  };
+  
 
   const saveDisciplineChanges = async (
     id: string,
@@ -170,17 +202,22 @@ const ManageDisciplines: FC = () => {
       )
       .map((discipline, index) => (
         <DisciplineRow
-          key={discipline._id}
-          index={index}
-          discipline={discipline}
-          selectedDisciplineId={selectedDisciplineId}
-          toggleDisciplineGroups={toggleDisciplineGroups}
-          groupsById={groupsById}
-          handleDeleteGroup={handleDeleteGroup}
-          openModalAddGroup={openModalAddGroup}
-          saveDisciplineChanges={saveDisciplineChanges}
-          handleDeleteDiscipline={handleDeleteDiscipline}
-        />
+        key={discipline._id}
+        index={index}
+        discipline={discipline}
+        selectedDisciplineId={selectedDisciplineId}
+        selectedDisciplineStudentId={selectedDisciplineStudentId}
+        toggleDisciplineGroups={toggleDisciplineGroups}
+        toggleDisciplineStudents={toggleDisciplineStudents}
+        groups={groupsById.filter((group) => group.discipline === discipline._id)}
+        students={studentsById.filter((student) => student.discipline === discipline._id)}
+        handleDeleteGroup={handleDeleteGroup}
+        openModalAddGroup={openModalAddGroup}
+        saveDisciplineChanges={saveDisciplineChanges}
+        handleDeleteDiscipline={handleDeleteDiscipline}
+        openModalAddStudent={openModalAddStudent}
+        handleDeleteStudent={handleDeleteStudent}
+      />
       ))}
   </div>
 </div>
@@ -196,6 +233,13 @@ const ManageDisciplines: FC = () => {
         onRequestClose={closeModalAddGroup}
         disciplineId={selectedDisciplineId || ""}
       />
+
+      <ModalAddStudent
+        isOpen={isModalAddStudentOpen}
+        onRequestClose={closeModalAddStudent}
+        disciplineId={selectedDisciplineStudentId || ""}
+      />
+
 
       <ModalAddDiscipline
         isOpen={isModalAddOpen}

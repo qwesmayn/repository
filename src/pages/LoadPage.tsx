@@ -48,13 +48,17 @@ const LoadPage: FC = () => {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0] || null;
-    selectedFile && selectedFile?.size < 100000000 ? setFile(selectedFile ?? undefined) : console.error("Выбранный файл слишком большой.")
+    selectedFile && selectedFile?.size < 100000000
+      ? setFile(selectedFile ?? undefined)
+      : console.error("Выбранный файл слишком большой.");
   };
 
   const handleCoverChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedCoverFile = event.target.files?.[0] || null;
-    selectedCoverFile && selectedCoverFile?.size < 10000000 ? setCoverFile(selectedCoverFile ?? undefined) : console.error("Выбранный файл слишком большой.")
-    if (selectedCoverFile && selectedCoverFile?.size < 10000000 ) {
+    selectedCoverFile && selectedCoverFile?.size < 10000000
+      ? setCoverFile(selectedCoverFile ?? undefined)
+      : console.error("Выбранный файл слишком большой.");
+    if (selectedCoverFile && selectedCoverFile?.size < 10000000) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setCoverPreview(reader.result as string);
@@ -152,39 +156,66 @@ const LoadPage: FC = () => {
               id="discipline"
               className="bg-bg-blue-design w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500"
               {...register("discipline", { required: true })}
+              defaultValue=""
             >
+              <option value="" disabled>
+                {i18n.t("material.sortByDiscipline")}
+              </option>
               {disciplines.map((discipline) => (
                 <option key={discipline._id} value={discipline._id}>
                   {discipline.name}
                 </option>
               ))}
             </select>
+            {errors.discipline && (
+              <span className="text-red-500">
+                {i18n.t("materialAdd.requieridDiscipline")}
+              </span>
+            )}
           </div>
           <div className="mb-9 shadow-dark-lg">
             <select
               id="materialType"
               className="bg-bg-blue-design w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500"
               {...register("materialType", { required: true })}
+              defaultValue=""
             >
+              <option value="" disabled>
+                {i18n.t("material.sortByMaterial")}
+              </option>
               {materialsTypes.map((materialsType) => (
                 <option key={materialsType._id} value={materialsType._id}>
                   {materialsType.name}
                 </option>
               ))}
             </select>
+            {errors.materialType && (
+              <span className="text-red-500">
+                {i18n.t("materialAdd.requieridMaterialType")}
+              </span>
+            )}
           </div>
           <div className="mb-9 shadow-dark-lg">
             <select
               id="author"
               className="bg-bg-blue-design w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500"
               {...register("author", { required: true })}
+              defaultValue=""
             >
+              <option value="" disabled>
+                {i18n.t("material.chooseAuthor")}
+              </option>
               {authors.map((author) => (
                 <option key={author._id} value={author._id}>
                   {author.fullName}
                 </option>
               ))}
             </select>
+            {errors.author && (
+              <span className="text-red-500">
+                {i18n.t("materialAdd.requieridAuthor")}
+              </span>
+            )}
           </div>
           <div className="mb flex items-center">
             <div className="flex-1">
@@ -196,8 +227,8 @@ const LoadPage: FC = () => {
                         {i18n.t("materialAdd.touchFile")}:
                       </p>
                       <div className="w-full flex justify-center my-4 bg-bg-blue-design">
-                        <div className="w-16">  
-                          <FileIcon extension={extension} {...fileIconProps}/>
+                        <div className="w-16">
+                          <FileIcon extension={extension} {...fileIconProps} />
                         </div>
                       </div>
                       <p className="text-sm text-yellow-600 mb-2 text-center">
@@ -308,7 +339,7 @@ const LoadPage: FC = () => {
           className="px-6 py-2 bg-bg-blue-design w-full text-black rounded-2xl shadow-dark-lg transition-colors duration-300"
           onClick={() => setShowSuccessPopup(true)}
         >
-          {i18n.t("materialAdd.clearAll")}
+          {i18n.t("materialAdd.clearAll")} 
         </button>
       </div>
       {showSuccessPopup && (

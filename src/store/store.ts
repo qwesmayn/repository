@@ -1,3 +1,4 @@
+import studentByIdReducer from './reducers/studentByIdSlice';
 import materialReducer from './reducers/materialSlice';
 import groupsByIdReducer from './reducers/GroupByIdSlice';
 import disciplineReducer from './reducers/disciplineSlice';
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
     disciplineReducer,
     groupsByIdReducer,
     materialReducer,
+    studentByIdReducer
 })
 
 export const store = configureStore({

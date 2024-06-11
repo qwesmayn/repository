@@ -9,6 +9,7 @@ import { IDiscipline } from "../../models/IDiscipline";
 import { IGroupsByiD } from "../../models/IGroupById";
 import { ITypesMaterials } from "../../models/ITypesMaterials";
 import { IMaterials } from "../../models/IMaterials";
+import { IStudentById } from "../../models/IStudentById";
 
 // Авторизация
 
@@ -153,6 +154,25 @@ export const getGroupsOnIdDiscipline = createAsyncThunk(
   }
 );
 
+export const getStudentsByDisciplineIds = createAsyncThunk(
+  "getStudentsByDisciplineIds",
+  async (disciplineIds: string[], thunkAPI) => {
+    try {
+      const response = await $authHost.get<{ studentsById: IStudentById[] }>(
+        `/find/d-s/students`,
+        {
+          params: { disciplineIds: disciplineIds.join(",") },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        "Не удалось получить студентов по id дисциплин"
+      );
+    }
+  }
+);
+
 export const getMaterials = createAsyncThunk(
   "fetchMaterials",
   async (_, thunkAPI) => {
@@ -277,6 +297,23 @@ export const createLink = createAsyncThunk(
   }
 );
 
+export const createLinkStudnet = createAsyncThunk(
+  "createLinkStudnet",
+  async (data: { studentId: string; disciplineId: string }, thunkAPI) => {
+    try {
+      const response = await $authHost.post<{ student: IStudentById }>(
+        "/find/d-s",
+        { studentId: data.studentId, disciplineId: data.disciplineId }
+      );
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        "Не удалось добавить связь между дисциплиной и студентом"
+      );
+    }
+  }
+);
+
 export const createMaterial = createAsyncThunk(
   "materials/createMaterial",
   async (
@@ -393,6 +430,20 @@ export const deleteLink = createAsyncThunk(
     try {
       const response = await $authHost.delete(
         `/find/d-g/${data.groupId}/${data.disciplineId}`
+      );
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const deleteLinkStudent = createAsyncThunk(
+  "deleteLinkStudent",
+  async (data: { studentId: string; disciplineId: string }, thunkAPI) => {
+    try {
+      const response = await $authHost.delete(
+        `/find/d-s/${data.studentId}/${data.disciplineId}`
       );
       return response.data;
     } catch (error) {
