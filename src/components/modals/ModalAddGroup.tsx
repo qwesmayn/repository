@@ -20,6 +20,7 @@ const ModalAddGroup: FC<ModalAddGroupProps> = ({
     if (groupName.trim()) {
       saveGroup(groupName);
       setGroupName("");
+      closeModal()
     }
   };
 

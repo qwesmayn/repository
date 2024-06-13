@@ -71,6 +71,7 @@ const ManageGroup: FC = () => {
           message={i18n.t('groupManage.succesAdd')}
           closeModal={() => {
             dispatch(getGroups());
+            setIsPopupOpen(false)
             closeAddGroupModal();
           }}
         />
