@@ -7,8 +7,8 @@ import {
   getMaterialsTypes,
   getMaterialsTypesById,
 } from "../action_creators/actionCreatos";
-import { IMaterials } from "../../models/iMaterials";
 import { ITypesMaterials } from "../../models/ITypesMaterials";
+import { IMaterials } from "../../models/IMaterials";
 
 export interface MaterialState {
   materials: IMaterials[];
