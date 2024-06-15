@@ -45,7 +45,7 @@ const AuthPage: FC = () => {
 
   return (
     <div className="flex min-h-full flex-1 flex-col justify-start px-6 pt-[89px] lg:px-[128px] bg-bg-blue-design h-screen">
-      <img className="w-[160px] mb-24" src={logo} alt="Your Company" />
+      <img className="w-[120px] mb-24" src={logo} alt="Your Company" />
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
           {i18n.t("nameUniversity")}
