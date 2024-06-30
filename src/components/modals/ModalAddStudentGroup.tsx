@@ -23,6 +23,11 @@ const ModalAddGroup: FC<ModalAddGroupProps> = ({ isModalOpen, closeModal, saveGr
     }
   };
 
+  const handleClose = () => {
+    setSelectedGroup(null)
+    closeModal()
+  }
+
   if (!isModalOpen) return null;
 
   return (
@@ -53,7 +58,7 @@ const ModalAddGroup: FC<ModalAddGroupProps> = ({ isModalOpen, closeModal, saveGr
               >
 {i18n.t('userManage.buttonSave')}
               </button>
-              <button className="bg-bg-blue-design text-black px-4 py-2 shadow-dark-lg" onClick={closeModal}>
+              <button className="bg-bg-blue-design text-black px-4 py-2 shadow-dark-lg" onClick={handleClose}>
               {i18n.t('userManage.buttonCancel')}
               </button>
               </div>

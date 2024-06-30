@@ -58,6 +58,11 @@ const ModalAddStudent: FC<ModalAddStudentProps> = ({ isOpen, onRequestClose, dis
     setLocalError(null);
   };
 
+  const handleClose = () => {
+    setSelectedStudents([])
+    onRequestClose(false)
+  }
+
   return (
     <>
       {isOpen && (
@@ -97,7 +102,7 @@ const ModalAddStudent: FC<ModalAddStudentProps> = ({ isOpen, onRequestClose, dis
                     {i18n.t('userManage.buttonSave')}
                   </button>
                   <button
-                    onClick={() => onRequestClose(false)}
+                    onClick={() => handleClose()}
                     className="bg-bg-blue-design text-black py-2 px-4 rounded-2xl shadow-dark-lg"
                   >
                     {i18n.t('userManage.buttonCancel')}

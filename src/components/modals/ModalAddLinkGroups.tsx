@@ -46,11 +46,17 @@ const ModalAddGroup: FC<ModalAddGroupProps> = ({ isOpen, onRequestClose, discipl
         await Promise.all(selectedGroups.map(groupId => dispatch(createLink({ groupId, disciplineId }))));
         dispatch(getDisciplines());
         onRequestClose(false);
+        setSelectedGroups([])
       }
     } catch (error) {
       setLocalError("Не удалось добавить связь между дисциплиной и группой");
     }
   };
+
+  const handleClose = () => {
+    setSelectedGroups([])
+    onRequestClose(false)
+  }
 
   const clearError = () => {
     dispatch(clearErrors());
@@ -96,7 +102,7 @@ const ModalAddGroup: FC<ModalAddGroupProps> = ({ isOpen, onRequestClose, discipl
                     {i18n.t('userManage.buttonSave')}
                   </button>
                   <button
-                    onClick={() => onRequestClose(false)}
+                    onClick={() => handleClose()}
                     className="bg-bg-blue-design text-black py-2 px-4 rounded-2xl shadow-dark-lg"
                   >
                     {i18n.t('userManage.buttonCancel')}

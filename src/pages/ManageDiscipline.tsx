@@ -129,6 +129,7 @@ const ManageDisciplines: FC = () => {
     } else if (deleteLink.rejected.match(resultAction)) {
       setLocalError("Не уадлось удалить связь с группой.");
     }
+    dispatch(getDisciplines())
   };
 
   const handleDeleteStudent = async (studentId: string, disciplineId: string) => {

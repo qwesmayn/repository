@@ -8,11 +8,13 @@ import StudentMaterialBlock from "./StudentMaterialBlock";
 import { useAppDispatch, useAppSelector } from "../hooks/typeHooks";
 import {
   getDisciplinesOnIdGroups,
+  getDisciplinesOnIdStudents,
   getStudents,
 } from "../store/action_creators/actionCreatos";
 import { IUser } from "../models/IUser";
 import { jwtDecode } from "jwt-decode";
 import Loading from "./Loadind";
+import { IStudentById } from "../models/IStudentById";
 
 interface MaterialsListProps {
   materials: IMaterials[];
@@ -40,8 +42,12 @@ const MaterialsList: FC<MaterialsListProps> = ({
   const { groupsById, isLoading: groupsLoading } = useAppSelector(
     (state) => state.groupsByIdReducer
   );
+  const { studentsById } = useAppSelector(
+    (state) => state.studentByIdReducer
+  );
   const [userId, setUserId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [studentDisciplines, setStudentDisciplines] = useState<string[]>([]);
 
   useEffect(() => {
     if (isStudentView) {
@@ -58,32 +64,36 @@ const MaterialsList: FC<MaterialsListProps> = ({
     if (isStudentView && userId && students.length > 0) {
       const user = students.find((student) => student._id === userId);
       if (user) {
-        dispatch(getDisciplinesOnIdGroups(user.group._id));
+        if (user.group) {
+          dispatch(getDisciplinesOnIdGroups(user.group._id));
+        } else {
+          dispatch(getDisciplinesOnIdStudents(user._id));
+        }
+        setLoading(true);
       }
-      setLoading(true);
     }
   }, [isStudentView, userId, students, dispatch]);
 
   useEffect(() => {
+    console.log(studentsById.length)
     if (
       isStudentView &&
       userId &&
       !studentsLoading &&
       !groupsLoading &&
-      groupsById.length > 0
+      groupsById.length > 0 || studentsById.length > 0
     ) {
       setLoading(false);
     }
-  }, [isStudentView, userId, studentsLoading, groupsLoading, groupsById]);
+  }, [isStudentView, userId, studentsLoading, groupsLoading, groupsById, studentsById]);
 
-  const filteredMaterials =
-    isStudentView && !loading
-      ? materials.filter((material) =>
-          groupsById.some(
-            (groupById) => groupById.discipline._id === material.discipline
-          )
-        )
-      : [];
+  // Filter materials based on student's disciplines
+  const filteredMaterials = isStudentView && !loading
+    ? materials.filter((material) => {
+        return groupsById.some((group) => group.discipline._id === material.discipline) ||
+        studentsById.some((student) => student.discipline._id  === material.discipline)
+      })
+    : materials;
 
   return loading ? (
     <Loading />

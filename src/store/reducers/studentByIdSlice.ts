@@ -3,6 +3,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import {
   createLinkStudnet,
   deleteLinkStudent,
+  getDisciplinesOnIdStudents,
   getStudentsByDisciplineIds,
 } from "../action_creators/actionCreatos";
 import { IStudentById } from "../../models/IStudentById";
@@ -49,12 +50,28 @@ export const studentByIdSlice = createSlice({
       );
     // обработка создания связи
     builder.addCase(
-      createLinkStudnet.rejected.type,
+      getDisciplinesOnIdStudents.rejected.type,
       (state, action: PayloadAction<string>) => {
         state.error = action.payload;
       }
     );
 
+    builder.addCase(
+      getDisciplinesOnIdStudents.fulfilled.type,
+      (state, action: PayloadAction<IStudentById[]>) => {
+        state.isLoading = false;
+        state.error = "";
+        state.studentsById = action.payload;
+      }
+    ),
+    
+  // обработка создания связи
+  builder.addCase(
+    createLinkStudnet.rejected.type,
+    (state, action: PayloadAction<string>) => {
+      state.error = action.payload;
+    }
+  );
     
     // обработка удаления связи
     builder.addCase(

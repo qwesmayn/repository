@@ -29,6 +29,11 @@ const ModalAddAuthorDiscipline: FC<ModalAddAuthorDisciplineProps> = ({
     closeModal();
   };
 
+  const handleClose = () => {
+    setSelectedDisciplines([])
+    closeModal()
+  }
+
   if (!isModalOpen) return null;
 
   return (
@@ -68,7 +73,7 @@ const ModalAddAuthorDiscipline: FC<ModalAddAuthorDisciplineProps> = ({
                 </button>
                 <button
                   className="bg-bg-blue-design text-black px-4 py-2 rounded-lg shadow-dark-lg"
-                  onClick={closeModal}
+                  onClick={handleClose}
                 >
                   {i18n.t("userManage.buttonCancel")}
                 </button>
