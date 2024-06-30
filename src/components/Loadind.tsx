@@ -2,7 +2,7 @@ import { FC } from "react";
 
 const Loading: FC = () => {
   return (
-    <div className="text-center align-super">
+    <div className="flex items-center justify-center">
       <div role="status">
         <svg
           aria-hidden="true"

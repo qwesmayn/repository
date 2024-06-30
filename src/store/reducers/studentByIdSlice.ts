@@ -38,7 +38,6 @@ export const studentByIdSlice = createSlice({
           state.isLoading = false;
           state.error = "";
           state.studentsById = action.payload;
-          debugger
         }
       ),
       builder.addCase(
@@ -55,6 +54,8 @@ export const studentByIdSlice = createSlice({
         state.error = action.payload;
       }
     );
+
+    
     // обработка удаления связи
     builder.addCase(
       deleteLinkStudent.rejected.type,

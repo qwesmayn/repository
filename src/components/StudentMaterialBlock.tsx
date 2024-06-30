@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC, useState } from "react";
 import { IMaterials } from "../models/IMaterials";
 import { IAuthors } from "../models/IAuthors";
 import { IDiscipline } from "../models/IDiscipline";
@@ -22,8 +22,7 @@ const StudentMaterialBlock: FC<StudentMaterialBlockProps> = ({
   disciplines,
   materialsTypes,
 }) => {
-  const [isDescriptionExpanded, setIsDescriptionExpanded] =
-    React.useState(false);
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const dispatch = useAppDispatch();
 
   const toggleDescription = () => {
@@ -56,10 +55,14 @@ const StudentMaterialBlock: FC<StudentMaterialBlockProps> = ({
     description,
     createdAt,
     contentUrl,
+    discipline,
+    author,
+    materialType
   } = material;
 
   const imageUrl = "http://localhost:3001/uploads/" + previewImageUrl;
   const fileUrl = "http://localhost:3001/uploads/" + contentUrl;
+
 
   return (
     <div
@@ -106,18 +109,18 @@ const StudentMaterialBlock: FC<StudentMaterialBlockProps> = ({
           )}
           <p className="text-xs mb-4 bg-white rounded-2xl p-1">
             <strong>{i18n.t("material.materialDiscipline")}</strong>{" "}
-            {getDisciplineName(material.discipline)}
+            {getDisciplineName(discipline)}
           </p>
           <p className="text-xs mb-4 bg-white rounded-2xl p-1">
             <strong>{i18n.t("material.materialAuthor")}</strong>{" "}
-            {getAuthorName(material.author)}
+            {getAuthorName(author)}
           </p>
 
           <div className="flex items-center justify-between">
             <div className="flex items-center flex-col space-y-4">
               <p className="bg-white text-xs rounded-2xl p-1">
                 <strong>{i18n.t("material.materialTypematerial")}</strong>
-                <br /> {getMaterialTypeName(material.materialType)}
+                <br /> {getMaterialTypeName(materialType)}
               </p>
             </div>
             <div className="flex items-center flex-col space-y-4 ">

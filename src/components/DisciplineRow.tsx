@@ -21,7 +21,7 @@ interface DisciplineRowProps {
   handleDeleteStudent: (studentId: string, disciplineId: string) => void;
 }
 
-const DisciplineRow: React.FC<DisciplineRowProps> = ({
+const DisciplineRow: FC<DisciplineRowProps> = ({
   index,
   discipline,
   selectedDisciplineId,
@@ -148,7 +148,7 @@ const DisciplineRow: React.FC<DisciplineRowProps> = ({
                   key={student._id}
                   className="flex justify-between items-center px-2 py-1 border-b"
                 >
-                  <span className="mr-6">{student.student.fullName}</span>
+                  <span className="mr-6">{student.student?.fullName}</span>
                   <button
                     className="text-red-500 transition-colors duration-300"
                     onClick={() =>

@@ -3,6 +3,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import {
   createLink,
   deleteLink,
+  getDisciplinesOnIdGroups,
   getGroupsOnIdDiscipline,
 } from "../action_creators/actionCreatos";
 import { IGroupsByiD } from "../../models/IGroupById";
@@ -54,6 +55,26 @@ export const groupsByIdSlice = createSlice({
         state.error = action.payload;
       }
     );
+
+    builder.addCase(getDisciplinesOnIdGroups.pending.type, (state) => {
+      state.isLoading = true;
+    }),
+      builder.addCase(
+        getDisciplinesOnIdGroups.fulfilled.type,
+        (state, action: PayloadAction<IGroupsByiD[]>) => {
+          state.isLoading = false;
+          state.error = "";
+          state.groupsById = action.payload;
+        }
+      ),
+      builder.addCase(
+        getDisciplinesOnIdGroups.rejected.type,
+        (state, action: PayloadAction<string>) => {
+          state.isLoading = false;
+          state.error = action.payload;
+        }
+      );
+
     // обработка удаления связи
     builder.addCase(
       deleteLink.rejected.type,

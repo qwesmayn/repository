@@ -154,6 +154,26 @@ export const getGroupsOnIdDiscipline = createAsyncThunk(
   }
 );
 
+export const getDisciplinesOnIdGroups = createAsyncThunk(
+  "fetchDisciplinesOnIdGroups",
+  async (groupsId: string[] | string, thunkAPI) => {
+    try {
+      const response = await $authHost.get<{ groupsById: IGroupsByiD[] }>(
+        `/find/d-g/disciplines`,
+        {
+          params: { groupIds: typeof(groupsId) === "string" ? groupsId : groupsId.join(",") },
+        }
+      );
+      console.log(response.data)
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        "Не удалось получить дисциплины по id групп"
+      );
+    }
+  }
+);
+
 export const getStudentsByDisciplineIds = createAsyncThunk(
   "getStudentsByDisciplineIds",
   async (disciplineIds: string[], thunkAPI) => {

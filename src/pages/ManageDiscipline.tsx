@@ -55,7 +55,6 @@ const ManageDisciplines: FC = () => {
   useEffect(() => {
     if (!isDisciplinesLoading && disciplines.length > 0) {
       const disciplineIds = disciplines.map((discipline) => discipline._id);
-      debugger
       dispatch(getGroupsOnIdDiscipline(disciplineIds));
       dispatch(getStudentsByDisciplineIds(disciplineIds));
     }
