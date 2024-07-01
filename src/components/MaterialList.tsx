@@ -47,7 +47,6 @@ const MaterialsList: FC<MaterialsListProps> = ({
   );
   const [userId, setUserId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [studentDisciplines, setStudentDisciplines] = useState<string[]>([]);
 
   useEffect(() => {
     if (isStudentView) {
@@ -64,18 +63,14 @@ const MaterialsList: FC<MaterialsListProps> = ({
     if (isStudentView && userId && students.length > 0) {
       const user = students.find((student) => student._id === userId);
       if (user) {
-        if (user.group) {
           dispatch(getDisciplinesOnIdGroups(user.group._id));
-        } else {
           dispatch(getDisciplinesOnIdStudents(user._id));
-        }
-        setLoading(true);
+                            setLoading(true);
       }
     }
   }, [isStudentView, userId, students, dispatch]);
 
   useEffect(() => {
-    console.log(studentsById.length)
     if (
       isStudentView &&
       userId &&
@@ -90,10 +85,11 @@ const MaterialsList: FC<MaterialsListProps> = ({
   // Filter materials based on student's disciplines
   const filteredMaterials = isStudentView && !loading
     ? materials.filter((material) => {
-        return groupsById.some((group) => group.discipline._id === material.discipline) ||
-        studentsById.some((student) => student.discipline._id  === material.discipline)
+        return groupsById.some((group) => group.discipline?._id === material.discipline) ||
+        studentsById.some((student) => student.discipline?._id  === material.discipline)
       })
     : materials;
+  
 
   return loading ? (
     <Loading />

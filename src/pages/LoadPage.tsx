@@ -28,6 +28,7 @@ const LoadPage: FC = () => {
   const [coverPreview, setCoverPreview] = useState<string | null>(null);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [showErrorPopup, setShowErrorPopup] = useState(false);
+  const [selectedAuthorId, setSelectedAuthorId] = useState<string | null>(null);
   const { disciplines } = useAppSelector((state) => state.disciplineReducer);
   const { authors } = useAppSelector((state) => state.userManageReducer);
   const { materialsTypes } = useAppSelector((state) => state.materialReducer);
@@ -161,12 +162,21 @@ const LoadPage: FC = () => {
               <option value="" disabled>
                 {i18n.t("material.sortByDiscipline")}
               </option>
-              {disciplines.map((discipline) => (
-                <option key={discipline._id} value={discipline._id}>
-                  {discipline.name}
-                </option>
-              ))}
+              {disciplines
+                .filter((discipline) =>
+                  selectedAuthorId
+                    ? authors
+                        .find((author) => author._id === selectedAuthorId)
+                        ?.disciplines.some((d) => d._id === discipline._id)
+                    : true
+                )
+                .map((discipline) => (
+                  <option key={discipline._id} value={discipline._id}>
+                    {discipline.name}
+                  </option>
+                ))}
             </select>
+
             {errors.discipline && (
               <span className="text-red-500">
                 {i18n.t("materialAdd.requieridDiscipline")}
@@ -201,6 +211,9 @@ const LoadPage: FC = () => {
               className="bg-bg-blue-design w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500"
               {...register("author", { required: true })}
               defaultValue=""
+              onChange={(e) => {
+                setSelectedAuthorId(e.target.value);
+              }}
             >
               <option value="" disabled>
                 {i18n.t("material.chooseAuthor")}
@@ -211,6 +224,7 @@ const LoadPage: FC = () => {
                 </option>
               ))}
             </select>
+
             {errors.author && (
               <span className="text-red-500">
                 {i18n.t("materialAdd.requieridAuthor")}
@@ -339,7 +353,7 @@ const LoadPage: FC = () => {
           className="px-6 py-2 bg-bg-blue-design w-full text-black rounded-2xl shadow-dark-lg transition-colors duration-300"
           onClick={() => setShowSuccessPopup(true)}
         >
-          {i18n.t("materialAdd.clearAll")} 
+          {i18n.t("materialAdd.clearAll")}
         </button>
       </div>
       {showSuccessPopup && (
