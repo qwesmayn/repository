@@ -14,7 +14,6 @@ import {
 import { IUser } from "../models/IUser";
 import { jwtDecode } from "jwt-decode";
 import Loading from "./Loadind";
-import { IStudentById } from "../models/IStudentById";
 
 interface MaterialsListProps {
   materials: IMaterials[];
@@ -63,9 +62,9 @@ const MaterialsList: FC<MaterialsListProps> = ({
     if (isStudentView && userId && students.length > 0) {
       const user = students.find((student) => student._id === userId);
       if (user) {
-          dispatch(getDisciplinesOnIdGroups(user.group._id));
+        dispatch(getDisciplinesOnIdGroups(user.group?._id));
           dispatch(getDisciplinesOnIdStudents(user._id));
-                            setLoading(true);
+        setLoading(true);
       }
     }
   }, [isStudentView, userId, students, dispatch]);

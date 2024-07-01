@@ -29,6 +29,7 @@ const LoadPage: FC = () => {
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [showErrorPopup, setShowErrorPopup] = useState(false);
   const [selectedAuthorId, setSelectedAuthorId] = useState<string | null>(null);
+  const [selectedDisciplineId, setSelectedDisciplineId] = useState<string | null>(null);
   const { disciplines } = useAppSelector((state) => state.disciplineReducer);
   const { authors } = useAppSelector((state) => state.userManageReducer);
   const { materialsTypes } = useAppSelector((state) => state.materialReducer);
@@ -158,25 +159,19 @@ const LoadPage: FC = () => {
               className="bg-bg-blue-design w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500"
               {...register("discipline", { required: true })}
               defaultValue=""
+              onChange={(e) => {
+                setSelectedDisciplineId(e.target.value);
+              }}
             >
               <option value="" disabled>
                 {i18n.t("material.sortByDiscipline")}
               </option>
-              {disciplines
-                .filter((discipline) =>
-                  selectedAuthorId
-                    ? authors
-                        .find((author) => author._id === selectedAuthorId)
-                        ?.disciplines.some((d) => d._id === discipline._id)
-                    : true
-                )
-                .map((discipline) => (
-                  <option key={discipline._id} value={discipline._id}>
-                    {discipline.name}
-                  </option>
-                ))}
+              {disciplines.map((discipline) => (
+                <option key={discipline._id} value={discipline._id}>
+                  {discipline.name}
+                </option>
+              ))}
             </select>
-
             {errors.discipline && (
               <span className="text-red-500">
                 {i18n.t("materialAdd.requieridDiscipline")}
@@ -218,11 +213,17 @@ const LoadPage: FC = () => {
               <option value="" disabled>
                 {i18n.t("material.chooseAuthor")}
               </option>
-              {authors.map((author) => (
-                <option key={author._id} value={author._id}>
-                  {author.fullName}
-                </option>
-              ))}
+              {authors
+                .filter((author) =>
+                  selectedDisciplineId
+                    ? author.disciplines.some((d) => d._id === selectedDisciplineId)
+                    : true
+                )
+                .map((author) => (
+                  <option key={author._id} value={author._id}>
+                    {author.fullName}
+                  </option>
+                ))}
             </select>
 
             {errors.author && (
@@ -364,6 +365,8 @@ const LoadPage: FC = () => {
             setFile(undefined);
             setCoverFile(undefined);
             setCoverPreview(null);
+            setSelectedDisciplineId(null);
+            setSelectedAuthorId(null);
             setShowSuccessPopup(false);
           }}
         />
